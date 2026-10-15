@@ -1,0 +1,11 @@
+﻿seed: 42
+lr: 0.003
+warmup_steps: 10
+max_steps: 200
+batch_size: 4
+grad_accum_steps: 1
+weight_decay: 0.01
+grad_clip: 1.0
+precision: fp32
+eval_every: 20
+checkpoint_every: 100

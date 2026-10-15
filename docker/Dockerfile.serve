@@ -1,0 +1,10 @@
+﻿# CPU serving image for the reference PyTorch checkpoint (not quantized).
+FROM python:3.12-slim
+WORKDIR /app
+COPY pyproject.toml README.md ./
+COPY src ./src
+RUN pip install --no-cache-dir torch==2.11.0 --index-url https://download.pytorch.org/whl/cpu \
+    && pip install --no-cache-dir ".[serve]"
+ENV MOELAB_CHECKPOINT=/models/last.pt
+EXPOSE 8000
+CMD ["uvicorn", "moelab.serving.api:app", "--host", "0.0.0.0", "--port", "8000"]

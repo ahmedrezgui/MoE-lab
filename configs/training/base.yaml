@@ -1,0 +1,13 @@
+seed: 42
+lr: 3.0e-4
+warmup_steps: 200
+max_steps: 5000
+batch_size: 32
+grad_accum_steps: 4
+weight_decay: 0.1
+grad_clip: 1.0
+precision: bf16          # bf16 | fp16 | fp32
+eval_every: 250
+checkpoint_every: 1000
+mlflow_experiment: moelab
+run_name: null            # auto-generated if null

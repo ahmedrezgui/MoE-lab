@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Data & artifacts — versioned with DVC, never with git
+data/
+checkpoints/
+mlruns/
+mlartifacts/
+*.pt
+*.bin
+*.gguf
+/dvcstore
+
+.env
+.DS_Store

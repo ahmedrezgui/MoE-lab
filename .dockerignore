@@ -1,0 +1,8 @@
+﻿.venv
+.git
+__pycache__
+data
+checkpoints
+mlruns
+.pytest_cache
+.ruff_cache
