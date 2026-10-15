@@ -30,6 +30,14 @@ def file_hash(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
+def save_checkpoint(payload, path):
+    """Replace a checkpoint only after its new contents have been written."""
+    path = Path(path)
+    temporary = path.with_name(path.name + ".tmp")
+    torch.save(payload, temporary)
+    temporary.replace(path)
+
+
 def train(
     model_cfg: ModelConfig,
     train_cfg: TrainingConfig,
@@ -69,6 +77,8 @@ def train(
     optimizer = torch.optim.AdamW(model.parameters(), lr=c.lr, weight_decay=c.weight_decay)
     scaler = torch.amp.GradScaler("cuda", enabled=device.type == "cuda" and c.precision == "fp16")
     step = 0
+    best_val_ce = math.inf
+    best_step = None
     if resume:
         saved = torch.load(resume, map_location="cpu", weights_only=True)
         if saved["model_config"] != model_cfg.model_dump():
@@ -79,6 +89,8 @@ def train(
         optimizer.load_state_dict(saved["optimizer"])
         scaler.load_state_dict(saved["scaler"])
         step = saved["step"]
+        best_val_ce = saved.get("best_val_ce", math.inf)
+        best_step = saved.get("best_step")
         rng.bit_generator.state = saved["numpy_rng"]
         torch.set_rng_state(saved["torch_rng"])
         if device.type == "cuda" and saved["cuda_rng"]:
@@ -159,8 +171,16 @@ def train(
             "elapsed_seconds": time.perf_counter() - start,
             "expert_counts": {k: v.tolist() for k, v in routing_counts.items()},
         }
+        improved = False
         if step % c.eval_every == 0 or step == stop:
             row.update(evaluate(model, datasets["val"], batches=4, batch_size=c.batch_size))
+            if not math.isfinite(row["val_ce"]):
+                raise RuntimeError("Non-finite validation cross entropy")
+            improved = row["val_ce"] < best_val_ce
+            if improved:
+                best_val_ce = row["val_ce"]
+                best_step = step
+            row.update(best_val_ce=best_val_ce, best_step=best_step)
             row["training_tokens"] = (
                 step * c.batch_size * c.grad_accum_steps * model_cfg.max_seq_len
             )
@@ -176,7 +196,8 @@ def train(
             print(json.dumps(row))
         with metrics_path.open("a", encoding="utf-8") as stream:
             stream.write(json.dumps(row) + "\n")
-        if step % c.checkpoint_every == 0 or step == stop:
+        save_last = step % c.checkpoint_every == 0 or step == stop
+        if save_last or improved:
             payload = {
                 "model_config": model_cfg.model_dump(),
                 "training_config": c.model_dump(),
@@ -184,12 +205,15 @@ def train(
                 "optimizer": optimizer.state_dict(),
                 "scaler": scaler.state_dict(),
                 "step": step,
+                "best_val_ce": best_val_ce,
+                "best_step": best_step,
                 "numpy_rng": rng.bit_generator.state,
                 "torch_rng": torch.get_rng_state(),
                 "data_hashes": fingerprints,
                 "cuda_rng": torch.cuda.get_rng_state_all() if device.type == "cuda" else [],
             }
-            temporary = output_dir / "last.pt.tmp"
-            torch.save(payload, temporary)
-            temporary.replace(output_dir / "last.pt")
+            if improved:
+                save_checkpoint(payload, output_dir / "best.pt")
+            if save_last:
+                save_checkpoint(payload, output_dir / "last.pt")
     return model
