@@ -21,3 +21,6 @@ mlartifacts/
 
 .env
 .DS_Store
+
+# Local learning guides and project notes
+/docs/

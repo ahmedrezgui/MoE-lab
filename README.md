@@ -2,7 +2,7 @@
 
 An educational decoder-only language model in PyTorch. Train random weights, inspect top-k routing, save/resume a run, and generate text locally. Supports a dense FFN baseline and a sparse MoE variant. This is an architecture laboratory, not an instruction-tuned assistant.
 
-Read the [audit and next-step plan](docs/AUDIT_AND_PLAN.md) and [architecture walkthrough](docs/ARCHITECTURE.md).
+The implementation lives in `src/moelab/`; runnable commands and the project roadmap are below.
 
 ## Implemented
 
@@ -77,7 +77,7 @@ Open http://127.0.0.1:8000/docs to try `/generate`. `/health` checks the process
 Invoke-RestMethod http://127.0.0.1:8000/generate -Method Post -ContentType "application/json" -Body '{"prompt":"Once upon a time","max_new_tokens":60,"temperature":0.8}'
 ```
 
-This is a local synchronous demo. Generation recomputes a sliding context window; it has no KV cache yet. Prompts longer than the model context are rejected by the API. A tokenizer JSON must accompany its matching checkpoint. Public deployment needs the deployment milestone in the plan.
+This is a local synchronous demo. Generation recomputes a sliding context window; it has no KV cache yet. Prompts longer than the model context are rejected by the API. A tokenizer JSON must accompany its matching checkpoint. Public deployment still needs authentication, request limits, and infrastructure verification.
 
 ## Tests and experiments
 
@@ -93,4 +93,4 @@ Suggested portfolio sequence: reproduce the local demo, train on a documented co
 
 ## Recorded runs and cloud assessment
 
-See [local results](docs/LOCAL_RESULTS.md) for the verified 200-step NVIDIA run and its overfitting limitations. See [Azure feasibility](docs/AZURE_FEASIBILITY.md) for student subscription restrictions and a concrete GPU cost comparison.
+A 200-step toy-corpus run completed on the local RTX 3050 Ti. Validation cross-entropy fell from 5.55 initially to 2.22 at step 100, then rose to 2.57 at step 200 as the model overfit. These are pipeline checks, not general language-quality benchmarks. Training currently runs locally; no Azure deployment has been made.
