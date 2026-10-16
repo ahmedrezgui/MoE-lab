@@ -66,3 +66,31 @@ def test_sampler_greedy_and_context_window():
     for kwargs in [{"top_k": 0}, {"top_p": 0}, {"temperature": -1}]:
         with pytest.raises(ValueError):
             generate(model, torch.tensor([[1]]), 1, **kwargs)
+
+
+def test_training_uses_effective_bpe_vocabulary(tmp_path):
+    torch.set_num_threads(2)
+    data = tmp_path / "data"
+    data.mkdir()
+    tokenizer = BPETokenizer(512)
+    tokenizer.train("abab")
+    assert tokenizer.vocab_size == 257
+    tokenizer.save(data / "tokenizer.json")
+    for split in ("train", "val"):
+        ids = tokenizer.encode("abab abcdefghijklmnopqrstuvwxyz " * 10)
+        np.asarray(ids, dtype="<u2").tofile(data / f"ids_{split}.bin")
+    model_cfg = ModelConfig(
+        vocab_size=257, d_model=64, n_layers=1, n_heads=4, n_kv_heads=2, max_seq_len=32
+    )
+    training_cfg = TrainingConfig(
+        lr=0.001, warmup_steps=0, max_steps=1, batch_size=1, precision="fp32"
+    )
+    inflated = model_cfg.model_copy(update={"vocab_size": 512})
+    with pytest.raises(ValueError, match="actual vocabulary size 257"):
+        train(inflated, training_cfg, data_dir=data, output_dir=tmp_path / "invalid")
+    assert not (tmp_path / "invalid").exists()
+    train(model_cfg, training_cfg, data_dir=data, output_dir=tmp_path / "valid")
+    model, _ = load_checkpoint(tmp_path / "valid/best.pt")
+    result = generate(model, torch.tensor([[97, 98]]), 8, temperature=0)
+    assert result.max() < tokenizer.vocab_size
+    assert isinstance(tokenizer.decode(result[0].tolist()), str)

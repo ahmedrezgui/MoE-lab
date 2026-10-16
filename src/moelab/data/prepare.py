@@ -1,4 +1,4 @@
-"""Stream document-separated JSONL into byte-token training artifacts."""
+"""Prepare document-separated JSONL with optional bounded byte-level BPE."""
 
 import hashlib
 import json
@@ -33,13 +33,24 @@ def fingerprint(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
-def prepare_documents(train_source, val_source, output, block_size=128):
+def prepare_documents(
+    train_source,
+    val_source,
+    output,
+    block_size=128,
+    *,
+    vocab_size=256,
+    tokenizer_training_bytes=65536,
+):
     """Keep validation intact; remove normalized exact duplicates from training.
 
     Documents are encoded separately and separated by two newline bytes. This is
     a text boundary, not EOS or an attention barrier: blocks may cross documents.
-    Byte-only tokenization makes the vocabulary complete without fitting merges.
+    Optional BPE fits only a bounded prefix of retained training documents.
     """
+    tokenizer = BPETokenizer(vocab_size)
+    if tokenizer_training_bytes < 1:
+        raise ValueError("tokenizer_training_bytes must be positive")
     train_source, val_source, output = map(Path, (train_source, val_source, output))
     if block_size < 1:
         raise ValueError("block_size must be positive")
@@ -60,7 +71,7 @@ def prepare_documents(train_source, val_source, output, block_size=128):
         for split, source in (("val", val_source), ("train", train_source)):
             seen = set()
             counts = {"read": 0, "kept": 0, "duplicates": 0, "overlap_with_val": 0, "tokens": 0}
-            with (staging / f"ids_{split}.bin").open("wb") as stream:
+            with (staging / f"kept_{split}.jsonl").open("w", encoding="utf-8") as stream:
                 for text in documents(source):
                     counts["read"] += 1
                     digest = hashlib.sha256(text.encode("utf-8")).digest()
@@ -71,27 +82,45 @@ def prepare_documents(train_source, val_source, output, block_size=128):
                     if split == "train" and digest in validation_hashes:
                         counts["overlap_with_val"] += 1
                         continue
-                    encoded = text.encode("utf-8") + b"\n\n"
-                    np.frombuffer(encoded, dtype=np.uint8).astype("<u2").tofile(stream)
+                    stream.write(json.dumps({"text": text}, ensure_ascii=False) + "\n")
                     counts["kept"] += 1
-                    counts["tokens"] += len(encoded)
-            if counts["kept"] == 0 or counts["tokens"] <= block_size:
-                raise ValueError(
-                    f"{split} needs retained documents and at least block_size + 1 tokens"
-                )
+            if counts["kept"] == 0:
+                raise ValueError(f"{split} needs retained documents")
             if split == "val":
                 validation_hashes = seen
             stats[split] = counts
-        BPETokenizer(256).save(staging / "tokenizer.json")
+        sample = tokenizer.train_documents(
+            documents(staging / "kept_train.jsonl"), tokenizer_training_bytes
+        )
+        boundary_ids = tokenizer.encode("\n\n")
+        for split in ("val", "train"):
+            spool = staging / f"kept_{split}.jsonl"
+            with (staging / f"ids_{split}.bin").open("wb") as stream:
+                for text in documents(spool):
+                    ids = tokenizer.encode(text) + boundary_ids
+                    np.asarray(ids, dtype="<u2").tofile(stream)
+                    stats[split]["tokens"] += len(ids)
+            if stats[split]["tokens"] <= block_size:
+                raise ValueError(f"{split} needs at least block_size + 1 tokens after tokenization")
+            spool.unlink()
+        tokenizer.save(staging / "tokenizer.json")
         metadata = {
-            "format_version": 1,
+            "format_version": 2,
             "sources": sources,
             "split": "explicit document-level source files; validation takes precedence",
             "normalization": "CRLF/CR to LF; strip outer whitespace",
             "deduplication": "SHA-256 of normalized UTF-8; exact within/across splits",
-            "boundary": "two newlines per document; not EOS; blocks may cross documents",
-            "tokenizer": "UTF-8 bytes; no learned merges",
-            "vocab_size": 256,
+            "boundary": "two newlines encoded separately per document; no EOS or attention barrier",
+            "tokenizer": "byte-level BPE" if tokenizer.merges else "UTF-8 bytes; no learned merges",
+            "requested_vocab_size": vocab_size,
+            "vocab_size": tokenizer.vocab_size,
+            "tokenizer_training": {
+                "max_bytes": tokenizer_training_bytes,
+                **sample,
+                "selection": "prefix of deduplicated, overlap-free training documents only",
+                "boundary_policy": "no pair counts or merges across document boundaries",
+                "hash_scope": "sample documents, each prefixed by an 8-byte big-endian byte length",
+            },
             "dtype": "little-endian uint16",
             "block_size_checked": block_size,
             "documents": stats,

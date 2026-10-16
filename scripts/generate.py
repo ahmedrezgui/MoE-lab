@@ -23,6 +23,8 @@ if __name__ == "__main__":
     torch.manual_seed(args.seed)
     model, _ = load_checkpoint(args.checkpoint, args.device)
     tokenizer = BPETokenizer.load(Path(args.checkpoint).with_name("tokenizer.json"))
+    if tokenizer.vocab_size != model.cfg.vocab_size:
+        raise ValueError("Checkpoint vocabulary must match the tokenizer's actual vocabulary size")
     ids = torch.tensor([tokenizer.encode(args.prompt)], device=args.device)
     result = generate(model, ids, args.max_new_tokens, args.temperature, args.top_k)
     print(tokenizer.decode(result[0].tolist()))

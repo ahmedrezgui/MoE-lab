@@ -33,7 +33,7 @@ python -m venv .venv
 
 For CPU-only installation, use the PyTorch `/whl/cpu` index instead. On Linux/macOS use `.venv/bin/python`. See the [official PyTorch installation selector](https://pytorch.org/get-started/locally/) for other hardware. No activation or Make is required.
 
-The included original short story is a plumbing fixture. A 200-step run can show loss reduction but does not establish general language quality. The default byte vocabulary is easy to inspect. To explore BPE merges use `--vocab-size 512` and set the model vocabulary to 512; after compression each split must still contain more tokens than the context length.
+The included original short story is a plumbing fixture. A 200-step run can show loss reduction but does not establish general language quality. The default byte vocabulary is easy to inspect. To explore BPE merges request `--vocab-size 512`, then set the model vocabulary to the **actual** `vocab_size` reported in the prepared metadata. The request is an upper bound: fitting can stop earlier. After compression each split must still contain more tokens than the context length.
 
 ## Download a bounded TinyStories subset
 
@@ -71,9 +71,31 @@ Use different files for the two splits and enough text in each retained split to
 
 This path preserves whole documents in their source split, standardizes line endings and outer whitespace, removes exact duplicates, and removes training documents also present in validation. Validation takes precedence. It streams text and stores document hashes in memory; it does not detect near-duplicates or establish the source's license.
 
-For this first preparation step, tokenization uses the complete 256-byte vocabulary with no learned BPE merges. Documents are separated by two newline bytes, **not an EOS token or attention barrier**; training windows may cross document boundaries within a split. The model vocabulary must remain 256. The existing `prepare_data.py` command remains available for the single-text demo.
+By default, preparation uses the complete 256-byte vocabulary without learned merges. Optional BPE fitting is described below. Documents and their two-newline separators are encoded separately, **not with an EOS token or attention barrier**; training windows may cross document boundaries within a split. The existing `prepare_data.py` command remains available for the single-text demo.
 
-The new output directory contains token files, `tokenizer.json`, and `metadata.json` with source/artifact hashes, token counts, normalization rules, and retained/duplicate/overlap counts. Existing output directories are rejected. Malformed records, empty documents, or insufficient retained tokens fail before publishing the output directory. Dataset downloading is available above. Near-duplicate detection, dedicated EOS handling, and scalable BPE training remain separate next steps.
+The new output directory contains token files, `tokenizer.json`, and `metadata.json` with source/artifact hashes, token counts, normalization rules, and retained/duplicate/overlap counts. Existing output directories are rejected. Malformed records, empty documents, or insufficient retained tokens fail before publishing the output directory. Dataset downloading is available above. Near-duplicate detection, dedicated EOS handling, and a high-performance tokenizer backend remain future work; the bounded reference BPE path below is implemented.
+
+## Fit a bounded BPE tokenizer
+
+```powershell
+.venv/Scripts/python scripts/prepare_documents.py --train-input data/raw/tinystories/train.jsonl --val-input data/raw/tinystories/val.jsonl --output data/tinystories-bpe --block-size 128 --vocab-size 512 --tokenizer-training-bytes 65536
+(Get-Content data/tinystories-bpe/metadata.json | ConvertFrom-Json).vocab_size
+Copy-Item configs/model/laptop-moe.yaml configs/model/laptop-bpe.yaml
+```
+
+Set `vocab_size` in `configs/model/laptop-bpe.yaml` to the number printed by the metadata command, then train with that config and a fresh run directory:
+
+```powershell
+.venv/Scripts/python scripts/train.py --config configs/training/laptop.yaml --model configs/model/laptop-bpe.yaml --data-dir data/tinystories-bpe --device cuda --output-dir checkpoints/tinystories-bpe --max-steps 20
+```
+
+`--vocab-size` is the requested capacity; `metadata.json` and `tokenizer.vocab_size` report the actual decodable vocabulary (`256 + learned merges`). For example, requesting 512 on a tiny sample may produce only 271 entries. Training, serving, and the generation CLI reject a model whose vocabulary does not match the tokenizer's actual size.
+
+Fitting uses at most `--tokenizer-training-bytes` UTF-8 bytes (default 65,536) from the prefix of retained, deduplicated, overlap-free **training** documents. No pair counts or merges cross document boundaries, and separator tokens are not part of the fitting sample. The last sampled document may be cut at a byte boundary; whole retained documents are still encoded afterward. Metadata records requested/actual vocabulary, sample byte/document counts, truncation, and a hash of length-prefixed sample documents. With requested size 256, fitting is skipped and sample counts are zero.
+
+The sample limit bounds BPE fitting input, not total RAM or runtime: Python lists/counters add overhead, each merge scans the sample again, and full documents are still read and encoded. Preparation temporarily spools normalized retained documents to disk, then validates both splits' lengths **after** compression. This remains an educational tokenizer, not a production-speed backend.
+
+Tokenizer JSON now uses format version 2 and records both requested and actual sizes. Legacy files remain loadable and their actual size is derived from their merges. Legacy checkpoints created with inflated output vocabularies cannot safely use that smaller tokenizer: prepare fresh data and train a correctly sized model. Existing valid byte-only runs remain loadable using their original data/tokenizer files. Do not regenerate a run's data before resuming: serialization changes can change the hashes checked by resume. Changing tokenization also changes the meaning of token-level perplexity; do not directly compare it with the earlier byte-only number.
 
 ## Your NVIDIA laptop
 

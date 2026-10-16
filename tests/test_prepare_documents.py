@@ -84,3 +84,35 @@ def test_unicode_bytes_and_short_split(tmp_path):
         prepare_documents(train, val, tmp_path / "too-short", block_size=100)
     with pytest.raises(ValueError, match="different source"):
         prepare_documents(train, train, tmp_path / "same-file", block_size=4)
+
+
+def test_bpe_fits_only_retained_training_documents_and_records_actual_size(tmp_path):
+    train = write_jsonl(tmp_path / "train.jsonl", ["zzzzzz", "abab", "abab", "cdcd"])
+    val = write_jsonl(tmp_path / "val.jsonl", ["zzzzzz", "validation words"])
+    output = tmp_path / "bpe"
+    metadata = prepare_documents(
+        train, val, output, block_size=1, vocab_size=512, tokenizer_training_bytes=5
+    )
+    tokenizer = BPETokenizer.load(output / "tokenizer.json")
+    # Overlapping z text and duplicate ab text are excluded before fitting.
+    assert tokenizer.merges == {(ord("a"), ord("b")): 256}
+    assert tokenizer.requested_vocab_size == 512
+    assert metadata["vocab_size"] == tokenizer.vocab_size == 257
+    assert metadata["tokenizer_training"]["bytes"] == 5
+    assert metadata["tokenizer_training"]["documents"] == 2
+    assert metadata["tokenizer_training"]["last_document_truncated"]
+    train_ids = np.fromfile(output / "ids_train.bin", dtype="<u2").tolist()
+    val_ids = np.fromfile(output / "ids_val.bin", dtype="<u2").tolist()
+    assert tokenizer.decode(train_ids) == "abab\n\ncdcd\n\n"
+    assert tokenizer.decode(val_ids) == "zzzzzz\n\nvalidation words\n\n"
+    assert max(train_ids + val_ids) < tokenizer.vocab_size
+    assert not list(output.glob("kept_*"))
+
+
+def test_bpe_rechecks_block_length_after_compression(tmp_path):
+    train = write_jsonl(tmp_path / "train.jsonl", ["ab" * 64])
+    val = write_jsonl(tmp_path / "val.jsonl", ["held-out text " * 20])
+    output = tmp_path / "short-bpe"
+    with pytest.raises(ValueError, match="after tokenization"):
+        prepare_documents(train, val, output, block_size=32, vocab_size=512)
+    assert not output.exists()

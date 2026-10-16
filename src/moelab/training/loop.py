@@ -62,7 +62,10 @@ def train(
     data_dir, output_dir = Path(data_dir), Path(output_dir)
     tokenizer = BPETokenizer.load(data_dir / "tokenizer.json")
     if tokenizer.vocab_size != model_cfg.vocab_size:
-        raise ValueError("Tokenizer and model vocabulary sizes differ")
+        raise ValueError(
+            f"Model vocab_size={model_cfg.vocab_size} must match the tokenizer's actual "
+            f"vocabulary size {tokenizer.vocab_size}; use metadata.json vocab_size"
+        )
     datasets = {
         s: BlockDataset(data_dir / f"ids_{s}.bin", model_cfg.max_seq_len) for s in ("train", "val")
     }
