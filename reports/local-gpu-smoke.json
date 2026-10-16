@@ -1,0 +1,480 @@
+{
+  "format_version": 1,
+  "status": "complete",
+  "started_utc": "2026-10-16T13:45:39.254116+00:00",
+  "git_head": "40cf9250bf8ab781256e8f91cb0fc8f927124b7f",
+  "git_dirty": true,
+  "source_sha256": {
+    "scripts/compare_budgets.py": "70c604c74d2f3b26690b57b2449c6df4a4291def5882b6ef8b91911a4ac69a66",
+    "scripts/download_data.py": "5b7fbcf66dad5d6ba6939e9d77cdd5cd2798e61519953791f57590a2ee3cbd46",
+    "scripts/generate.py": "fd33c0c322eed2e22346bee465b869f50b4d10f5050b0b821a41553ff6ba2ca7",
+    "scripts/prepare_data.py": "6ba0e9f1a561cf35ff3a12772fe1cb09fe86bf65165f6d89ae9ad737a33c55b3",
+    "scripts/prepare_documents.py": "05a931c7258d522fd4aba95b8318ba6934684a5a3759b341f53c9a3ff46158cf",
+    "scripts/run_comparison.py": "39fa5fbee9bb251002fdd97f9fedb6f431e179b7db4235c83fd2902b714d45de",
+    "scripts/train.py": "7492a0094d6844fe92633b22c079c2a995f3ac9a8a3c6768fec44da936e1781f",
+    "src/moelab/__init__.py": "4a253cfa65eccbc4bf7305bdc4e4535e70aa7cd59360cbd838cf37cccb47ea9e",
+    "src/moelab/comparison.py": "4bd1c73fc1fb2aee8003e217cdd9334befb0443a9e142b571bc0a5169129b6fe",
+    "src/moelab/config.py": "1f1d31764f8a9d88ec8bb01fe4a69b29fa3a99f0463880d97af6e693d48fe817",
+    "src/moelab/data/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "src/moelab/data/dataset.py": "c88eee2739aa3edbb934855fce12d2c2a5951c13bfff2ebd7371ec6ca0322584",
+    "src/moelab/data/download.py": "690c64b6169b3087ae91cbc6f67353c2f8c5b119b1279d85595e1bc228ba5fc0",
+    "src/moelab/data/prepare.py": "e300b1aa0a2e7b885c22f52b7cfe108221d38644c3478028547a7d39723ebfd4",
+    "src/moelab/evals/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "src/moelab/evals/judge.py": "bf71e0aa33fde73f6506a0b8779c78bc03a429176b04cebcf8a7e60ad2c19e3d",
+    "src/moelab/evals/perplexity.py": "2a7502be38528322824f01af5598e7a470f0666136240e964d69aae4829aee8b",
+    "src/moelab/inference/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "src/moelab/inference/generate.py": "69498e95a8466c7f138cfa6eedcfb900e8ee28a275d99d083d945fd176cdaad7",
+    "src/moelab/inference/kv_cache.py": "4de6f3985f874d0f1fef08f38421210e4ddf457c177b649892f2239465a63a9e",
+    "src/moelab/model/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "src/moelab/model/attention.py": "f2884ae133e0f769b6fb95ee17f69398be74d42f0a261add7383ca85ca2d1c09",
+    "src/moelab/model/budget.py": "763c055dc55dcd5f2fdbe8b78a3d61e3e1516ef633ab6c2917b22a4802f47696",
+    "src/moelab/model/moe.py": "08405097488d281f21e85c3dbd3c32acc5ae077841fd80beb9add5ee00bb9d01",
+    "src/moelab/model/transformer.py": "891305455b39b729f644d8d6f40369b44f07a77209b6ba8db60243523e461bfa",
+    "src/moelab/serving/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "src/moelab/serving/api.py": "af6e31e768af07a40a7c1e0d618f90eb275c3fa2482fa75ec66981de1c49497c",
+    "src/moelab/tokenizer/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "src/moelab/tokenizer/bpe.py": "5c6fad7a1da4c18b18c95188914abae0c2f831556c65e850dbb1e36e5cbf59c7",
+    "src/moelab/training/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "src/moelab/training/loop.py": "161e90ed939de6a2d6c8ae5ea61850d5437b75a1af9b83bd2d62fcfeb5e6b04d",
+    "src/moelab/training/tracking.py": "a270a818214b5ffc46325d11e0b5e6066e36411305e18874aba3fb0192da3a77"
+  },
+  "data_hashes": {
+    "ids_train.bin": "84cad9dc001a889c1372d2329c3689464b437ffe7bf3b0b24dd47f63c2a6f948",
+    "ids_val.bin": "a05e89de8d5ba21d7d3782ce8dd93aea11e5c93c1fc671cb663968cb293cd7e1",
+    "tokenizer.json": "e6985b17cbe664e6fd669e236854990bdfde00efa7e22a768e6bc4fab9eb2fdd"
+  },
+  "budget": {
+    "budget_basis": "shared weights plus selected experts per token; not FLOPs or memory",
+    "dense": {
+      "ffn_hidden_dim": 683,
+      "embedding_params": 34816,
+      "attention_params": 98304,
+      "norm_params": 640,
+      "router_params": 0,
+      "ffn_params_per_expert_per_layer": 262272,
+      "total_ffn_params": 524544,
+      "active_ffn_params_estimate": 524544,
+      "total_params": 658304,
+      "active_params_estimate": 658304
+    },
+    "moe": {
+      "ffn_hidden_dim": 341,
+      "embedding_params": 34816,
+      "attention_params": 98304,
+      "norm_params": 640,
+      "router_params": 1024,
+      "ffn_params_per_expert_per_layer": 130944,
+      "total_ffn_params": 1047552,
+      "active_ffn_params_estimate": 523776,
+      "total_params": 1182336,
+      "active_params_estimate": 658560
+    },
+    "active_gap_params": 256,
+    "active_gap_fraction": 0.00038887808671981335,
+    "within_0_1_percent": true
+  },
+  "steps_per_run": 20,
+  "seeds": [
+    42,
+    43
+  ],
+  "device_requested": "cuda",
+  "timeout_seconds_per_run": 180,
+  "model_configs": {
+    "dense": {
+      "vocab_size": 272,
+      "d_model": 128,
+      "n_layers": 2,
+      "n_heads": 4,
+      "n_kv_heads": 2,
+      "max_seq_len": 128,
+      "dropout": 0.0,
+      "ffn_hidden_dim": 683,
+      "moe": null
+    },
+    "moe": {
+      "vocab_size": 272,
+      "d_model": 128,
+      "n_layers": 2,
+      "n_heads": 4,
+      "n_kv_heads": 2,
+      "max_seq_len": 128,
+      "dropout": 0.0,
+      "ffn_hidden_dim": 341,
+      "moe": {
+        "n_experts": 4,
+        "top_k": 2,
+        "load_balance_coef": 0.01
+      }
+    }
+  },
+  "training_config": {
+    "seed": 42,
+    "lr": 0.001,
+    "warmup_steps": 10,
+    "max_steps": 200,
+    "batch_size": 2,
+    "grad_accum_steps": 4,
+    "weight_decay": 0.01,
+    "grad_clip": 1.0,
+    "precision": "bf16",
+    "eval_every": 20,
+    "checkpoint_every": 100,
+    "mlflow_experiment": "moelab",
+    "run_name": null
+  },
+  "order_policy": "alternate dense-first and moe-first by seed index",
+  "runs": [
+    {
+      "model": "dense",
+      "seed": 42,
+      "process_seconds": 7.030418799986364,
+      "format_version": 1,
+      "start_step": 0,
+      "final_step": 20,
+      "session_training_tokens": 20480,
+      "loop_seconds": 1.739102500010631,
+      "loop_tokens_per_second": 11776.189154966316,
+      "timing_scope": "training loop including evaluation, logging and checkpoint writes; excludes setup and initial validation; CUDA synchronized at boundaries",
+      "peak_allocated_mib": 33.63427734375,
+      "peak_reserved_mib": 38.0,
+      "memory_scope": "PyTorch allocator peaks during loop; includes resident model; not total device usage; reserved cache may originate during setup",
+      "final_val_ce": 3.4256226420402527,
+      "final_val_perplexity": 30.741780018336673,
+      "best_val_ce": 3.4256226420402527,
+      "best_step": 20,
+      "evaluation": {
+        "seed": 123,
+        "batches": 4,
+        "batch_size": 2,
+        "precision": "fp32",
+        "includes_aux_loss": false
+      },
+      "model_config": {
+        "vocab_size": 272,
+        "d_model": 128,
+        "n_layers": 2,
+        "n_heads": 4,
+        "n_kv_heads": 2,
+        "max_seq_len": 128,
+        "dropout": 0.0,
+        "ffn_hidden_dim": 683,
+        "moe": null
+      },
+      "training_config": {
+        "seed": 42,
+        "lr": 0.001,
+        "warmup_steps": 10,
+        "max_steps": 200,
+        "batch_size": 2,
+        "grad_accum_steps": 4,
+        "weight_decay": 0.01,
+        "grad_clip": 1.0,
+        "precision": "bf16",
+        "eval_every": 20,
+        "checkpoint_every": 100,
+        "mlflow_experiment": "moelab",
+        "run_name": null
+      },
+      "data_hashes": {
+        "ids_train.bin": "84cad9dc001a889c1372d2329c3689464b437ffe7bf3b0b24dd47f63c2a6f948",
+        "ids_val.bin": "a05e89de8d5ba21d7d3782ce8dd93aea11e5c93c1fc671cb663968cb293cd7e1",
+        "tokenizer.json": "e6985b17cbe664e6fd669e236854990bdfde00efa7e22a768e6bc4fab9eb2fdd"
+      },
+      "environment": {
+        "python": "3.12.8",
+        "platform": "Windows-11-10.0.26300-SP0",
+        "torch": "2.11.0+cu128",
+        "cuda_runtime": "12.8",
+        "device": "cuda",
+        "threads": 2,
+        "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+        "gpu_total_mib": 4095.5,
+        "deterministic_algorithms": false,
+        "matmul_allow_tf32": false,
+        "cudnn_allow_tf32": true,
+        "cudnn_benchmark": false
+      }
+    },
+    {
+      "model": "moe",
+      "seed": 42,
+      "process_seconds": 7.986650900013046,
+      "format_version": 1,
+      "start_step": 0,
+      "final_step": 20,
+      "session_training_tokens": 20480,
+      "loop_seconds": 2.946168900001794,
+      "loop_tokens_per_second": 6951.400512030226,
+      "timing_scope": "training loop including evaluation, logging and checkpoint writes; excludes setup and initial validation; CUDA synchronized at boundaries",
+      "peak_allocated_mib": 43.8203125,
+      "peak_reserved_mib": 48.0,
+      "memory_scope": "PyTorch allocator peaks during loop; includes resident model; not total device usage; reserved cache may originate during setup",
+      "final_val_ce": 3.480496883392334,
+      "final_val_perplexity": 32.47585478038763,
+      "best_val_ce": 3.480496883392334,
+      "best_step": 20,
+      "evaluation": {
+        "seed": 123,
+        "batches": 4,
+        "batch_size": 2,
+        "precision": "fp32",
+        "includes_aux_loss": false
+      },
+      "model_config": {
+        "vocab_size": 272,
+        "d_model": 128,
+        "n_layers": 2,
+        "n_heads": 4,
+        "n_kv_heads": 2,
+        "max_seq_len": 128,
+        "dropout": 0.0,
+        "ffn_hidden_dim": 341,
+        "moe": {
+          "n_experts": 4,
+          "top_k": 2,
+          "load_balance_coef": 0.01
+        }
+      },
+      "training_config": {
+        "seed": 42,
+        "lr": 0.001,
+        "warmup_steps": 10,
+        "max_steps": 200,
+        "batch_size": 2,
+        "grad_accum_steps": 4,
+        "weight_decay": 0.01,
+        "grad_clip": 1.0,
+        "precision": "bf16",
+        "eval_every": 20,
+        "checkpoint_every": 100,
+        "mlflow_experiment": "moelab",
+        "run_name": null
+      },
+      "data_hashes": {
+        "ids_train.bin": "84cad9dc001a889c1372d2329c3689464b437ffe7bf3b0b24dd47f63c2a6f948",
+        "ids_val.bin": "a05e89de8d5ba21d7d3782ce8dd93aea11e5c93c1fc671cb663968cb293cd7e1",
+        "tokenizer.json": "e6985b17cbe664e6fd669e236854990bdfde00efa7e22a768e6bc4fab9eb2fdd"
+      },
+      "environment": {
+        "python": "3.12.8",
+        "platform": "Windows-11-10.0.26300-SP0",
+        "torch": "2.11.0+cu128",
+        "cuda_runtime": "12.8",
+        "device": "cuda",
+        "threads": 2,
+        "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+        "gpu_total_mib": 4095.5,
+        "deterministic_algorithms": false,
+        "matmul_allow_tf32": false,
+        "cudnn_allow_tf32": true,
+        "cudnn_benchmark": false
+      }
+    },
+    {
+      "model": "moe",
+      "seed": 43,
+      "process_seconds": 7.766003700002329,
+      "format_version": 1,
+      "start_step": 0,
+      "final_step": 20,
+      "session_training_tokens": 20480,
+      "loop_seconds": 2.8918905000027735,
+      "loop_tokens_per_second": 7081.872567436547,
+      "timing_scope": "training loop including evaluation, logging and checkpoint writes; excludes setup and initial validation; CUDA synchronized at boundaries",
+      "peak_allocated_mib": 43.81640625,
+      "peak_reserved_mib": 48.0,
+      "memory_scope": "PyTorch allocator peaks during loop; includes resident model; not total device usage; reserved cache may originate during setup",
+      "final_val_ce": 3.466049015522003,
+      "final_val_perplexity": 32.01002117590981,
+      "best_val_ce": 3.466049015522003,
+      "best_step": 20,
+      "evaluation": {
+        "seed": 123,
+        "batches": 4,
+        "batch_size": 2,
+        "precision": "fp32",
+        "includes_aux_loss": false
+      },
+      "model_config": {
+        "vocab_size": 272,
+        "d_model": 128,
+        "n_layers": 2,
+        "n_heads": 4,
+        "n_kv_heads": 2,
+        "max_seq_len": 128,
+        "dropout": 0.0,
+        "ffn_hidden_dim": 341,
+        "moe": {
+          "n_experts": 4,
+          "top_k": 2,
+          "load_balance_coef": 0.01
+        }
+      },
+      "training_config": {
+        "seed": 43,
+        "lr": 0.001,
+        "warmup_steps": 10,
+        "max_steps": 200,
+        "batch_size": 2,
+        "grad_accum_steps": 4,
+        "weight_decay": 0.01,
+        "grad_clip": 1.0,
+        "precision": "bf16",
+        "eval_every": 20,
+        "checkpoint_every": 100,
+        "mlflow_experiment": "moelab",
+        "run_name": null
+      },
+      "data_hashes": {
+        "ids_train.bin": "84cad9dc001a889c1372d2329c3689464b437ffe7bf3b0b24dd47f63c2a6f948",
+        "ids_val.bin": "a05e89de8d5ba21d7d3782ce8dd93aea11e5c93c1fc671cb663968cb293cd7e1",
+        "tokenizer.json": "e6985b17cbe664e6fd669e236854990bdfde00efa7e22a768e6bc4fab9eb2fdd"
+      },
+      "environment": {
+        "python": "3.12.8",
+        "platform": "Windows-11-10.0.26300-SP0",
+        "torch": "2.11.0+cu128",
+        "cuda_runtime": "12.8",
+        "device": "cuda",
+        "threads": 2,
+        "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+        "gpu_total_mib": 4095.5,
+        "deterministic_algorithms": false,
+        "matmul_allow_tf32": false,
+        "cudnn_allow_tf32": true,
+        "cudnn_benchmark": false
+      }
+    },
+    {
+      "model": "dense",
+      "seed": 43,
+      "process_seconds": 6.259113700012676,
+      "format_version": 1,
+      "start_step": 0,
+      "final_step": 20,
+      "session_training_tokens": 20480,
+      "loop_seconds": 1.3729171000013594,
+      "loop_tokens_per_second": 14917.142484407632,
+      "timing_scope": "training loop including evaluation, logging and checkpoint writes; excludes setup and initial validation; CUDA synchronized at boundaries",
+      "peak_allocated_mib": 33.63427734375,
+      "peak_reserved_mib": 38.0,
+      "memory_scope": "PyTorch allocator peaks during loop; includes resident model; not total device usage; reserved cache may originate during setup",
+      "final_val_ce": 3.4326486587524414,
+      "final_val_perplexity": 30.958532841321706,
+      "best_val_ce": 3.4326486587524414,
+      "best_step": 20,
+      "evaluation": {
+        "seed": 123,
+        "batches": 4,
+        "batch_size": 2,
+        "precision": "fp32",
+        "includes_aux_loss": false
+      },
+      "model_config": {
+        "vocab_size": 272,
+        "d_model": 128,
+        "n_layers": 2,
+        "n_heads": 4,
+        "n_kv_heads": 2,
+        "max_seq_len": 128,
+        "dropout": 0.0,
+        "ffn_hidden_dim": 683,
+        "moe": null
+      },
+      "training_config": {
+        "seed": 43,
+        "lr": 0.001,
+        "warmup_steps": 10,
+        "max_steps": 200,
+        "batch_size": 2,
+        "grad_accum_steps": 4,
+        "weight_decay": 0.01,
+        "grad_clip": 1.0,
+        "precision": "bf16",
+        "eval_every": 20,
+        "checkpoint_every": 100,
+        "mlflow_experiment": "moelab",
+        "run_name": null
+      },
+      "data_hashes": {
+        "ids_train.bin": "84cad9dc001a889c1372d2329c3689464b437ffe7bf3b0b24dd47f63c2a6f948",
+        "ids_val.bin": "a05e89de8d5ba21d7d3782ce8dd93aea11e5c93c1fc671cb663968cb293cd7e1",
+        "tokenizer.json": "e6985b17cbe664e6fd669e236854990bdfde00efa7e22a768e6bc4fab9eb2fdd"
+      },
+      "environment": {
+        "python": "3.12.8",
+        "platform": "Windows-11-10.0.26300-SP0",
+        "torch": "2.11.0+cu128",
+        "cuda_runtime": "12.8",
+        "device": "cuda",
+        "threads": 2,
+        "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+        "gpu_total_mib": 4095.5,
+        "deterministic_algorithms": false,
+        "matmul_allow_tf32": false,
+        "cudnn_allow_tf32": true,
+        "cudnn_benchmark": false
+      }
+    }
+  ],
+  "data_metadata": {
+    "format_version": 3,
+    "sources": {
+      "train": {
+        "path": "data\\raw\\tinystories-smoke\\train.jsonl",
+        "sha256": "8039288fa7f8c740fb153c46ecd69af0e2e8dd654c3949a85cbea44f6b759710"
+      },
+      "val": {
+        "path": "data\\raw\\tinystories-smoke\\val.jsonl",
+        "sha256": "d01ce4feb66905ef2c4022773bcf88cdd2c2c1bc131f1d9c48a5c6a12d27f516"
+      }
+    },
+    "split": "explicit document-level source files; validation takes precedence",
+    "normalization": "CRLF/CR to LF; strip outer whitespace",
+    "deduplication": "SHA-256 of normalized UTF-8; exact within/across splits",
+    "boundary": "one EOS after each document; no attention barrier",
+    "eos_token_id": 271,
+    "tokenizer": "byte-level BPE",
+    "requested_vocab_size": 512,
+    "vocab_size": 272,
+    "tokenizer_training": {
+      "max_bytes": 128,
+      "bytes": 128,
+      "documents": 1,
+      "last_document_truncated": true,
+      "sha256": "e21c6cd6663c81f20cc52b083a0a315d8ccd5f71cc9fc32d1155566a385f4e8c",
+      "selection": "prefix of deduplicated, overlap-free training documents only",
+      "boundary_policy": "no pair counts or merges across document boundaries",
+      "hash_scope": "sample documents, each prefixed by an 8-byte big-endian byte length"
+    },
+    "dtype": "little-endian uint16",
+    "block_size_checked": 64,
+    "documents": {
+      "val": {
+        "read": 4,
+        "kept": 4,
+        "duplicates": 0,
+        "overlap_with_val": 0,
+        "tokens": 2541
+      },
+      "train": {
+        "read": 8,
+        "kept": 8,
+        "duplicates": 0,
+        "overlap_with_val": 0,
+        "tokens": 5091
+      }
+    },
+    "tokens": {
+      "val": 2541,
+      "train": 5091
+    },
+    "artifacts_sha256": {
+      "ids_train.bin": "84cad9dc001a889c1372d2329c3689464b437ffe7bf3b0b24dd47f63c2a6f948",
+      "ids_val.bin": "a05e89de8d5ba21d7d3782ce8dd93aea11e5c93c1fc671cb663968cb293cd7e1",
+      "tokenizer.json": "e6985b17cbe664e6fd669e236854990bdfde00efa7e22a768e6bc4fab9eb2fdd"
+    }
+  },
+  "finished_utc": "2026-10-16T13:46:08.349336+00:00"
+}

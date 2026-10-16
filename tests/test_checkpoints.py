@@ -1,6 +1,7 @@
 """Checkpoint selection follows held-out CE, including across resumed runs."""
 
 import json
+import math
 
 import numpy as np
 import pytest
@@ -72,13 +73,17 @@ def test_best_checkpoint_survives_worsening_ties_and_resume(run_setup, monkeypat
 
 def test_legacy_checkpoint_starts_new_selection_history(run_setup, monkeypatch):
     model_cfg, training_cfg, paths = run_setup
-    monkeypatch.setattr(loop, "evaluate", lambda *a, **kw: {"val_ce": 2.0})
+    monkeypatch.setattr(
+        loop, "evaluate", lambda *a, **kw: {"val_ce": 2.0, "val_perplexity": math.exp(2.0)}
+    )
     loop.train(model_cfg, training_cfg, max_steps=1, **paths)
     output = paths["output_dir"]
     legacy = torch.load(output / "last.pt", weights_only=True)
     del legacy["best_val_ce"], legacy["best_step"]
     torch.save(legacy, output / "last.pt")
-    monkeypatch.setattr(loop, "evaluate", lambda *a, **kw: {"val_ce": 3.0})
+    monkeypatch.setattr(
+        loop, "evaluate", lambda *a, **kw: {"val_ce": 3.0, "val_perplexity": math.exp(3.0)}
+    )
     loop.train(model_cfg, training_cfg, max_steps=2, resume=output / "last.pt", **paths)
     best = torch.load(output / "best.pt", weights_only=True)
     assert (best["best_step"], best["best_val_ce"]) == (2, 3.0)
@@ -87,7 +92,9 @@ def test_legacy_checkpoint_starts_new_selection_history(run_setup, monkeypatch):
 @pytest.mark.parametrize("invalid_ce", [float("nan"), float("inf")])
 def test_nonfinite_validation_does_not_replace_best(run_setup, monkeypatch, invalid_ce):
     model_cfg, training_cfg, paths = run_setup
-    monkeypatch.setattr(loop, "evaluate", lambda *a, **kw: {"val_ce": 2.0})
+    monkeypatch.setattr(
+        loop, "evaluate", lambda *a, **kw: {"val_ce": 2.0, "val_perplexity": math.exp(2.0)}
+    )
     loop.train(model_cfg, training_cfg, max_steps=1, **paths)
     output = paths["output_dir"]
     original_best = (output / "best.pt").read_bytes()

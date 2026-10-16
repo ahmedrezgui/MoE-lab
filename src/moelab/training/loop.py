@@ -3,6 +3,7 @@
 import hashlib
 import json
 import math
+import platform
 import time
 from contextlib import nullcontext
 from pathlib import Path
@@ -121,10 +122,11 @@ def train(
             }
         )
     )
-    start = time.perf_counter()
     start_step = step
     if device.type == "cuda":
+        torch.cuda.synchronize(device)
         torch.cuda.reset_peak_memory_stats(device)
+    start = time.perf_counter()
     while step < stop:
         if step < c.warmup_steps:
             factor = (step + 1) / c.warmup_steps
@@ -219,4 +221,60 @@ def train(
                 save_checkpoint(payload, output_dir / "best.pt")
             if save_last:
                 save_checkpoint(payload, output_dir / "last.pt")
+    if device.type == "cuda":
+        torch.cuda.synchronize(device)
+    duration = time.perf_counter() - start
+    session_tokens = (step - start_step) * c.batch_size * c.grad_accum_steps * model_cfg.max_seq_len
+    summary = {
+        "format_version": 1,
+        "start_step": start_step,
+        "final_step": step,
+        "session_training_tokens": session_tokens,
+        "loop_seconds": duration,
+        "loop_tokens_per_second": session_tokens / duration,
+        "timing_scope": "training loop including evaluation, logging and checkpoint writes; "
+        "excludes setup and initial validation; CUDA synchronized at boundaries",
+        "peak_allocated_mib": torch.cuda.max_memory_allocated(device) / 2**20
+        if device.type == "cuda"
+        else None,
+        "peak_reserved_mib": torch.cuda.max_memory_reserved(device) / 2**20
+        if device.type == "cuda"
+        else None,
+        "memory_scope": "PyTorch allocator peaks during loop; includes resident model; "
+        "not total device usage; reserved cache may originate during setup",
+        "final_val_ce": row["val_ce"],
+        "final_val_perplexity": row["val_perplexity"],
+        "best_val_ce": best_val_ce,
+        "best_step": best_step,
+        "evaluation": {
+            "seed": 123,
+            "batches": 4,
+            "batch_size": c.batch_size,
+            "precision": "fp32",
+            "includes_aux_loss": False,
+        },
+        "model_config": model_cfg.model_dump(),
+        "training_config": c.model_dump(),
+        "data_hashes": fingerprints,
+        "environment": {
+            "python": platform.python_version(),
+            "platform": platform.platform(),
+            "torch": str(torch.__version__),
+            "cuda_runtime": torch.version.cuda,
+            "device": str(device),
+            "threads": torch.get_num_threads(),
+            "gpu": torch.cuda.get_device_name(device) if device.type == "cuda" else None,
+            "gpu_total_mib": torch.cuda.get_device_properties(device).total_memory / 2**20
+            if device.type == "cuda"
+            else None,
+            "deterministic_algorithms": torch.are_deterministic_algorithms_enabled(),
+            "matmul_allow_tf32": torch.backends.cuda.matmul.allow_tf32,
+            "cudnn_allow_tf32": torch.backends.cudnn.allow_tf32,
+            "cudnn_benchmark": torch.backends.cudnn.benchmark,
+        },
+    }
+    summary_path = output_dir / "run_summary.json"
+    temporary = summary_path.with_suffix(".json.tmp")
+    temporary.write_text(json.dumps(summary, indent=2, allow_nan=False), encoding="utf-8")
+    temporary.replace(summary_path)
     return model
