@@ -35,6 +35,24 @@ For CPU-only installation, use the PyTorch `/whl/cpu` index instead. On Linux/ma
 
 The included original short story is a plumbing fixture. A 200-step run can show loss reduction but does not establish general language quality. The default byte vocabulary is easy to inspect. To explore BPE merges use `--vocab-size 512` and set the model vocabulary to 512; after compression each split must still contain more tokens than the context length.
 
+## Download a bounded TinyStories subset
+
+The downloader uses the original [TinyStories dataset](https://huggingface.co/datasets/roneneldan/TinyStories) train/validation files, pinned to revision `f54c09fd23315a6f9c86f9dc80f725de7d8f9c64`. The [dataset card](https://huggingface.co/datasets/roneneldan/TinyStories/blob/f54c09fd23315a6f9c86f9dc80f725de7d8f9c64/README.md) identifies the data as synthetic stories and declares [CDLA-Sharing-1.0](https://cdla.dev/sharing-1-0/).
+
+```powershell
+.venv/Scripts/python scripts/download_data.py --output data/raw/tinystories --train-documents 1000 --val-documents 100
+.venv/Scripts/python scripts/prepare_documents.py --train-input data/raw/tinystories/train.jsonl --val-input data/raw/tinystories/val.jsonl --output data/tinystories --block-size 128
+.venv/Scripts/python scripts/train.py --config configs/training/laptop.yaml --model configs/model/laptop-moe.yaml --data-dir data/tinystories --device cuda --output-dir checkpoints/tinystories --max-steps 20
+```
+
+The download selects the first N nonempty complete stories in each original split, not a random sample. Defaults limit application reads to 32 MiB per source split and reject source stories larger than 1 MiB. Set `--max-bytes-per-split` and `--max-document-bytes` in bytes to adjust these limits. A separately bounded dataset-card request reads at most 64 KiB plus one detection byte. Requests use a 30-second network timeout; there is no automatic retry or partial-download resume.
+
+Output contains `train.jsonl`, `val.jsonl`, `manifest.json`, `SOURCE_README.md`, and `NOTICE.txt`. The manifest records the pinned source URLs, selection/modification policy, license reference, document counts, bytes read, source-prefix hashes, and output hashes. A source-prefix hash covers only the bytes read, possibly including read-ahead beyond the final selected story; it is not a checksum of the entire remote corpus. Transport buffering/HTTP overhead is outside the application-read count.
+
+The original `<|endoftext|>` separator is consumed while converting whole stories to JSONL; it is not added to the model vocabulary. The next preparation command performs exact deduplication and inserts its documented newline boundary. Keep the raw manifest/card/notice beside your prepared artifacts to retain provenance. Existing output directories, incomplete requested subsets, malformed UTF-8, oversized stories, and unexpected card license metadata fail rather than publish partial output. Alternative revisions must be immutable 40-character lowercase commit IDs.
+
+No new dependency is required. Downloaded stories and generated checkpoints stay ignored by Git. This small prefix is suitable for pipeline development; it is not a representative corpus benchmark or evidence of model quality.
+
 ## Prepare separate document splits
 
 For local corpora already divided into training and validation, use JSONL files with one object per document:
@@ -55,7 +73,7 @@ This path preserves whole documents in their source split, standardizes line end
 
 For this first preparation step, tokenization uses the complete 256-byte vocabulary with no learned BPE merges. Documents are separated by two newline bytes, **not an EOS token or attention barrier**; training windows may cross document boundaries within a split. The model vocabulary must remain 256. The existing `prepare_data.py` command remains available for the single-text demo.
 
-The new output directory contains token files, `tokenizer.json`, and `metadata.json` with source/artifact hashes, token counts, normalization rules, and retained/duplicate/overlap counts. Existing output directories are rejected. Malformed records, empty documents, or insufficient retained tokens fail before publishing the output directory. Dataset downloading, near-duplicate detection, dedicated EOS handling, and scalable BPE training remain separate next steps.
+The new output directory contains token files, `tokenizer.json`, and `metadata.json` with source/artifact hashes, token counts, normalization rules, and retained/duplicate/overlap counts. Existing output directories are rejected. Malformed records, empty documents, or insufficient retained tokens fail before publishing the output directory. Dataset downloading is available above. Near-duplicate detection, dedicated EOS handling, and scalable BPE training remain separate next steps.
 
 ## Your NVIDIA laptop
 
