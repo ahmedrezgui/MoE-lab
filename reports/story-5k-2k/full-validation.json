@@ -1,0 +1,19 @@
+{
+  "val_ce": 2.198544243604873,
+  "val_perplexity": 9.01188483670213,
+  "summed_nll": 63025.6678314209,
+  "stream_tokens": 28668,
+  "scored_targets": 28667,
+  "unscored_prefix_tokens": 1,
+  "context_length": 128,
+  "full_blocks": 223,
+  "tail_targets": 123,
+  "batch_size": 2,
+  "evaluation_seconds": 0.9397931999992579,
+  "targets_per_second": 30503.519284905058,
+  "precision": "fp32",
+  "includes_aux_loss": false,
+  "policy": "consecutive context-reset blocks; target positions 1..N-1 scored once; short tail included; no padding; EOS and cross-document transitions included",
+  "timing_scope": "forward scoring and transfers; synchronized CUDA boundaries; excludes checkpoint loading, file hashing and input validation",
+  "checkpoint_sha256": "a0aa2ab93c9628b75ddd81fc91dcba80b0cf8cb7f39686828628035c15b2b10b"
+}

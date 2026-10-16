@@ -1,0 +1,132 @@
+{
+  "checkpoint": {
+    "checkpoint": "checkpoints/balance-ablation-1k/coef-0.1-seed-42/last.pt",
+    "checkpoint_sha256": "39b93d9e7b23bf2cf8eef8fa7e6d85fa02d6ab18e67494c9bb097e521916f103",
+    "tokenizer_sha256": "7c1741e837f3404144bec51ed1952c4b5e156d017d8182183727824dfa9fcfe5",
+    "step": 200,
+    "training_seed": 42,
+    "device": "cpu",
+    "torch": "2.11.0+cu128",
+    "model_config": {
+      "vocab_size": 512,
+      "d_model": 128,
+      "n_layers": 2,
+      "n_heads": 4,
+      "n_kv_heads": 2,
+      "max_seq_len": 128,
+      "dropout": 0.0,
+      "ffn_hidden_dim": 341,
+      "moe": {
+        "n_experts": 4,
+        "top_k": 2,
+        "load_balance_coef": 0.1
+      }
+    },
+    "total_parameters": 1213056,
+    "active_parameters_estimate": 689280
+  },
+  "samples": [
+    {
+      "prompt": "Once upon a time",
+      "text": "Once upon a times to s and the pure the s and s and the pure cardoked the s and the pure cardoked the s and s and the pure the pure cardoked the s and s and the p",
+      "continuation": "s to s and the pure the s and s and the pure cardoked the s and the pure cardoked the s and s and the pure the pure cardoked the s and s and the p",
+      "prompt_tokens": 2,
+      "generated_tokens": 64,
+      "finish_reason": "length",
+      "generation_seconds": 0.18813829999999143,
+      "device": "cpu",
+      "settings": {
+        "max_new_tokens": 64,
+        "temperature": 0.0,
+        "top_k": 40,
+        "top_p": 0.95,
+        "seed": 42
+      }
+    },
+    {
+      "prompt": "Once upon a time",
+      "text": "Once upon a timet the s adoack, thouk youry. He see cared he was mor on the fe. He reas and re the car in the said were hin that she she gooked es her toming to d.\n",
+      "continuation": "t the s adoack, thouk youry. He see cared he was mor on the fe. He reas and re the car in the said were hin that she she gooked es her toming to d.\n",
+      "prompt_tokens": 2,
+      "generated_tokens": 64,
+      "finish_reason": "length",
+      "generation_seconds": 0.23128490001545288,
+      "device": "cpu",
+      "settings": {
+        "max_new_tokens": 64,
+        "temperature": 0.8,
+        "top_k": 40,
+        "top_p": 0.95,
+        "seed": 42
+      }
+    },
+    {
+      "prompt": "The little fox",
+      "text": "The little fox car car car car car car car car car car car car car car car car car car car car car ",
+      "continuation": " car car car car car car car car car car car car car car car car car car car car car ",
+      "prompt_tokens": 5,
+      "generated_tokens": 64,
+      "finish_reason": "length",
+      "generation_seconds": 0.1981828999996651,
+      "device": "cpu",
+      "settings": {
+        "max_new_tokens": 64,
+        "temperature": 0.0,
+        "top_k": 40,
+        "top_p": 0.95,
+        "seed": 42
+      }
+    },
+    {
+      "prompt": "The little fox",
+      "text": "The little foxt the s adoack, then he d, pen. He see cared he was mor on the fe. He restorre the car in the said were hin that she she gooked es her toming to d.\n",
+      "continuation": "t the s adoack, then he d, pen. He see cared he was mor on the fe. He restorre the car in the said were hin that she she gooked es her toming to d.\n",
+      "prompt_tokens": 5,
+      "generated_tokens": 64,
+      "finish_reason": "length",
+      "generation_seconds": 0.1962964000122156,
+      "device": "cpu",
+      "settings": {
+        "max_new_tokens": 64,
+        "temperature": 0.8,
+        "top_k": 40,
+        "top_p": 0.95,
+        "seed": 42
+      }
+    },
+    {
+      "prompt": "One day, a girl",
+      "text": "One day, a girly was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happ",
+      "continuation": "y was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happy was so happ",
+      "prompt_tokens": 5,
+      "generated_tokens": 64,
+      "finish_reason": "length",
+      "generation_seconds": 0.18677369999932125,
+      "device": "cpu",
+      "settings": {
+        "max_new_tokens": 64,
+        "temperature": 0.0,
+        "top_k": 40,
+        "top_p": 0.95,
+        "seed": 42
+      }
+    },
+    {
+      "prompt": "One day, a girl",
+      "text": "One day, a girlon the s adoack, then he d, pen. He see cared he was mor on the fre. He restorre the car in the said were hin that she she gooked es a toming to d.\n",
+      "continuation": "on the s adoack, then he d, pen. He see cared he was mor on the fre. He restorre the car in the said were hin that she she gooked es a toming to d.\n",
+      "prompt_tokens": 5,
+      "generated_tokens": 64,
+      "finish_reason": "length",
+      "generation_seconds": 0.2842994999955408,
+      "device": "cpu",
+      "settings": {
+        "max_new_tokens": 64,
+        "temperature": 0.8,
+        "top_k": 40,
+        "top_p": 0.95,
+        "seed": 42
+      }
+    }
+  ]
+}

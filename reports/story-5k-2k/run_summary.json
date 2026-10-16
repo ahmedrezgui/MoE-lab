@@ -1,0 +1,72 @@
+{
+  "format_version": 1,
+  "start_step": 0,
+  "final_step": 2000,
+  "session_training_tokens": 2048000,
+  "loop_seconds": 237.10628519998863,
+  "loop_tokens_per_second": 8637.476641636062,
+  "timing_scope": "training loop including evaluation, logging and checkpoint writes; excludes setup and initial validation; CUDA synchronized at boundaries",
+  "peak_allocated_mib": 45.16943359375,
+  "peak_reserved_mib": 50.0,
+  "memory_scope": "PyTorch allocator peaks during loop; includes resident model; not total device usage; reserved cache may originate during setup",
+  "final_val_ce": 2.2587844133377075,
+  "final_val_perplexity": 9.57144716875202,
+  "best_val_ce": 2.2587844133377075,
+  "best_step": 2000,
+  "evaluation": {
+    "seed": 123,
+    "batches": 4,
+    "batch_size": 2,
+    "precision": "fp32",
+    "includes_aux_loss": false
+  },
+  "model_config": {
+    "vocab_size": 512,
+    "d_model": 128,
+    "n_layers": 2,
+    "n_heads": 4,
+    "n_kv_heads": 2,
+    "max_seq_len": 128,
+    "dropout": 0.0,
+    "ffn_hidden_dim": 341,
+    "moe": {
+      "n_experts": 4,
+      "top_k": 2,
+      "load_balance_coef": 0.1
+    }
+  },
+  "training_config": {
+    "seed": 42,
+    "lr": 0.001,
+    "warmup_steps": 10,
+    "max_steps": 2000,
+    "batch_size": 2,
+    "grad_accum_steps": 4,
+    "weight_decay": 0.01,
+    "grad_clip": 1.0,
+    "precision": "bf16",
+    "eval_every": 100,
+    "checkpoint_every": 500,
+    "mlflow_experiment": "moelab",
+    "run_name": null
+  },
+  "data_hashes": {
+    "ids_train.bin": "9eeca353a6272732fb9a14784fad37756db37fa2696c92f1e9ae528f86845212",
+    "ids_val.bin": "2868aff28ff5c7111fa864d26c62605dc1c509b5fc09a29953c1439195912509",
+    "tokenizer.json": "7c1741e837f3404144bec51ed1952c4b5e156d017d8182183727824dfa9fcfe5"
+  },
+  "environment": {
+    "python": "3.12.8",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "torch": "2.11.0+cu128",
+    "cuda_runtime": "12.8",
+    "device": "cuda",
+    "threads": 2,
+    "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+    "gpu_total_mib": 4095.5,
+    "deterministic_algorithms": false,
+    "matmul_allow_tf32": false,
+    "cudnn_allow_tf32": true,
+    "cudnn_benchmark": false
+  }
+}

@@ -86,3 +86,14 @@ Fresh GPU training is not guaranteed to recreate bit-identical weights or files.
 Suitable claim: implemented and tested an educational MoE language model, controlled parameter budgets and paired experiments, audited expert traffic, confirmed a candidate on reserved data, and built a local interactive inference demo with traceable weights and settings.
 
 Unsupported claim: a fluent assistant, factual knowledge system, competitive pretrained LLM, proof that MoE is faster/better than dense, or a generally optimal balancing coefficient. Generated text can be incoherent, fabricated or undesirable; there has been no factuality, safety or instruction-following evaluation. The source is synthetic English stories, not representative multilingual or domain data. Outputs are for inspection, not decision-making.
+
+
+## Larger training candidate (2026-10-16)
+
+A separate candidate keeps this architecture, coefficient 0.1, seed 42 and byte-identical tokenizer/development stream, while increasing training to 5,000 stories and 2,000 fresh optimizer updates. Its SHA-256 is `a0aa2ab93c9628b75ddd81fc91dcba80b0cf8cb7f39686828628035c15b2b10b`; weights are local at `checkpoints/story-5k-2k/last.pt`. The original default checkpoint and original samples above remain unchanged.
+
+Full CPU fp32 development CE improved from 3.937743 to 2.198544 (perplexity 51.3027 to 9.0119), scoring the same 28,667 targets. The local training loop took 237.11 seconds, with 45.17 MiB peak allocated and 50.00 MiB peak reserved PyTorch memory. These are allocator figures, not total GPU usage. The idle original UI and concurrent test execution limit runtime comparisons.
+
+The [full experiment report](reports/story-5k-2k/README.md) contains commands, controls, fingerprints, early/late routing and every [before](reports/story-5k-2k/samples-before.json)/[after](reports/story-5k-2k/samples-after.json) output. Recognizable phrases improve, but repetitions, inconsistent pronouns and incoherence remain; all six outputs still reach the cap without EOS. Both corpus size and training horizon change, so their separate contributions are unknown. This is one seed on an inspected development set, with no new confirmation/test-set claim.
+
+Launch with `.venv/Scripts/python scripts/demo_ui.py --checkpoint checkpoints/story-5k-2k/last.pt --port 7861`. The candidate is an educational improvement, not a fluent assistant.

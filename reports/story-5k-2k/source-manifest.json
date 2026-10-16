@@ -1,0 +1,40 @@
+{
+  "format_version": 1,
+  "dataset": "roneneldan/TinyStories",
+  "revision": "f54c09fd23315a6f9c86f9dc80f725de7d8f9c64",
+  "dataset_url": "https://huggingface.co/datasets/roneneldan/TinyStories",
+  "license": "cdla-sharing-1.0",
+  "license_url": "https://cdla.dev/sharing-1-0/",
+  "dataset_card": {
+    "url": "https://huggingface.co/datasets/roneneldan/TinyStories/resolve/f54c09fd23315a6f9c86f9dc80f725de7d8f9c64/README.md",
+    "file": "SOURCE_README.md",
+    "sha256": "f67b71c3ffe761795b9428222444bfc1ec447d45cb13b00821b7e6c1ceecf7c5"
+  },
+  "selection": "first N nonempty complete documents in each original split; not random",
+  "modifications": "split on <|endoftext|>; strip outer whitespace; convert to JSONL",
+  "limits": {
+    "max_bytes_per_split": 33554432,
+    "max_document_bytes": 1048576
+  },
+  "source_hash_scope": "read prefix; may include bytes beyond the last selected story",
+  "splits": {
+    "train": {
+      "url": "https://huggingface.co/datasets/roneneldan/TinyStories/resolve/f54c09fd23315a6f9c86f9dc80f725de7d8f9c64/TinyStories-train.txt",
+      "source_file": "TinyStories-train.txt",
+      "documents": 5000,
+      "source_bytes_read": 4259840,
+      "source_prefix_sha256": "c351ec8a49d84d229f5fb669af4379462ca77686b658653cd9e79fd7c4b84bf1",
+      "output_file": "train.jsonl",
+      "sha256": "29879f98cce8b1c6a1021e881c5880ab8967719839a4c3dfe58069622212cf7c"
+    },
+    "val": {
+      "url": "https://huggingface.co/datasets/roneneldan/TinyStories/resolve/f54c09fd23315a6f9c86f9dc80f725de7d8f9c64/TinyStories-valid.txt",
+      "source_file": "TinyStories-valid.txt",
+      "documents": 100,
+      "source_bytes_read": 131072,
+      "source_prefix_sha256": "4a79ede43ee5a4931fb3c5ae06f55406aecc8f6737be6ce3ce606dd84f5e86bd",
+      "output_file": "val.jsonl",
+      "sha256": "7d6dee413376b5d604b363afa715d4a617eb6e765ad766c80e5d9c05cf4a0ec1"
+    }
+  }
+}

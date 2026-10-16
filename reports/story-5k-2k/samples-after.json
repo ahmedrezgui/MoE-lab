@@ -1,0 +1,132 @@
+{
+  "checkpoint": {
+    "checkpoint": "checkpoints/story-5k-2k/last.pt",
+    "checkpoint_sha256": "a0aa2ab93c9628b75ddd81fc91dcba80b0cf8cb7f39686828628035c15b2b10b",
+    "tokenizer_sha256": "7c1741e837f3404144bec51ed1952c4b5e156d017d8182183727824dfa9fcfe5",
+    "step": 2000,
+    "training_seed": 42,
+    "device": "cpu",
+    "torch": "2.11.0+cu128",
+    "model_config": {
+      "vocab_size": 512,
+      "d_model": 128,
+      "n_layers": 2,
+      "n_heads": 4,
+      "n_kv_heads": 2,
+      "max_seq_len": 128,
+      "dropout": 0.0,
+      "ffn_hidden_dim": 341,
+      "moe": {
+        "n_experts": 4,
+        "top_k": 2,
+        "load_balance_coef": 0.1
+      }
+    },
+    "total_parameters": 1213056,
+    "active_parameters_estimate": 689280
+  },
+  "samples": [
+    {
+      "prompt": "Once upon a time",
+      "text": "Once upon a time. One day, he saw a big smile on her friends and a big hug and the sun down on the store to be careful and make a big hug and smile.\nOne day, the little girl was playing in the park with",
+      "continuation": ". One day, he saw a big smile on her friends and a big hug and the sun down on the store to be careful and make a big hug and smile.\nOne day, the little girl was playing in the park with",
+      "prompt_tokens": 2,
+      "generated_tokens": 64,
+      "finish_reason": "length",
+      "generation_seconds": 0.19574769999599084,
+      "device": "cpu",
+      "settings": {
+        "max_new_tokens": 64,
+        "temperature": 0.0,
+        "top_k": 40,
+        "top_p": 0.95,
+        "seed": 42
+      }
+    },
+    {
+      "prompt": "Once upon a time",
+      "text": "Once upon a timet a little girl faster. He had never put them soar who was disappointing. One day he saw a clouds of water.\nOne day she saw a smiling room. They wanted to know ",
+      "continuation": "t a little girl faster. He had never put them soar who was disappointing. One day he saw a clouds of water.\nOne day she saw a smiling room. They wanted to know ",
+      "prompt_tokens": 2,
+      "generated_tokens": 64,
+      "finish_reason": "length",
+      "generation_seconds": 0.2269252999976743,
+      "device": "cpu",
+      "settings": {
+        "max_new_tokens": 64,
+        "temperature": 0.8,
+        "top_k": 40,
+        "top_p": 0.95,
+        "seed": 42
+      }
+    },
+    {
+      "prompt": "The little fox",
+      "text": "The little fox had a big smile on his friends. From that day on, the sun had a big smile on his friends and the sun didn't want to play with his friends. One day, she saw a big huge bird",
+      "continuation": " had a big smile on his friends. From that day on, the sun had a big smile on his friends and the sun didn't want to play with his friends. One day, she saw a big huge bird",
+      "prompt_tokens": 5,
+      "generated_tokens": 64,
+      "finish_reason": "length",
+      "generation_seconds": 0.18437810000614263,
+      "device": "cpu",
+      "settings": {
+        "max_new_tokens": 64,
+        "temperature": 0.0,
+        "top_k": 40,
+        "top_p": 0.95,
+        "seed": 42
+      }
+    },
+    {
+      "prompt": "The little fox",
+      "text": "The little fox went to the park. Jack thought that she couldn't wait to take a hurt her. When he realized he could make it in pointing the grass. They were happy and ex",
+      "continuation": " went to the park. Jack thought that she couldn't wait to take a hurt her. When he realized he could make it in pointing the grass. They were happy and ex",
+      "prompt_tokens": 5,
+      "generated_tokens": 64,
+      "finish_reason": "length",
+      "generation_seconds": 0.20520949998172,
+      "device": "cpu",
+      "settings": {
+        "max_new_tokens": 64,
+        "temperature": 0.8,
+        "top_k": 40,
+        "top_p": 0.95,
+        "seed": 42
+      }
+    },
+    {
+      "prompt": "One day, a girl",
+      "text": "One day, a girl and a little girl named Lily. She loved to play with his friends. One day, she saw a big hug and a big smile on his friends. Lily was so happy that he was very happy. She was so happy that he had a big hug and a big ",
+      "continuation": " and a little girl named Lily. She loved to play with his friends. One day, she saw a big hug and a big smile on his friends. Lily was so happy that he was very happy. She was so happy that he had a big hug and a big ",
+      "prompt_tokens": 5,
+      "generated_tokens": 64,
+      "finish_reason": "length",
+      "generation_seconds": 0.19508720000158064,
+      "device": "cpu",
+      "settings": {
+        "max_new_tokens": 64,
+        "temperature": 0.0,
+        "top_k": 40,
+        "top_p": 0.95,
+        "seed": 42
+      }
+    },
+    {
+      "prompt": "One day, a girl",
+      "text": "One day, a girl's feel day. He had a big box with pair and saw a walk. She looked up and felt so happy and took her head and said, \"Thank you, but you can make it closely and coul",
+      "continuation": "'s feel day. He had a big box with pair and saw a walk. She looked up and felt so happy and took her head and said, \"Thank you, but you can make it closely and coul",
+      "prompt_tokens": 5,
+      "generated_tokens": 64,
+      "finish_reason": "length",
+      "generation_seconds": 0.20198199999867938,
+      "device": "cpu",
+      "settings": {
+        "max_new_tokens": 64,
+        "temperature": 0.8,
+        "top_k": 40,
+        "top_p": 0.95,
+        "seed": 42
+      }
+    }
+  ]
+}

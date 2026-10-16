@@ -37,6 +37,15 @@ The exporter refuses an existing destination. Prompt length is limited to the mo
 
 ## Windows quickstart
 
+For the larger 5,000-story / 2,000-step training experiment, see the
+[reproduction commands and before/after evidence](reports/story-5k-2k/README.md).
+It keeps the model and tokenizer fixed and compares full development loss and
+the same six generation samples. Try its local checkpoint separately:
+
+```powershell
+.venv/Scripts/python scripts/demo_ui.py --checkpoint checkpoints/story-5k-2k/last.pt --port 7861
+```
+
 From the project directory (Python 3.11+):
 
 ```powershell
