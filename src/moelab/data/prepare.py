@@ -41,14 +41,15 @@ def prepare_documents(
     *,
     vocab_size=256,
     tokenizer_training_bytes=65536,
+    add_eos=False,
 ):
     """Keep validation intact; remove normalized exact duplicates from training.
 
-    Documents are encoded separately and separated by two newline bytes. This is
-    a text boundary, not EOS or an attention barrier: blocks may cross documents.
+    Documents are encoded separately and followed by EOS when enabled, otherwise
+    two newline bytes. Neither creates an attention barrier: blocks may cross documents.
     Optional BPE fits only a bounded prefix of retained training documents.
     """
-    tokenizer = BPETokenizer(vocab_size)
+    tokenizer = BPETokenizer(vocab_size, add_eos=add_eos)
     if tokenizer_training_bytes < 1:
         raise ValueError("tokenizer_training_bytes must be positive")
     train_source, val_source, output = map(Path, (train_source, val_source, output))
@@ -92,7 +93,7 @@ def prepare_documents(
         sample = tokenizer.train_documents(
             documents(staging / "kept_train.jsonl"), tokenizer_training_bytes
         )
-        boundary_ids = tokenizer.encode("\n\n")
+        boundary_ids = [tokenizer.eos_token_id] if add_eos else tokenizer.encode("\n\n")
         for split in ("val", "train"):
             spool = staging / f"kept_{split}.jsonl"
             with (staging / f"ids_{split}.bin").open("wb") as stream:
@@ -105,12 +106,17 @@ def prepare_documents(
             spool.unlink()
         tokenizer.save(staging / "tokenizer.json")
         metadata = {
-            "format_version": 2,
+            "format_version": 3,
             "sources": sources,
             "split": "explicit document-level source files; validation takes precedence",
             "normalization": "CRLF/CR to LF; strip outer whitespace",
             "deduplication": "SHA-256 of normalized UTF-8; exact within/across splits",
-            "boundary": "two newlines encoded separately per document; no EOS or attention barrier",
+            "boundary": (
+                "one EOS after each document; no attention barrier"
+                if add_eos
+                else "two newlines encoded separately per document; no attention barrier"
+            ),
+            "eos_token_id": tokenizer.eos_token_id,
             "tokenizer": "byte-level BPE" if tokenizer.merges else "UTF-8 bytes; no learned merges",
             "requested_vocab_size": vocab_size,
             "vocab_size": tokenizer.vocab_size,

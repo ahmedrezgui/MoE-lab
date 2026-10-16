@@ -71,3 +71,48 @@ def test_fitting_and_sample_hash_are_deterministic():
     texts = ["abracadabra", "banana banana"]
     assert a.train_documents(texts, 16) == b.train_documents(iter(texts), 16)
     assert a.merges == b.merges
+
+
+def test_eos_is_reserved_and_explicit(tmp_path):
+    with pytest.raises(ValueError, match="optional EOS"):
+        BPETokenizer(256, add_eos=True)
+    byte = BPETokenizer(257, add_eos=True)
+    byte.train("abab")
+    assert not byte.merges and byte.eos_token_id == 256
+    tokenizer = BPETokenizer(512, add_eos=True)
+    tokenizer.train("abab")
+    assert tokenizer.vocab_size == 258 and tokenizer.eos_token_id == 257
+    assert tokenizer.encode("abab", add_eos=True) == [256, 256, 257]
+    literal = "<|endoftext|>"
+    assert 257 not in tokenizer.encode(literal)
+    assert tokenizer.decode(tokenizer.encode(literal)) == literal
+    assert tokenizer.decode([256, 257]) == "ab"
+    assert tokenizer.decode([256, 257], skip_special_tokens=False) == "ab" + literal
+    with pytest.raises(ValueError, match="no EOS"):
+        BPETokenizer().encode("text", add_eos=True)
+    path = tmp_path / "eos.json"
+    tokenizer.save(path)
+    restored = BPETokenizer.load(path)
+    assert restored.encode("abab", add_eos=True) == [256, 256, 257]
+    payload = json.loads(path.read_text())
+    payload["eos_token_id"] = 256
+    path.write_text(json.dumps(payload))
+    with pytest.raises(ValueError, match="Stored EOS"):
+        BPETokenizer.load(path)
+
+
+def test_format_two_remains_without_eos(tmp_path):
+    path = tmp_path / "v2.json"
+    path.write_text(
+        json.dumps(
+            {
+                "format_version": 2,
+                "requested_vocab_size": 512,
+                "vocab_size": 257,
+                "merges": [[97, 98, 256]],
+            }
+        )
+    )
+    tokenizer = BPETokenizer.load(path)
+    assert tokenizer.eos_token_id is None
+    assert tokenizer.decode([256]) == "ab"

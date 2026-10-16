@@ -71,5 +71,21 @@ def generate(req: GenerateRequest):
     REQUESTS.inc()
     with LATENCY.time(), app.state.lock:
         x = torch.tensor([ids], device=next(model.parameters()).device)
-        result = sample(model, x, req.max_new_tokens, req.temperature, req.top_k, req.top_p)
-    return {"text": tokenizer.decode(result[0].tolist()), "generated_tokens": req.max_new_tokens}
+        result = sample(
+            model,
+            x,
+            req.max_new_tokens,
+            req.temperature,
+            req.top_k,
+            req.top_p,
+            eos_token_id=tokenizer.eos_token_id,
+        )
+    generated_tokens = result.size(1) - len(ids)
+    stopped_on_eos = (
+        tokenizer.eos_token_id is not None and result[0, -1].item() == tokenizer.eos_token_id
+    )
+    return {
+        "text": tokenizer.decode(result[0].tolist()),
+        "generated_tokens": generated_tokens,
+        "finish_reason": "eos" if stopped_on_eos else "length",
+    }

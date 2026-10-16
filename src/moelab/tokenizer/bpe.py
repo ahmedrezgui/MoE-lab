@@ -23,16 +23,24 @@ def merge(ids: list[int], pair: tuple[int, int], token: int) -> list[int]:
 
 
 class BPETokenizer:
-    def __init__(self, vocab_size: int = 256) -> None:
-        if not 256 <= vocab_size <= 65536:
-            raise ValueError("vocab_size must fit uint16 and include all 256 bytes")
+    def __init__(self, vocab_size: int = 256, *, add_eos: bool = False) -> None:
+        if not isinstance(add_eos, bool):
+            raise ValueError("add_eos must be a boolean")
+        if not 256 + int(add_eos) <= vocab_size <= 65536:
+            raise ValueError("vocab_size must fit uint16 and include 256 bytes plus optional EOS")
+        self.add_eos = add_eos
         self.requested_vocab_size = vocab_size
         self.merges: dict[tuple[int, int], int] = {}
 
     @property
     def vocab_size(self) -> int:
         """Number of decodable IDs, not the requested upper bound."""
-        return 256 + len(self.merges)
+        return 256 + len(self.merges) + int(self.add_eos)
+
+    @property
+    def eos_token_id(self) -> int | None:
+        """EOS follows learned merge IDs; it never participates in BPE fitting."""
+        return 256 + len(self.merges) if self.add_eos else None
 
     def train(self, text: str, max_training_bytes: int = 65536) -> dict:
         return self.train_documents([text], max_training_bytes)
@@ -51,7 +59,8 @@ class BPETokenizer:
         used = 0
         truncated = False
         digest = hashlib.sha256()
-        if self.requested_vocab_size > 256:
+        merge_limit = self.requested_vocab_size - int(self.add_eos)
+        if merge_limit > 256:
             for text in texts:
                 raw = text.encode("utf-8")
                 sample = raw[: max_training_bytes - used]
@@ -66,7 +75,7 @@ class BPETokenizer:
                 if used == max_training_bytes:
                     break
         sample_count = len(samples)
-        for token in range(256, self.requested_vocab_size):
+        for token in range(256, merge_limit):
             counts = Counter()
             for ids in samples:
                 counts.update(zip(ids, ids[1:], strict=False))
@@ -84,16 +93,20 @@ class BPETokenizer:
             "sha256": digest.hexdigest(),
         }
 
-    def encode(self, text: str) -> list[int]:
+    def encode(self, text: str, *, add_eos: bool = False) -> list[int]:
+        if add_eos and self.eos_token_id is None:
+            raise ValueError("Tokenizer has no EOS token")
         ids = list(text.encode("utf-8"))
         for pair, token in self.merges.items():
             ids = merge(ids, pair, token)
-        return ids
+        return ids + [self.eos_token_id] if add_eos else ids
 
-    def decode(self, ids: list[int]) -> str:
+    def decode(self, ids: list[int], *, skip_special_tokens: bool = True) -> str:
         vocab = {i: bytes([i]) for i in range(256)}
         for (a, b), token in self.merges.items():
             vocab[token] = vocab[a] + vocab[b]
+        if self.eos_token_id is not None:
+            vocab[self.eos_token_id] = b"" if skip_special_tokens else b"<|endoftext|>"
         if any(i not in vocab for i in ids):
             raise ValueError(
                 f"Token IDs must be within the actual vocabulary [0, {self.vocab_size})"
@@ -104,7 +117,9 @@ class BPETokenizer:
         Path(path).write_text(
             json.dumps(
                 {
-                    "format_version": 2,
+                    "format_version": 3,
+                    "add_eos": self.add_eos,
+                    "eos_token_id": self.eos_token_id,
                     "requested_vocab_size": self.requested_vocab_size,
                     "vocab_size": self.vocab_size,
                     "merges": [[a, b, t] for (a, b), t in self.merges.items()],
@@ -117,16 +132,21 @@ class BPETokenizer:
     def load(cls, path: str | Path) -> BPETokenizer:
         data = json.loads(Path(path).read_text(encoding="utf-8"))
         version = data.get("format_version", 1)
-        if version not in (1, 2):
+        if version not in (1, 2, 3):
             raise ValueError("Unsupported tokenizer format version")
         # Legacy files stored the requested capacity under vocab_size.
-        obj = cls(data["requested_vocab_size"] if version == 2 else data["vocab_size"])
+        obj = cls(
+            data["requested_vocab_size"] if version >= 2 else data["vocab_size"],
+            add_eos=data["add_eos"] if version == 3 else False,
+        )
         for a, b, token in data["merges"]:
             if token != 256 + len(obj.merges) or not 0 <= a < token or not 0 <= b < token:
                 raise ValueError("Invalid BPE merge table")
-            if (a, b) in obj.merges or token >= obj.requested_vocab_size:
+            if (a, b) in obj.merges or token >= obj.requested_vocab_size - int(obj.add_eos):
                 raise ValueError("Invalid BPE merge table")
             obj.merges[a, b] = token
-        if version == 2 and data["vocab_size"] != obj.vocab_size:
+        if version >= 2 and data["vocab_size"] != obj.vocab_size:
             raise ValueError("Stored vocabulary size does not match the merge table")
+        if version == 3 and data["eos_token_id"] != obj.eos_token_id:
+            raise ValueError("Stored EOS ID does not match the merge table")
         return obj

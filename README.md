@@ -49,7 +49,7 @@ The download selects the first N nonempty complete stories in each original spli
 
 Output contains `train.jsonl`, `val.jsonl`, `manifest.json`, `SOURCE_README.md`, and `NOTICE.txt`. The manifest records the pinned source URLs, selection/modification policy, license reference, document counts, bytes read, source-prefix hashes, and output hashes. A source-prefix hash covers only the bytes read, possibly including read-ahead beyond the final selected story; it is not a checksum of the entire remote corpus. Transport buffering/HTTP overhead is outside the application-read count.
 
-The original `<|endoftext|>` separator is consumed while converting whole stories to JSONL; it is not added to the model vocabulary. The next preparation command performs exact deduplication and inserts its documented newline boundary. Keep the raw manifest/card/notice beside your prepared artifacts to retain provenance. Existing output directories, incomplete requested subsets, malformed UTF-8, oversized stories, and unexpected card license metadata fail rather than publish partial output. Alternative revisions must be immutable 40-character lowercase commit IDs.
+The original `<|endoftext|>` separator is consumed while converting whole stories to JSONL; the downloader does not assign it a token ID. Preparation performs exact deduplication and inserts a newline boundary by default, or a dedicated EOS token with `--add-eos`. Keep the raw manifest/card/notice beside your prepared artifacts to retain provenance. Existing output directories, incomplete requested subsets, malformed UTF-8, oversized stories, and unexpected card license metadata fail rather than publish partial output. Alternative revisions must be immutable 40-character lowercase commit IDs.
 
 No new dependency is required. Downloaded stories and generated checkpoints stay ignored by Git. This small prefix is suitable for pipeline development; it is not a representative corpus benchmark or evidence of model quality.
 
@@ -71,9 +71,9 @@ Use different files for the two splits and enough text in each retained split to
 
 This path preserves whole documents in their source split, standardizes line endings and outer whitespace, removes exact duplicates, and removes training documents also present in validation. Validation takes precedence. It streams text and stores document hashes in memory; it does not detect near-duplicates or establish the source's license.
 
-By default, preparation uses the complete 256-byte vocabulary without learned merges. Optional BPE fitting is described below. Documents and their two-newline separators are encoded separately, **not with an EOS token or attention barrier**; training windows may cross document boundaries within a split. The existing `prepare_data.py` command remains available for the single-text demo.
+By default, preparation uses the complete 256-byte vocabulary without learned merges. Optional BPE fitting is described below. Documents and their two-newline separators are encoded separately, with no attention barrier; opt-in EOS is described below; training windows may cross document boundaries within a split. The existing `prepare_data.py` command remains available for the single-text demo.
 
-The new output directory contains token files, `tokenizer.json`, and `metadata.json` with source/artifact hashes, token counts, normalization rules, and retained/duplicate/overlap counts. Existing output directories are rejected. Malformed records, empty documents, or insufficient retained tokens fail before publishing the output directory. Dataset downloading is available above. Near-duplicate detection, dedicated EOS handling, and a high-performance tokenizer backend remain future work; the bounded reference BPE path below is implemented.
+The new output directory contains token files, `tokenizer.json`, and `metadata.json` with source/artifact hashes, token counts, normalization rules, and retained/duplicate/overlap counts. Existing output directories are rejected. Malformed records, empty documents, or insufficient retained tokens fail before publishing the output directory. Dataset downloading is available above. Near-duplicate detection and a high-performance tokenizer backend remain future work; the bounded reference BPE path below is implemented.
 
 ## Fit a bounded BPE tokenizer
 
@@ -89,13 +89,30 @@ Set `vocab_size` in `configs/model/laptop-bpe.yaml` to the number printed by the
 .venv/Scripts/python scripts/train.py --config configs/training/laptop.yaml --model configs/model/laptop-bpe.yaml --data-dir data/tinystories-bpe --device cuda --output-dir checkpoints/tinystories-bpe --max-steps 20
 ```
 
-`--vocab-size` is the requested capacity; `metadata.json` and `tokenizer.vocab_size` report the actual decodable vocabulary (`256 + learned merges`). For example, requesting 512 on a tiny sample may produce only 271 entries. Training, serving, and the generation CLI reject a model whose vocabulary does not match the tokenizer's actual size.
+`--vocab-size` is the requested capacity; `metadata.json` and `tokenizer.vocab_size` report the actual decodable vocabulary (`256 + learned merges + 1 if EOS is enabled`, otherwise `256 + learned merges`). For example, requesting 512 on a tiny sample may produce only 271 entries. Training, serving, and the generation CLI reject a model whose vocabulary does not match the tokenizer's actual size.
 
 Fitting uses at most `--tokenizer-training-bytes` UTF-8 bytes (default 65,536) from the prefix of retained, deduplicated, overlap-free **training** documents. No pair counts or merges cross document boundaries, and separator tokens are not part of the fitting sample. The last sampled document may be cut at a byte boundary; whole retained documents are still encoded afterward. Metadata records requested/actual vocabulary, sample byte/document counts, truncation, and a hash of length-prefixed sample documents. With requested size 256, fitting is skipped and sample counts are zero.
 
 The sample limit bounds BPE fitting input, not total RAM or runtime: Python lists/counters add overhead, each merge scans the sample again, and full documents are still read and encoded. Preparation temporarily spools normalized retained documents to disk, then validates both splits' lengths **after** compression. This remains an educational tokenizer, not a production-speed backend.
 
-Tokenizer JSON now uses format version 2 and records both requested and actual sizes. Legacy files remain loadable and their actual size is derived from their merges. Legacy checkpoints created with inflated output vocabularies cannot safely use that smaller tokenizer: prepare fresh data and train a correctly sized model. Existing valid byte-only runs remain loadable using their original data/tokenizer files. Do not regenerate a run's data before resuming: serialization changes can change the hashes checked by resume. Changing tokenization also changes the meaning of token-level perplexity; do not directly compare it with the earlier byte-only number.
+Tokenizer JSON now uses format version 3 and records requested/actual sizes and EOS configuration. Formats 1 and 2 load without EOS. Legacy files remain loadable and their actual size is derived from their merges. Legacy checkpoints created with inflated output vocabularies cannot safely use that smaller tokenizer: prepare fresh data and train a correctly sized model. Existing valid byte-only runs remain loadable using their original data/tokenizer files. Do not regenerate a run's data before resuming: serialization changes can change the hashes checked by resume. Changing tokenization also changes the meaning of token-level perplexity; do not directly compare it with the earlier byte-only number.
+
+## Optional end-of-sequence token
+
+EOS (end of sequence) gives the model a token it can learn to predict at the end of a document:
+
+```powershell
+.venv/Scripts/python scripts/prepare_documents.py --train-input data/raw/tinystories/train.jsonl --val-input data/raw/tinystories/val.jsonl --output data/tinystories-eos --block-size 128 --vocab-size 512 --tokenizer-training-bytes 65536 --add-eos
+(Get-Content data/tinystories-eos/metadata.json | ConvertFrom-Json).vocab_size
+```
+
+Create a fresh model configuration with that actual vocabulary size and train in a fresh run directory, using `--data-dir data/tinystories-eos`. The requested capacity includes EOS and must be at least 257; 257 gives byte-only text plus EOS. EOS has ID `256 + number of learned merges`. Metadata records this ID. Preparation appends exactly one EOS after each retained document, replacing the default two-newline separator. EOS never participates in BPE fitting.
+
+EOS is an ordinary prediction target during training. It does not reset positions or attention, and packed windows can still cross documents. There is no loss masking at boundaries: predicting the next document after EOS is also part of training. Compare validation loss only with the same tokenizer and boundary policy.
+
+The CLI and API stop on a newly generated EOS or the token limit. Prompts do not receive EOS automatically; literal `<|endoftext|>` text stays ordinary text. Decoding hides special tokens by default; `decode(ids, skip_special_tokens=False)` displays EOS as `<|endoftext|>` for inspection. A short training run need not learn when to stop.
+
+The Python sampler returns EOS in its token tensor. For batches, finished rows receive repeated EOS padding until every row finishes or the limit is reached; slice each continuation at its first EOS to recover its length. Prompt EOS tokens do not stop generation. No separate padding token is introduced. Existing tokenizers without EOS keep fixed-length generation. Enabling EOS requires freshly prepared data and a new training run, not resuming an old checkpoint with a replaced tokenizer.
 
 ## Your NVIDIA laptop
 
@@ -138,6 +155,8 @@ Open http://127.0.0.1:8000/docs to try `/generate`. `/health` checks the process
 ```powershell
 Invoke-RestMethod http://127.0.0.1:8000/generate -Method Post -ContentType "application/json" -Body '{"prompt":"Once upon a time","max_new_tokens":60,"temperature":0.8}'
 ```
+
+`/generate` returns `text`, `generated_tokens`, and `finish_reason` (`"eos"` or `"length"`). The count excludes the prompt and includes a generated EOS even though it is hidden in text.
 
 This is a local synchronous demo. Generation recomputes a sliding context window; it has no KV cache yet. Prompts longer than the model context are rejected by the API. A tokenizer JSON must accompany its matching checkpoint. Public deployment still needs authentication, request limits, and infrastructure verification.
 

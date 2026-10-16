@@ -15,6 +15,9 @@ if __name__ == "__main__":
         "--vocab-size", type=int, default=256, help="Requested vocabulary upper bound"
     )
     parser.add_argument("--tokenizer-training-bytes", type=int, default=65536)
+    parser.add_argument(
+        "--add-eos", action="store_true", help="Reserve one vocabulary entry for EOS"
+    )
     args = parser.parse_args()
     result = prepare_documents(
         args.train_input,
@@ -23,5 +26,6 @@ if __name__ == "__main__":
         args.block_size,
         vocab_size=args.vocab_size,
         tokenizer_training_bytes=args.tokenizer_training_bytes,
+        add_eos=args.add_eos,
     )
     print(json.dumps(result, indent=2))

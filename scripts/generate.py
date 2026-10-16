@@ -26,5 +26,12 @@ if __name__ == "__main__":
     if tokenizer.vocab_size != model.cfg.vocab_size:
         raise ValueError("Checkpoint vocabulary must match the tokenizer's actual vocabulary size")
     ids = torch.tensor([tokenizer.encode(args.prompt)], device=args.device)
-    result = generate(model, ids, args.max_new_tokens, args.temperature, args.top_k)
+    result = generate(
+        model,
+        ids,
+        args.max_new_tokens,
+        args.temperature,
+        args.top_k,
+        eos_token_id=tokenizer.eos_token_id,
+    )
     print(tokenizer.decode(result[0].tolist()))

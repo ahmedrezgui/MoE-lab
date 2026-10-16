@@ -4,15 +4,27 @@ import torch
 
 
 @torch.no_grad()
-def generate(model, idx, max_new_tokens, temperature=1.0, top_k=None, top_p=None):
+def generate(
+    model, idx, max_new_tokens, temperature=1.0, top_k=None, top_p=None, *, eos_token_id=None
+):
+    """Include sampled EOS in results; pad finished batch rows with EOS.
+
+    Only newly generated EOS stops a row. Prompt EOS tokens remain valid context.
+    Without an EOS ID, preserve fixed-length generation behavior.
+    """
     if max_new_tokens < 0 or temperature < 0:
         raise ValueError("max_new_tokens and temperature must be nonnegative")
     if top_k is not None and top_k < 1:
         raise ValueError("top_k must be positive")
     if top_p is not None and not 0 < top_p <= 1:
         raise ValueError("top_p must be in (0, 1]")
-    if idx.ndim != 2 or idx.size(1) == 0:
+    if idx.ndim != 2 or idx.size(0) == 0 or idx.size(1) == 0:
         raise ValueError("Provide a nonempty [batch, sequence] prompt")
+    if eos_token_id is not None and (
+        type(eos_token_id) is not int or not 0 <= eos_token_id < model.cfg.vocab_size
+    ):
+        raise ValueError("eos_token_id must be an integer within the model vocabulary")
+    finished = torch.zeros(idx.size(0), dtype=torch.bool, device=idx.device)
     was_training = model.training
     model.eval()
     try:
@@ -33,7 +45,12 @@ def generate(model, idx, max_new_tokens, temperature=1.0, top_k=None, top_p=None
                     remove[:, 0] = False
                     scores = scores.scatter(1, order, sorted_scores.masked_fill(remove, -torch.inf))
                 token = torch.multinomial(scores.softmax(-1), num_samples=1)
+            if eos_token_id is not None:
+                token = token.masked_fill(finished[:, None], eos_token_id)
+                finished |= token.squeeze(-1) == eos_token_id
             idx = torch.cat((idx, token), dim=1)
+            if eos_token_id is not None and finished.all():
+                break
     finally:
         model.train(was_training)
     return idx

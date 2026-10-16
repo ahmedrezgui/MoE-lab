@@ -116,3 +116,18 @@ def test_bpe_rechecks_block_length_after_compression(tmp_path):
     with pytest.raises(ValueError, match="after tokenization"):
         prepare_documents(train, val, output, block_size=32, vocab_size=512)
     assert not output.exists()
+
+
+def test_eos_replaces_separator_after_each_retained_document(tmp_path):
+    train = write_jsonl(tmp_path / "train.jsonl", ["abab", "abab", "cdcd"])
+    val = write_jsonl(tmp_path / "val.jsonl", ["held-out"])
+    output = tmp_path / "eos"
+    metadata = prepare_documents(train, val, output, block_size=1, vocab_size=512, add_eos=True)
+    tokenizer = BPETokenizer.load(output / "tokenizer.json")
+    eos = tokenizer.eos_token_id
+    assert eos == metadata["eos_token_id"] == tokenizer.vocab_size - 1
+    for split, texts in (("train", ["abab", "cdcd"]), ("val", ["held-out"])):
+        ids = np.fromfile(output / f"ids_{split}.bin", dtype="<u2").tolist()
+        assert ids == [token for text in texts for token in tokenizer.encode(text, add_eos=True)]
+        assert ids.count(eos) == len(texts)
+        assert metadata["documents"][split]["tokens"] == len(ids)

@@ -40,3 +40,30 @@ def test_serving_checkpoint(tmp_path, monkeypatch):
         assert response.json()["text"].startswith("Hi")
         assert client.post("/generate", json={"prompt": "a" * 33}).status_code == 422
         assert client.get("/metrics").status_code == 200
+
+
+def test_api_reports_eos_and_actual_token_count(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+
+    import moelab.serving.api as api
+
+    class EndModel(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.weight = torch.nn.Parameter(torch.zeros(1))
+            self.cfg = SimpleNamespace(vocab_size=257, max_seq_len=32)
+
+        def forward(self, idx):
+            logits = torch.zeros((*idx.shape, 257))
+            logits[..., 256] = 100
+            return logits, None
+
+    monkeypatch.setattr(api, "load_checkpoint", lambda *args: (EndModel(), {}))
+    BPETokenizer(257, add_eos=True).save(tmp_path / "tokenizer.json")
+    monkeypatch.setenv("MOELAB_CHECKPOINT", str(tmp_path / "last.pt"))
+    with TestClient(app) as client:
+        response = client.post(
+            "/generate", json={"prompt": "Hi", "max_new_tokens": 10, "temperature": 0}
+        )
+        assert response.status_code == 200
+        assert response.json() == {"text": "Hi", "generated_tokens": 1, "finish_reason": "eos"}
