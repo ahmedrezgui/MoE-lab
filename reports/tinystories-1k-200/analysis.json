@@ -1,0 +1,5178 @@
+{
+  "format_version": 1,
+  "comparison_sha256": "11631db482a8cef10d82e081f4c33e0f1d67d67c76e2fc75d71e5b7dedb971fe",
+  "early_window": [
+    1,
+    20
+  ],
+  "late_window": [
+    181,
+    200
+  ],
+  "runs": [
+    {
+      "model": "dense",
+      "seed": 42,
+      "metrics_sha256": "6f276caabdbcbb11b02e490e7719f23948c9d88412c9a92316f2159f591ccd18",
+      "validation_curve": [
+        {
+          "step": 0,
+          "val_ce": 6.277232885360718,
+          "val_perplexity": 532.3136511054237
+        },
+        {
+          "step": 20,
+          "val_ce": 5.410063624382019,
+          "val_perplexity": 223.645816554759
+        },
+        {
+          "step": 40,
+          "val_ce": 5.008971452713013,
+          "val_perplexity": 149.75063130501943
+        },
+        {
+          "step": 60,
+          "val_ce": 4.634251713752747,
+          "val_perplexity": 102.950852458247
+        },
+        {
+          "step": 80,
+          "val_ce": 4.357024669647217,
+          "val_perplexity": 78.02463964161856
+        },
+        {
+          "step": 100,
+          "val_ce": 4.202471494674683,
+          "val_perplexity": 66.85134979044878
+        },
+        {
+          "step": 120,
+          "val_ce": 4.072903394699097,
+          "val_perplexity": 58.72722361454809
+        },
+        {
+          "step": 140,
+          "val_ce": 4.011057257652283,
+          "val_perplexity": 55.20520584664485
+        },
+        {
+          "step": 160,
+          "val_ce": 3.9651139974594116,
+          "val_perplexity": 52.726279708991285
+        },
+        {
+          "step": 180,
+          "val_ce": 3.9314194917678833,
+          "val_perplexity": 50.9792910168892
+        },
+        {
+          "step": 200,
+          "val_ce": 3.901845395565033,
+          "val_perplexity": 49.493700337424386
+        }
+      ],
+      "early_val_ce": 5.410063624382019,
+      "final_val_ce": 3.901845395565033,
+      "ce_change_from_early": -1.508218228816986,
+      "best_val_ce": 3.901845395565033,
+      "best_step": 200,
+      "loop_seconds": 15.083783599999151,
+      "loop_tokens_per_second": 13577.495237999272,
+      "peak_allocated_mib": 34.98193359375,
+      "session_training_tokens": 204800
+    },
+    {
+      "model": "moe",
+      "seed": 42,
+      "metrics_sha256": "1b96e39ce2d7efd53415035ec8eaffd6e5e2e89b6352cf85b7c08945078ade2d",
+      "validation_curve": [
+        {
+          "step": 0,
+          "val_ce": 6.264876008033752,
+          "val_perplexity": 525.7763898691272
+        },
+        {
+          "step": 20,
+          "val_ce": 5.440866947174072,
+          "val_perplexity": 230.64205128528488
+        },
+        {
+          "step": 40,
+          "val_ce": 5.326126456260681,
+          "val_perplexity": 205.63987436908766
+        },
+        {
+          "step": 60,
+          "val_ce": 5.031967878341675,
+          "val_perplexity": 153.23426257336345
+        },
+        {
+          "step": 80,
+          "val_ce": 4.684096455574036,
+          "val_perplexity": 108.21245336390088
+        },
+        {
+          "step": 100,
+          "val_ce": 4.42119562625885,
+          "val_perplexity": 83.19569687679947
+        },
+        {
+          "step": 120,
+          "val_ce": 4.230958104133606,
+          "val_perplexity": 68.783101988074
+        },
+        {
+          "step": 140,
+          "val_ce": 4.134938716888428,
+          "val_perplexity": 62.48576163122502
+        },
+        {
+          "step": 160,
+          "val_ce": 4.079141974449158,
+          "val_perplexity": 59.09474329098842
+        },
+        {
+          "step": 180,
+          "val_ce": 4.042659163475037,
+          "val_perplexity": 56.9776544326912
+        },
+        {
+          "step": 200,
+          "val_ce": 4.018858551979065,
+          "val_perplexity": 55.637562182568466
+        }
+      ],
+      "early_val_ce": 5.440866947174072,
+      "final_val_ce": 4.018858551979065,
+      "ce_change_from_early": -1.4220083951950073,
+      "best_val_ce": 4.018858551979065,
+      "best_step": 200,
+      "loop_seconds": 25.75751019999734,
+      "loop_tokens_per_second": 7951.079060429573,
+      "peak_allocated_mib": 45.16845703125,
+      "session_training_tokens": 204800,
+      "routing_early": {
+        "format_version": 1,
+        "metrics_file": "checkpoints/comparison-1k-200/moe-seed-42/metrics.jsonl",
+        "metrics_sha256": "1b96e39ce2d7efd53415035ec8eaffd6e5e2e89b6352cf85b7c08945078ade2d",
+        "requested_start_step": 1,
+        "requested_end_step": 20,
+        "first_step": 1,
+        "last_step": 20,
+        "observed_steps": 20,
+        "scope": "training hard top-k assignments across all microbatches; percentages use assignments, not unique tokens or gate weights",
+        "layer_id_convention": "logged model.modules() IDs, not decoder block indices",
+        "layers": {
+          "11": {
+            "assignments": 40960,
+            "counts": [
+              11144,
+              9412,
+              10714,
+              9690
+            ],
+            "assignment_percentages": [
+              27.207031250000004,
+              22.978515625,
+              26.157226562500004,
+              23.6572265625
+            ],
+            "max_to_uniform_ratio": 1.08828125,
+            "zero_assignment_experts": [],
+            "zero_assignment_steps_per_expert": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "peak_step_max_to_uniform_ratio": 1.638671875,
+            "per_step": [
+              {
+                "step": 1,
+                "assignments": 2048,
+                "counts": [
+                  559,
+                  460,
+                  450,
+                  579
+                ],
+                "assignment_percentages": [
+                  27.294921875,
+                  22.4609375,
+                  21.97265625,
+                  28.271484375
+                ],
+                "max_to_uniform_ratio": 1.130859375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 2,
+                "assignments": 2048,
+                "counts": [
+                  567,
+                  477,
+                  404,
+                  600
+                ],
+                "assignment_percentages": [
+                  27.685546875,
+                  23.291015625,
+                  19.7265625,
+                  29.296875
+                ],
+                "max_to_uniform_ratio": 1.171875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 3,
+                "assignments": 2048,
+                "counts": [
+                  532,
+                  474,
+                  497,
+                  545
+                ],
+                "assignment_percentages": [
+                  25.9765625,
+                  23.14453125,
+                  24.267578125,
+                  26.611328125
+                ],
+                "max_to_uniform_ratio": 1.064453125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 4,
+                "assignments": 2048,
+                "counts": [
+                  573,
+                  435,
+                  470,
+                  570
+                ],
+                "assignment_percentages": [
+                  27.978515625,
+                  21.240234375,
+                  22.94921875,
+                  27.83203125
+                ],
+                "max_to_uniform_ratio": 1.119140625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 5,
+                "assignments": 2048,
+                "counts": [
+                  563,
+                  444,
+                  471,
+                  570
+                ],
+                "assignment_percentages": [
+                  27.490234375,
+                  21.6796875,
+                  22.998046875,
+                  27.83203125
+                ],
+                "max_to_uniform_ratio": 1.11328125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 6,
+                "assignments": 2048,
+                "counts": [
+                  582,
+                  421,
+                  584,
+                  461
+                ],
+                "assignment_percentages": [
+                  28.41796875,
+                  20.556640625,
+                  28.515625,
+                  22.509765625
+                ],
+                "max_to_uniform_ratio": 1.140625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 7,
+                "assignments": 2048,
+                "counts": [
+                  699,
+                  354,
+                  546,
+                  449
+                ],
+                "assignment_percentages": [
+                  34.130859375,
+                  17.28515625,
+                  26.66015625,
+                  21.923828125
+                ],
+                "max_to_uniform_ratio": 1.365234375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 8,
+                "assignments": 2048,
+                "counts": [
+                  659,
+                  347,
+                  658,
+                  384
+                ],
+                "assignment_percentages": [
+                  32.177734375,
+                  16.943359375,
+                  32.12890625,
+                  18.75
+                ],
+                "max_to_uniform_ratio": 1.287109375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 9,
+                "assignments": 2048,
+                "counts": [
+                  665,
+                  352,
+                  685,
+                  346
+                ],
+                "assignment_percentages": [
+                  32.470703125,
+                  17.1875,
+                  33.447265625,
+                  16.89453125
+                ],
+                "max_to_uniform_ratio": 1.337890625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 10,
+                "assignments": 2048,
+                "counts": [
+                  583,
+                  405,
+                  746,
+                  314
+                ],
+                "assignment_percentages": [
+                  28.466796875,
+                  19.775390625,
+                  36.42578125,
+                  15.33203125
+                ],
+                "max_to_uniform_ratio": 1.45703125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 11,
+                "assignments": 2048,
+                "counts": [
+                  455,
+                  649,
+                  612,
+                  332
+                ],
+                "assignment_percentages": [
+                  22.216796875,
+                  31.689453125,
+                  29.8828125,
+                  16.2109375
+                ],
+                "max_to_uniform_ratio": 1.267578125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 12,
+                "assignments": 2048,
+                "counts": [
+                  404,
+                  753,
+                  530,
+                  361
+                ],
+                "assignment_percentages": [
+                  19.7265625,
+                  36.767578125,
+                  25.87890625,
+                  17.626953125
+                ],
+                "max_to_uniform_ratio": 1.470703125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 13,
+                "assignments": 2048,
+                "counts": [
+                  366,
+                  825,
+                  379,
+                  478
+                ],
+                "assignment_percentages": [
+                  17.87109375,
+                  40.283203125,
+                  18.505859375,
+                  23.33984375
+                ],
+                "max_to_uniform_ratio": 1.611328125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 14,
+                "assignments": 2048,
+                "counts": [
+                  352,
+                  770,
+                  280,
+                  646
+                ],
+                "assignment_percentages": [
+                  17.1875,
+                  37.59765625,
+                  13.671875,
+                  31.54296875
+                ],
+                "max_to_uniform_ratio": 1.50390625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 15,
+                "assignments": 2048,
+                "counts": [
+                  326,
+                  580,
+                  303,
+                  839
+                ],
+                "assignment_percentages": [
+                  15.91796875,
+                  28.3203125,
+                  14.794921875,
+                  40.966796875
+                ],
+                "max_to_uniform_ratio": 1.638671875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 16,
+                "assignments": 2048,
+                "counts": [
+                  593,
+                  387,
+                  324,
+                  744
+                ],
+                "assignment_percentages": [
+                  28.955078125,
+                  18.896484375,
+                  15.8203125,
+                  36.328125
+                ],
+                "max_to_uniform_ratio": 1.453125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 17,
+                "assignments": 2048,
+                "counts": [
+                  683,
+                  218,
+                  536,
+                  611
+                ],
+                "assignment_percentages": [
+                  33.349609375,
+                  10.64453125,
+                  26.171875,
+                  29.833984375
+                ],
+                "max_to_uniform_ratio": 1.333984375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 18,
+                "assignments": 2048,
+                "counts": [
+                  737,
+                  189,
+                  775,
+                  347
+                ],
+                "assignment_percentages": [
+                  35.986328125,
+                  9.228515625,
+                  37.841796875,
+                  16.943359375
+                ],
+                "max_to_uniform_ratio": 1.513671875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 19,
+                "assignments": 2048,
+                "counts": [
+                  678,
+                  307,
+                  802,
+                  261
+                ],
+                "assignment_percentages": [
+                  33.10546875,
+                  14.990234375,
+                  39.16015625,
+                  12.744140625
+                ],
+                "max_to_uniform_ratio": 1.56640625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 20,
+                "assignments": 2048,
+                "counts": [
+                  568,
+                  565,
+                  662,
+                  253
+                ],
+                "assignment_percentages": [
+                  27.734375,
+                  27.587890625,
+                  32.32421875,
+                  12.353515625
+                ],
+                "max_to_uniform_ratio": 1.29296875,
+                "zero_assignment_experts": []
+              }
+            ]
+          },
+          "38": {
+            "assignments": 40960,
+            "counts": [
+              10635,
+              9553,
+              10513,
+              10259
+            ],
+            "assignment_percentages": [
+              25.96435546875,
+              23.32275390625,
+              25.66650390625,
+              25.046386718750004
+            ],
+            "max_to_uniform_ratio": 1.03857421875,
+            "zero_assignment_experts": [],
+            "zero_assignment_steps_per_expert": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "peak_step_max_to_uniform_ratio": 2.0,
+            "per_step": [
+              {
+                "step": 1,
+                "assignments": 2048,
+                "counts": [
+                  599,
+                  503,
+                  425,
+                  521
+                ],
+                "assignment_percentages": [
+                  29.248046875,
+                  24.560546875,
+                  20.751953125,
+                  25.439453125
+                ],
+                "max_to_uniform_ratio": 1.169921875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 2,
+                "assignments": 2048,
+                "counts": [
+                  477,
+                  509,
+                  564,
+                  498
+                ],
+                "assignment_percentages": [
+                  23.291015625,
+                  24.853515625,
+                  27.5390625,
+                  24.31640625
+                ],
+                "max_to_uniform_ratio": 1.1015625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 3,
+                "assignments": 2048,
+                "counts": [
+                  581,
+                  461,
+                  426,
+                  580
+                ],
+                "assignment_percentages": [
+                  28.369140625,
+                  22.509765625,
+                  20.80078125,
+                  28.3203125
+                ],
+                "max_to_uniform_ratio": 1.134765625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 4,
+                "assignments": 2048,
+                "counts": [
+                  535,
+                  467,
+                  444,
+                  602
+                ],
+                "assignment_percentages": [
+                  26.123046875,
+                  22.802734375,
+                  21.6796875,
+                  29.39453125
+                ],
+                "max_to_uniform_ratio": 1.17578125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 5,
+                "assignments": 2048,
+                "counts": [
+                  735,
+                  374,
+                  372,
+                  567
+                ],
+                "assignment_percentages": [
+                  35.888671875,
+                  18.26171875,
+                  18.1640625,
+                  27.685546875
+                ],
+                "max_to_uniform_ratio": 1.435546875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 6,
+                "assignments": 2048,
+                "counts": [
+                  789,
+                  391,
+                  308,
+                  560
+                ],
+                "assignment_percentages": [
+                  38.525390625,
+                  19.091796875,
+                  15.0390625,
+                  27.34375
+                ],
+                "max_to_uniform_ratio": 1.541015625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 7,
+                "assignments": 2048,
+                "counts": [
+                  827,
+                  561,
+                  298,
+                  362
+                ],
+                "assignment_percentages": [
+                  40.380859375,
+                  27.392578125,
+                  14.55078125,
+                  17.67578125
+                ],
+                "max_to_uniform_ratio": 1.615234375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 8,
+                "assignments": 2048,
+                "counts": [
+                  913,
+                  658,
+                  265,
+                  212
+                ],
+                "assignment_percentages": [
+                  44.580078125,
+                  32.12890625,
+                  12.939453125,
+                  10.3515625
+                ],
+                "max_to_uniform_ratio": 1.783203125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 9,
+                "assignments": 2048,
+                "counts": [
+                  799,
+                  548,
+                  658,
+                  43
+                ],
+                "assignment_percentages": [
+                  39.013671875,
+                  26.7578125,
+                  32.12890625,
+                  2.099609375
+                ],
+                "max_to_uniform_ratio": 1.560546875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 10,
+                "assignments": 2048,
+                "counts": [
+                  189,
+                  605,
+                  983,
+                  271
+                ],
+                "assignment_percentages": [
+                  9.228515625,
+                  29.541015625,
+                  47.998046875,
+                  13.232421875
+                ],
+                "max_to_uniform_ratio": 1.919921875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 11,
+                "assignments": 2048,
+                "counts": [
+                  11,
+                  358,
+                  816,
+                  863
+                ],
+                "assignment_percentages": [
+                  0.537109375,
+                  17.48046875,
+                  39.84375,
+                  42.138671875
+                ],
+                "max_to_uniform_ratio": 1.685546875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 12,
+                "assignments": 2048,
+                "counts": [
+                  35,
+                  923,
+                  77,
+                  1013
+                ],
+                "assignment_percentages": [
+                  1.708984375,
+                  45.068359375,
+                  3.759765625,
+                  49.462890625
+                ],
+                "max_to_uniform_ratio": 1.978515625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 13,
+                "assignments": 2048,
+                "counts": [
+                  191,
+                  527,
+                  308,
+                  1022
+                ],
+                "assignment_percentages": [
+                  9.326171875,
+                  25.732421875,
+                  15.0390625,
+                  49.90234375
+                ],
+                "max_to_uniform_ratio": 1.99609375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 14,
+                "assignments": 2048,
+                "counts": [
+                  630,
+                  18,
+                  473,
+                  927
+                ],
+                "assignment_percentages": [
+                  30.76171875,
+                  0.87890625,
+                  23.095703125,
+                  45.263671875
+                ],
+                "max_to_uniform_ratio": 1.810546875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 15,
+                "assignments": 2048,
+                "counts": [
+                  955,
+                  34,
+                  1018,
+                  41
+                ],
+                "assignment_percentages": [
+                  46.630859375,
+                  1.66015625,
+                  49.70703125,
+                  2.001953125
+                ],
+                "max_to_uniform_ratio": 1.98828125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 16,
+                "assignments": 2048,
+                "counts": [
+                  32,
+                  987,
+                  1023,
+                  6
+                ],
+                "assignment_percentages": [
+                  1.5625,
+                  48.193359375,
+                  49.951171875,
+                  0.29296875
+                ],
+                "max_to_uniform_ratio": 1.998046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 17,
+                "assignments": 2048,
+                "counts": [
+                  7,
+                  1014,
+                  1024,
+                  3
+                ],
+                "assignment_percentages": [
+                  0.341796875,
+                  49.51171875,
+                  50.0,
+                  0.146484375
+                ],
+                "max_to_uniform_ratio": 2.0,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 18,
+                "assignments": 2048,
+                "counts": [
+                  343,
+                  535,
+                  1020,
+                  150
+                ],
+                "assignment_percentages": [
+                  16.748046875,
+                  26.123046875,
+                  49.8046875,
+                  7.32421875
+                ],
+                "max_to_uniform_ratio": 1.9921875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 19,
+                "assignments": 2048,
+                "counts": [
+                  1001,
+                  41,
+                  9,
+                  997
+                ],
+                "assignment_percentages": [
+                  48.876953125,
+                  2.001953125,
+                  0.439453125,
+                  48.681640625
+                ],
+                "max_to_uniform_ratio": 1.955078125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 20,
+                "assignments": 2048,
+                "counts": [
+                  986,
+                  39,
+                  2,
+                  1021
+                ],
+                "assignment_percentages": [
+                  48.14453125,
+                  1.904296875,
+                  0.09765625,
+                  49.853515625
+                ],
+                "max_to_uniform_ratio": 1.994140625,
+                "zero_assignment_experts": []
+              }
+            ]
+          }
+        }
+      },
+      "routing_late": {
+        "format_version": 1,
+        "metrics_file": "checkpoints/comparison-1k-200/moe-seed-42/metrics.jsonl",
+        "metrics_sha256": "1b96e39ce2d7efd53415035ec8eaffd6e5e2e89b6352cf85b7c08945078ade2d",
+        "requested_start_step": 181,
+        "requested_end_step": 200,
+        "first_step": 181,
+        "last_step": 200,
+        "observed_steps": 20,
+        "scope": "training hard top-k assignments across all microbatches; percentages use assignments, not unique tokens or gate weights",
+        "layer_id_convention": "logged model.modules() IDs, not decoder block indices",
+        "layers": {
+          "11": {
+            "assignments": 40960,
+            "counts": [
+              10265,
+              9279,
+              9813,
+              11603
+            ],
+            "assignment_percentages": [
+              25.06103515625,
+              22.65380859375,
+              23.95751953125,
+              28.32763671875
+            ],
+            "max_to_uniform_ratio": 1.13310546875,
+            "zero_assignment_experts": [],
+            "zero_assignment_steps_per_expert": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "peak_step_max_to_uniform_ratio": 1.181640625,
+            "per_step": [
+              {
+                "step": 181,
+                "assignments": 2048,
+                "counts": [
+                  516,
+                  470,
+                  478,
+                  584
+                ],
+                "assignment_percentages": [
+                  25.1953125,
+                  22.94921875,
+                  23.33984375,
+                  28.515625
+                ],
+                "max_to_uniform_ratio": 1.140625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 182,
+                "assignments": 2048,
+                "counts": [
+                  495,
+                  459,
+                  492,
+                  602
+                ],
+                "assignment_percentages": [
+                  24.169921875,
+                  22.412109375,
+                  24.0234375,
+                  29.39453125
+                ],
+                "max_to_uniform_ratio": 1.17578125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 183,
+                "assignments": 2048,
+                "counts": [
+                  477,
+                  445,
+                  526,
+                  600
+                ],
+                "assignment_percentages": [
+                  23.291015625,
+                  21.728515625,
+                  25.68359375,
+                  29.296875
+                ],
+                "max_to_uniform_ratio": 1.171875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 184,
+                "assignments": 2048,
+                "counts": [
+                  515,
+                  486,
+                  460,
+                  587
+                ],
+                "assignment_percentages": [
+                  25.146484375,
+                  23.73046875,
+                  22.4609375,
+                  28.662109375
+                ],
+                "max_to_uniform_ratio": 1.146484375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 185,
+                "assignments": 2048,
+                "counts": [
+                  484,
+                  482,
+                  516,
+                  566
+                ],
+                "assignment_percentages": [
+                  23.6328125,
+                  23.53515625,
+                  25.1953125,
+                  27.63671875
+                ],
+                "max_to_uniform_ratio": 1.10546875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 186,
+                "assignments": 2048,
+                "counts": [
+                  478,
+                  485,
+                  485,
+                  600
+                ],
+                "assignment_percentages": [
+                  23.33984375,
+                  23.681640625,
+                  23.681640625,
+                  29.296875
+                ],
+                "max_to_uniform_ratio": 1.171875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 187,
+                "assignments": 2048,
+                "counts": [
+                  497,
+                  454,
+                  517,
+                  580
+                ],
+                "assignment_percentages": [
+                  24.267578125,
+                  22.16796875,
+                  25.244140625,
+                  28.3203125
+                ],
+                "max_to_uniform_ratio": 1.1328125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 188,
+                "assignments": 2048,
+                "counts": [
+                  507,
+                  464,
+                  494,
+                  583
+                ],
+                "assignment_percentages": [
+                  24.755859375,
+                  22.65625,
+                  24.12109375,
+                  28.466796875
+                ],
+                "max_to_uniform_ratio": 1.138671875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 189,
+                "assignments": 2048,
+                "counts": [
+                  541,
+                  489,
+                  451,
+                  567
+                ],
+                "assignment_percentages": [
+                  26.416015625,
+                  23.876953125,
+                  22.021484375,
+                  27.685546875
+                ],
+                "max_to_uniform_ratio": 1.107421875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 190,
+                "assignments": 2048,
+                "counts": [
+                  543,
+                  436,
+                  483,
+                  586
+                ],
+                "assignment_percentages": [
+                  26.513671875,
+                  21.2890625,
+                  23.583984375,
+                  28.61328125
+                ],
+                "max_to_uniform_ratio": 1.14453125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 191,
+                "assignments": 2048,
+                "counts": [
+                  532,
+                  449,
+                  485,
+                  582
+                ],
+                "assignment_percentages": [
+                  25.9765625,
+                  21.923828125,
+                  23.681640625,
+                  28.41796875
+                ],
+                "max_to_uniform_ratio": 1.13671875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 192,
+                "assignments": 2048,
+                "counts": [
+                  472,
+                  475,
+                  515,
+                  586
+                ],
+                "assignment_percentages": [
+                  23.046875,
+                  23.193359375,
+                  25.146484375,
+                  28.61328125
+                ],
+                "max_to_uniform_ratio": 1.14453125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 193,
+                "assignments": 2048,
+                "counts": [
+                  543,
+                  487,
+                  453,
+                  565
+                ],
+                "assignment_percentages": [
+                  26.513671875,
+                  23.779296875,
+                  22.119140625,
+                  27.587890625
+                ],
+                "max_to_uniform_ratio": 1.103515625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 194,
+                "assignments": 2048,
+                "counts": [
+                  557,
+                  451,
+                  471,
+                  569
+                ],
+                "assignment_percentages": [
+                  27.197265625,
+                  22.021484375,
+                  22.998046875,
+                  27.783203125
+                ],
+                "max_to_uniform_ratio": 1.111328125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 195,
+                "assignments": 2048,
+                "counts": [
+                  515,
+                  449,
+                  493,
+                  591
+                ],
+                "assignment_percentages": [
+                  25.146484375,
+                  21.923828125,
+                  24.072265625,
+                  28.857421875
+                ],
+                "max_to_uniform_ratio": 1.154296875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 196,
+                "assignments": 2048,
+                "counts": [
+                  523,
+                  426,
+                  494,
+                  605
+                ],
+                "assignment_percentages": [
+                  25.537109375,
+                  20.80078125,
+                  24.12109375,
+                  29.541015625
+                ],
+                "max_to_uniform_ratio": 1.181640625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 197,
+                "assignments": 2048,
+                "counts": [
+                  488,
+                  495,
+                  520,
+                  545
+                ],
+                "assignment_percentages": [
+                  23.828125,
+                  24.169921875,
+                  25.390625,
+                  26.611328125
+                ],
+                "max_to_uniform_ratio": 1.064453125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 198,
+                "assignments": 2048,
+                "counts": [
+                  539,
+                  442,
+                  480,
+                  587
+                ],
+                "assignment_percentages": [
+                  26.318359375,
+                  21.58203125,
+                  23.4375,
+                  28.662109375
+                ],
+                "max_to_uniform_ratio": 1.146484375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 199,
+                "assignments": 2048,
+                "counts": [
+                  518,
+                  478,
+                  502,
+                  550
+                ],
+                "assignment_percentages": [
+                  25.29296875,
+                  23.33984375,
+                  24.51171875,
+                  26.85546875
+                ],
+                "max_to_uniform_ratio": 1.07421875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 200,
+                "assignments": 2048,
+                "counts": [
+                  525,
+                  457,
+                  498,
+                  568
+                ],
+                "assignment_percentages": [
+                  25.634765625,
+                  22.314453125,
+                  24.31640625,
+                  27.734375
+                ],
+                "max_to_uniform_ratio": 1.109375,
+                "zero_assignment_experts": []
+              }
+            ]
+          },
+          "38": {
+            "assignments": 40960,
+            "counts": [
+              7467,
+              9887,
+              11256,
+              12350
+            ],
+            "assignment_percentages": [
+              18.22998046875,
+              24.13818359375,
+              27.480468749999996,
+              30.1513671875
+            ],
+            "max_to_uniform_ratio": 1.2060546875,
+            "zero_assignment_experts": [],
+            "zero_assignment_steps_per_expert": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "peak_step_max_to_uniform_ratio": 1.259765625,
+            "per_step": [
+              {
+                "step": 181,
+                "assignments": 2048,
+                "counts": [
+                  378,
+                  491,
+                  553,
+                  626
+                ],
+                "assignment_percentages": [
+                  18.45703125,
+                  23.974609375,
+                  27.001953125,
+                  30.56640625
+                ],
+                "max_to_uniform_ratio": 1.22265625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 182,
+                "assignments": 2048,
+                "counts": [
+                  357,
+                  520,
+                  551,
+                  620
+                ],
+                "assignment_percentages": [
+                  17.431640625,
+                  25.390625,
+                  26.904296875,
+                  30.2734375
+                ],
+                "max_to_uniform_ratio": 1.2109375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 183,
+                "assignments": 2048,
+                "counts": [
+                  347,
+                  506,
+                  550,
+                  645
+                ],
+                "assignment_percentages": [
+                  16.943359375,
+                  24.70703125,
+                  26.85546875,
+                  31.494140625
+                ],
+                "max_to_uniform_ratio": 1.259765625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 184,
+                "assignments": 2048,
+                "counts": [
+                  361,
+                  499,
+                  586,
+                  602
+                ],
+                "assignment_percentages": [
+                  17.626953125,
+                  24.365234375,
+                  28.61328125,
+                  29.39453125
+                ],
+                "max_to_uniform_ratio": 1.17578125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 185,
+                "assignments": 2048,
+                "counts": [
+                  333,
+                  545,
+                  588,
+                  582
+                ],
+                "assignment_percentages": [
+                  16.259765625,
+                  26.611328125,
+                  28.7109375,
+                  28.41796875
+                ],
+                "max_to_uniform_ratio": 1.1484375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 186,
+                "assignments": 2048,
+                "counts": [
+                  362,
+                  476,
+                  589,
+                  621
+                ],
+                "assignment_percentages": [
+                  17.67578125,
+                  23.2421875,
+                  28.759765625,
+                  30.322265625
+                ],
+                "max_to_uniform_ratio": 1.212890625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 187,
+                "assignments": 2048,
+                "counts": [
+                  363,
+                  487,
+                  576,
+                  622
+                ],
+                "assignment_percentages": [
+                  17.724609375,
+                  23.779296875,
+                  28.125,
+                  30.37109375
+                ],
+                "max_to_uniform_ratio": 1.21484375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 188,
+                "assignments": 2048,
+                "counts": [
+                  365,
+                  503,
+                  551,
+                  629
+                ],
+                "assignment_percentages": [
+                  17.822265625,
+                  24.560546875,
+                  26.904296875,
+                  30.712890625
+                ],
+                "max_to_uniform_ratio": 1.228515625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 189,
+                "assignments": 2048,
+                "counts": [
+                  352,
+                  509,
+                  582,
+                  605
+                ],
+                "assignment_percentages": [
+                  17.1875,
+                  24.853515625,
+                  28.41796875,
+                  29.541015625
+                ],
+                "max_to_uniform_ratio": 1.181640625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 190,
+                "assignments": 2048,
+                "counts": [
+                  383,
+                  486,
+                  540,
+                  639
+                ],
+                "assignment_percentages": [
+                  18.701171875,
+                  23.73046875,
+                  26.3671875,
+                  31.201171875
+                ],
+                "max_to_uniform_ratio": 1.248046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 191,
+                "assignments": 2048,
+                "counts": [
+                  382,
+                  461,
+                  560,
+                  645
+                ],
+                "assignment_percentages": [
+                  18.65234375,
+                  22.509765625,
+                  27.34375,
+                  31.494140625
+                ],
+                "max_to_uniform_ratio": 1.259765625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 192,
+                "assignments": 2048,
+                "counts": [
+                  362,
+                  514,
+                  578,
+                  594
+                ],
+                "assignment_percentages": [
+                  17.67578125,
+                  25.09765625,
+                  28.22265625,
+                  29.00390625
+                ],
+                "max_to_uniform_ratio": 1.16015625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 193,
+                "assignments": 2048,
+                "counts": [
+                  397,
+                  505,
+                  563,
+                  583
+                ],
+                "assignment_percentages": [
+                  19.384765625,
+                  24.658203125,
+                  27.490234375,
+                  28.466796875
+                ],
+                "max_to_uniform_ratio": 1.138671875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 194,
+                "assignments": 2048,
+                "counts": [
+                  366,
+                  502,
+                  555,
+                  625
+                ],
+                "assignment_percentages": [
+                  17.87109375,
+                  24.51171875,
+                  27.099609375,
+                  30.517578125
+                ],
+                "max_to_uniform_ratio": 1.220703125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 195,
+                "assignments": 2048,
+                "counts": [
+                  386,
+                  483,
+                  560,
+                  619
+                ],
+                "assignment_percentages": [
+                  18.84765625,
+                  23.583984375,
+                  27.34375,
+                  30.224609375
+                ],
+                "max_to_uniform_ratio": 1.208984375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 196,
+                "assignments": 2048,
+                "counts": [
+                  393,
+                  437,
+                  593,
+                  625
+                ],
+                "assignment_percentages": [
+                  19.189453125,
+                  21.337890625,
+                  28.955078125,
+                  30.517578125
+                ],
+                "max_to_uniform_ratio": 1.220703125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 197,
+                "assignments": 2048,
+                "counts": [
+                  416,
+                  502,
+                  529,
+                  601
+                ],
+                "assignment_percentages": [
+                  20.3125,
+                  24.51171875,
+                  25.830078125,
+                  29.345703125
+                ],
+                "max_to_uniform_ratio": 1.173828125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 198,
+                "assignments": 2048,
+                "counts": [
+                  389,
+                  492,
+                  547,
+                  620
+                ],
+                "assignment_percentages": [
+                  18.994140625,
+                  24.0234375,
+                  26.708984375,
+                  30.2734375
+                ],
+                "max_to_uniform_ratio": 1.2109375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 199,
+                "assignments": 2048,
+                "counts": [
+                  394,
+                  479,
+                  564,
+                  611
+                ],
+                "assignment_percentages": [
+                  19.23828125,
+                  23.388671875,
+                  27.5390625,
+                  29.833984375
+                ],
+                "max_to_uniform_ratio": 1.193359375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 200,
+                "assignments": 2048,
+                "counts": [
+                  381,
+                  490,
+                  541,
+                  636
+                ],
+                "assignment_percentages": [
+                  18.603515625,
+                  23.92578125,
+                  26.416015625,
+                  31.0546875
+                ],
+                "max_to_uniform_ratio": 1.2421875,
+                "zero_assignment_experts": []
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "model": "moe",
+      "seed": 43,
+      "metrics_sha256": "fb354b7106450ee0738fa23d566f8177a63393f616e58878eb6e07ef98eaa05e",
+      "validation_curve": [
+        {
+          "step": 0,
+          "val_ce": 6.263773441314697,
+          "val_perplexity": 525.1970057834919
+        },
+        {
+          "step": 20,
+          "val_ce": 5.430188179016113,
+          "val_perplexity": 228.19218236432374
+        },
+        {
+          "step": 40,
+          "val_ce": 5.385212063789368,
+          "val_perplexity": 218.15636226731309
+        },
+        {
+          "step": 60,
+          "val_ce": 5.138301730155945,
+          "val_perplexity": 170.42609292319622
+        },
+        {
+          "step": 80,
+          "val_ce": 4.748112201690674,
+          "val_perplexity": 115.36629053935366
+        },
+        {
+          "step": 100,
+          "val_ce": 4.433080792427063,
+          "val_perplexity": 84.1903909016014
+        },
+        {
+          "step": 120,
+          "val_ce": 4.26819384098053,
+          "val_perplexity": 71.39257276106682
+        },
+        {
+          "step": 140,
+          "val_ce": 4.16578471660614,
+          "val_perplexity": 64.4432322817445
+        },
+        {
+          "step": 160,
+          "val_ce": 4.095219969749451,
+          "val_perplexity": 60.05254744850122
+        },
+        {
+          "step": 180,
+          "val_ce": 4.050783038139343,
+          "val_perplexity": 57.44241904459681
+        },
+        {
+          "step": 200,
+          "val_ce": 4.0330095291137695,
+          "val_perplexity": 56.43048513828483
+        }
+      ],
+      "early_val_ce": 5.430188179016113,
+      "final_val_ce": 4.0330095291137695,
+      "ce_change_from_early": -1.3971786499023438,
+      "best_val_ce": 4.0330095291137695,
+      "best_step": 200,
+      "loop_seconds": 25.04486399999587,
+      "loop_tokens_per_second": 8177.3252991125755,
+      "peak_allocated_mib": 45.1689453125,
+      "session_training_tokens": 204800,
+      "routing_early": {
+        "format_version": 1,
+        "metrics_file": "checkpoints/comparison-1k-200/moe-seed-43/metrics.jsonl",
+        "metrics_sha256": "fb354b7106450ee0738fa23d566f8177a63393f616e58878eb6e07ef98eaa05e",
+        "requested_start_step": 1,
+        "requested_end_step": 20,
+        "first_step": 1,
+        "last_step": 20,
+        "observed_steps": 20,
+        "scope": "training hard top-k assignments across all microbatches; percentages use assignments, not unique tokens or gate weights",
+        "layer_id_convention": "logged model.modules() IDs, not decoder block indices",
+        "layers": {
+          "11": {
+            "assignments": 40960,
+            "counts": [
+              9257,
+              9547,
+              11503,
+              10653
+            ],
+            "assignment_percentages": [
+              22.60009765625,
+              23.30810546875,
+              28.08349609375,
+              26.00830078125
+            ],
+            "max_to_uniform_ratio": 1.12333984375,
+            "zero_assignment_experts": [],
+            "zero_assignment_steps_per_expert": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "peak_step_max_to_uniform_ratio": 1.92578125,
+            "per_step": [
+              {
+                "step": 1,
+                "assignments": 2048,
+                "counts": [
+                  506,
+                  516,
+                  517,
+                  509
+                ],
+                "assignment_percentages": [
+                  24.70703125,
+                  25.1953125,
+                  25.244140625,
+                  24.853515625
+                ],
+                "max_to_uniform_ratio": 1.009765625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 2,
+                "assignments": 2048,
+                "counts": [
+                  502,
+                  480,
+                  529,
+                  537
+                ],
+                "assignment_percentages": [
+                  24.51171875,
+                  23.4375,
+                  25.830078125,
+                  26.220703125
+                ],
+                "max_to_uniform_ratio": 1.048828125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 3,
+                "assignments": 2048,
+                "counts": [
+                  464,
+                  514,
+                  551,
+                  519
+                ],
+                "assignment_percentages": [
+                  22.65625,
+                  25.09765625,
+                  26.904296875,
+                  25.341796875
+                ],
+                "max_to_uniform_ratio": 1.076171875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 4,
+                "assignments": 2048,
+                "counts": [
+                  479,
+                  427,
+                  515,
+                  627
+                ],
+                "assignment_percentages": [
+                  23.388671875,
+                  20.849609375,
+                  25.146484375,
+                  30.615234375
+                ],
+                "max_to_uniform_ratio": 1.224609375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 5,
+                "assignments": 2048,
+                "counts": [
+                  409,
+                  456,
+                  562,
+                  621
+                ],
+                "assignment_percentages": [
+                  19.970703125,
+                  22.265625,
+                  27.44140625,
+                  30.322265625
+                ],
+                "max_to_uniform_ratio": 1.212890625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 6,
+                "assignments": 2048,
+                "counts": [
+                  442,
+                  442,
+                  533,
+                  631
+                ],
+                "assignment_percentages": [
+                  21.58203125,
+                  21.58203125,
+                  26.025390625,
+                  30.810546875
+                ],
+                "max_to_uniform_ratio": 1.232421875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 7,
+                "assignments": 2048,
+                "counts": [
+                  415,
+                  346,
+                  538,
+                  749
+                ],
+                "assignment_percentages": [
+                  20.263671875,
+                  16.89453125,
+                  26.26953125,
+                  36.572265625
+                ],
+                "max_to_uniform_ratio": 1.462890625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 8,
+                "assignments": 2048,
+                "counts": [
+                  333,
+                  287,
+                  621,
+                  807
+                ],
+                "assignment_percentages": [
+                  16.259765625,
+                  14.013671875,
+                  30.322265625,
+                  39.404296875
+                ],
+                "max_to_uniform_ratio": 1.576171875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 9,
+                "assignments": 2048,
+                "counts": [
+                  328,
+                  250,
+                  639,
+                  831
+                ],
+                "assignment_percentages": [
+                  16.015625,
+                  12.20703125,
+                  31.201171875,
+                  40.576171875
+                ],
+                "max_to_uniform_ratio": 1.623046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 10,
+                "assignments": 2048,
+                "counts": [
+                  290,
+                  236,
+                  711,
+                  811
+                ],
+                "assignment_percentages": [
+                  14.16015625,
+                  11.5234375,
+                  34.716796875,
+                  39.599609375
+                ],
+                "max_to_uniform_ratio": 1.583984375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 11,
+                "assignments": 2048,
+                "counts": [
+                  352,
+                  382,
+                  699,
+                  615
+                ],
+                "assignment_percentages": [
+                  17.1875,
+                  18.65234375,
+                  34.130859375,
+                  30.029296875
+                ],
+                "max_to_uniform_ratio": 1.365234375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 12,
+                "assignments": 2048,
+                "counts": [
+                  509,
+                  570,
+                  597,
+                  372
+                ],
+                "assignment_percentages": [
+                  24.853515625,
+                  27.83203125,
+                  29.150390625,
+                  18.1640625
+                ],
+                "max_to_uniform_ratio": 1.166015625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 13,
+                "assignments": 2048,
+                "counts": [
+                  715,
+                  818,
+                  351,
+                  164
+                ],
+                "assignment_percentages": [
+                  34.912109375,
+                  39.94140625,
+                  17.138671875,
+                  8.0078125
+                ],
+                "max_to_uniform_ratio": 1.59765625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 14,
+                "assignments": 2048,
+                "counts": [
+                  862,
+                  876,
+                  234,
+                  76
+                ],
+                "assignment_percentages": [
+                  42.08984375,
+                  42.7734375,
+                  11.42578125,
+                  3.7109375
+                ],
+                "max_to_uniform_ratio": 1.7109375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 15,
+                "assignments": 2048,
+                "counts": [
+                  840,
+                  837,
+                  284,
+                  87
+                ],
+                "assignment_percentages": [
+                  41.015625,
+                  40.869140625,
+                  13.8671875,
+                  4.248046875
+                ],
+                "max_to_uniform_ratio": 1.640625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 16,
+                "assignments": 2048,
+                "counts": [
+                  609,
+                  748,
+                  575,
+                  116
+                ],
+                "assignment_percentages": [
+                  29.736328125,
+                  36.5234375,
+                  28.076171875,
+                  5.6640625
+                ],
+                "max_to_uniform_ratio": 1.4609375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 17,
+                "assignments": 2048,
+                "counts": [
+                  482,
+                  613,
+                  758,
+                  195
+                ],
+                "assignment_percentages": [
+                  23.53515625,
+                  29.931640625,
+                  37.01171875,
+                  9.521484375
+                ],
+                "max_to_uniform_ratio": 1.48046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 18,
+                "assignments": 2048,
+                "counts": [
+                  310,
+                  350,
+                  875,
+                  513
+                ],
+                "assignment_percentages": [
+                  15.13671875,
+                  17.08984375,
+                  42.724609375,
+                  25.048828125
+                ],
+                "max_to_uniform_ratio": 1.708984375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 19,
+                "assignments": 2048,
+                "counts": [
+                  141,
+                  200,
+                  820,
+                  887
+                ],
+                "assignment_percentages": [
+                  6.884765625,
+                  9.765625,
+                  40.0390625,
+                  43.310546875
+                ],
+                "max_to_uniform_ratio": 1.732421875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 20,
+                "assignments": 2048,
+                "counts": [
+                  269,
+                  199,
+                  594,
+                  986
+                ],
+                "assignment_percentages": [
+                  13.134765625,
+                  9.716796875,
+                  29.00390625,
+                  48.14453125
+                ],
+                "max_to_uniform_ratio": 1.92578125,
+                "zero_assignment_experts": []
+              }
+            ]
+          },
+          "38": {
+            "assignments": 40960,
+            "counts": [
+              11467,
+              10245,
+              9108,
+              10140
+            ],
+            "assignment_percentages": [
+              27.99560546875,
+              25.01220703125,
+              22.236328125,
+              24.755859375
+            ],
+            "max_to_uniform_ratio": 1.11982421875,
+            "zero_assignment_experts": [],
+            "zero_assignment_steps_per_expert": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "peak_step_max_to_uniform_ratio": 1.998046875,
+            "per_step": [
+              {
+                "step": 1,
+                "assignments": 2048,
+                "counts": [
+                  524,
+                  538,
+                  433,
+                  553
+                ],
+                "assignment_percentages": [
+                  25.5859375,
+                  26.26953125,
+                  21.142578125,
+                  27.001953125
+                ],
+                "max_to_uniform_ratio": 1.080078125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 2,
+                "assignments": 2048,
+                "counts": [
+                  567,
+                  527,
+                  415,
+                  539
+                ],
+                "assignment_percentages": [
+                  27.685546875,
+                  25.732421875,
+                  20.263671875,
+                  26.318359375
+                ],
+                "max_to_uniform_ratio": 1.107421875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 3,
+                "assignments": 2048,
+                "counts": [
+                  525,
+                  521,
+                  422,
+                  580
+                ],
+                "assignment_percentages": [
+                  25.634765625,
+                  25.439453125,
+                  20.60546875,
+                  28.3203125
+                ],
+                "max_to_uniform_ratio": 1.1328125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 4,
+                "assignments": 2048,
+                "counts": [
+                  592,
+                  510,
+                  350,
+                  596
+                ],
+                "assignment_percentages": [
+                  28.90625,
+                  24.90234375,
+                  17.08984375,
+                  29.1015625
+                ],
+                "max_to_uniform_ratio": 1.1640625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 5,
+                "assignments": 2048,
+                "counts": [
+                  429,
+                  433,
+                  442,
+                  744
+                ],
+                "assignment_percentages": [
+                  20.947265625,
+                  21.142578125,
+                  21.58203125,
+                  36.328125
+                ],
+                "max_to_uniform_ratio": 1.453125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 6,
+                "assignments": 2048,
+                "counts": [
+                  204,
+                  473,
+                  447,
+                  924
+                ],
+                "assignment_percentages": [
+                  9.9609375,
+                  23.095703125,
+                  21.826171875,
+                  45.1171875
+                ],
+                "max_to_uniform_ratio": 1.8046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 7,
+                "assignments": 2048,
+                "counts": [
+                  220,
+                  469,
+                  461,
+                  898
+                ],
+                "assignment_percentages": [
+                  10.7421875,
+                  22.900390625,
+                  22.509765625,
+                  43.84765625
+                ],
+                "max_to_uniform_ratio": 1.75390625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 8,
+                "assignments": 2048,
+                "counts": [
+                  126,
+                  381,
+                  750,
+                  791
+                ],
+                "assignment_percentages": [
+                  6.15234375,
+                  18.603515625,
+                  36.62109375,
+                  38.623046875
+                ],
+                "max_to_uniform_ratio": 1.544921875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 9,
+                "assignments": 2048,
+                "counts": [
+                  336,
+                  683,
+                  520,
+                  509
+                ],
+                "assignment_percentages": [
+                  16.40625,
+                  33.349609375,
+                  25.390625,
+                  24.853515625
+                ],
+                "max_to_uniform_ratio": 1.333984375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 10,
+                "assignments": 2048,
+                "counts": [
+                  1005,
+                  823,
+                  156,
+                  64
+                ],
+                "assignment_percentages": [
+                  49.072265625,
+                  40.185546875,
+                  7.6171875,
+                  3.125
+                ],
+                "max_to_uniform_ratio": 1.962890625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 11,
+                "assignments": 2048,
+                "counts": [
+                  1018,
+                  760,
+                  229,
+                  41
+                ],
+                "assignment_percentages": [
+                  49.70703125,
+                  37.109375,
+                  11.181640625,
+                  2.001953125
+                ],
+                "max_to_uniform_ratio": 1.98828125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 12,
+                "assignments": 2048,
+                "counts": [
+                  1021,
+                  149,
+                  801,
+                  77
+                ],
+                "assignment_percentages": [
+                  49.853515625,
+                  7.275390625,
+                  39.111328125,
+                  3.759765625
+                ],
+                "max_to_uniform_ratio": 1.994140625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 13,
+                "assignments": 2048,
+                "counts": [
+                  1023,
+                  238,
+                  391,
+                  396
+                ],
+                "assignment_percentages": [
+                  49.951171875,
+                  11.62109375,
+                  19.091796875,
+                  19.3359375
+                ],
+                "max_to_uniform_ratio": 1.998046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 14,
+                "assignments": 2048,
+                "counts": [
+                  1023,
+                  632,
+                  20,
+                  373
+                ],
+                "assignment_percentages": [
+                  49.951171875,
+                  30.859375,
+                  0.9765625,
+                  18.212890625
+                ],
+                "max_to_uniform_ratio": 1.998046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 15,
+                "assignments": 2048,
+                "counts": [
+                  1023,
+                  730,
+                  114,
+                  181
+                ],
+                "assignment_percentages": [
+                  49.951171875,
+                  35.64453125,
+                  5.56640625,
+                  8.837890625
+                ],
+                "max_to_uniform_ratio": 1.998046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 16,
+                "assignments": 2048,
+                "counts": [
+                  1011,
+                  56,
+                  851,
+                  130
+                ],
+                "assignment_percentages": [
+                  49.365234375,
+                  2.734375,
+                  41.552734375,
+                  6.34765625
+                ],
+                "max_to_uniform_ratio": 1.974609375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 17,
+                "assignments": 2048,
+                "counts": [
+                  796,
+                  29,
+                  652,
+                  571
+                ],
+                "assignment_percentages": [
+                  38.8671875,
+                  1.416015625,
+                  31.8359375,
+                  27.880859375
+                ],
+                "max_to_uniform_ratio": 1.5546875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 18,
+                "assignments": 2048,
+                "counts": [
+                  2,
+                  308,
+                  725,
+                  1013
+                ],
+                "assignment_percentages": [
+                  0.09765625,
+                  15.0390625,
+                  35.400390625,
+                  49.462890625
+                ],
+                "max_to_uniform_ratio": 1.978515625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 19,
+                "assignments": 2048,
+                "counts": [
+                  14,
+                  964,
+                  114,
+                  956
+                ],
+                "assignment_percentages": [
+                  0.68359375,
+                  47.0703125,
+                  5.56640625,
+                  46.6796875
+                ],
+                "max_to_uniform_ratio": 1.8828125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 20,
+                "assignments": 2048,
+                "counts": [
+                  8,
+                  1021,
+                  815,
+                  204
+                ],
+                "assignment_percentages": [
+                  0.390625,
+                  49.853515625,
+                  39.794921875,
+                  9.9609375
+                ],
+                "max_to_uniform_ratio": 1.994140625,
+                "zero_assignment_experts": []
+              }
+            ]
+          }
+        }
+      },
+      "routing_late": {
+        "format_version": 1,
+        "metrics_file": "checkpoints/comparison-1k-200/moe-seed-43/metrics.jsonl",
+        "metrics_sha256": "fb354b7106450ee0738fa23d566f8177a63393f616e58878eb6e07ef98eaa05e",
+        "requested_start_step": 181,
+        "requested_end_step": 200,
+        "first_step": 181,
+        "last_step": 200,
+        "observed_steps": 20,
+        "scope": "training hard top-k assignments across all microbatches; percentages use assignments, not unique tokens or gate weights",
+        "layer_id_convention": "logged model.modules() IDs, not decoder block indices",
+        "layers": {
+          "11": {
+            "assignments": 40960,
+            "counts": [
+              10515,
+              9916,
+              9713,
+              10816
+            ],
+            "assignment_percentages": [
+              25.67138671875,
+              24.208984375,
+              23.71337890625,
+              26.406249999999996
+            ],
+            "max_to_uniform_ratio": 1.05625,
+            "zero_assignment_experts": [],
+            "zero_assignment_steps_per_expert": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "peak_step_max_to_uniform_ratio": 1.126953125,
+            "per_step": [
+              {
+                "step": 181,
+                "assignments": 2048,
+                "counts": [
+                  479,
+                  503,
+                  498,
+                  568
+                ],
+                "assignment_percentages": [
+                  23.388671875,
+                  24.560546875,
+                  24.31640625,
+                  27.734375
+                ],
+                "max_to_uniform_ratio": 1.109375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 182,
+                "assignments": 2048,
+                "counts": [
+                  505,
+                  528,
+                  442,
+                  573
+                ],
+                "assignment_percentages": [
+                  24.658203125,
+                  25.78125,
+                  21.58203125,
+                  27.978515625
+                ],
+                "max_to_uniform_ratio": 1.119140625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 183,
+                "assignments": 2048,
+                "counts": [
+                  562,
+                  480,
+                  464,
+                  542
+                ],
+                "assignment_percentages": [
+                  27.44140625,
+                  23.4375,
+                  22.65625,
+                  26.46484375
+                ],
+                "max_to_uniform_ratio": 1.09765625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 184,
+                "assignments": 2048,
+                "counts": [
+                  536,
+                  478,
+                  531,
+                  503
+                ],
+                "assignment_percentages": [
+                  26.171875,
+                  23.33984375,
+                  25.927734375,
+                  24.560546875
+                ],
+                "max_to_uniform_ratio": 1.046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 185,
+                "assignments": 2048,
+                "counts": [
+                  509,
+                  479,
+                  535,
+                  525
+                ],
+                "assignment_percentages": [
+                  24.853515625,
+                  23.388671875,
+                  26.123046875,
+                  25.634765625
+                ],
+                "max_to_uniform_ratio": 1.044921875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 186,
+                "assignments": 2048,
+                "counts": [
+                  542,
+                  510,
+                  486,
+                  510
+                ],
+                "assignment_percentages": [
+                  26.46484375,
+                  24.90234375,
+                  23.73046875,
+                  24.90234375
+                ],
+                "max_to_uniform_ratio": 1.05859375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 187,
+                "assignments": 2048,
+                "counts": [
+                  546,
+                  474,
+                  487,
+                  541
+                ],
+                "assignment_percentages": [
+                  26.66015625,
+                  23.14453125,
+                  23.779296875,
+                  26.416015625
+                ],
+                "max_to_uniform_ratio": 1.06640625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 188,
+                "assignments": 2048,
+                "counts": [
+                  543,
+                  517,
+                  471,
+                  517
+                ],
+                "assignment_percentages": [
+                  26.513671875,
+                  25.244140625,
+                  22.998046875,
+                  25.244140625
+                ],
+                "max_to_uniform_ratio": 1.060546875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 189,
+                "assignments": 2048,
+                "counts": [
+                  522,
+                  508,
+                  467,
+                  551
+                ],
+                "assignment_percentages": [
+                  25.48828125,
+                  24.8046875,
+                  22.802734375,
+                  26.904296875
+                ],
+                "max_to_uniform_ratio": 1.076171875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 190,
+                "assignments": 2048,
+                "counts": [
+                  506,
+                  493,
+                  495,
+                  554
+                ],
+                "assignment_percentages": [
+                  24.70703125,
+                  24.072265625,
+                  24.169921875,
+                  27.05078125
+                ],
+                "max_to_uniform_ratio": 1.08203125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 191,
+                "assignments": 2048,
+                "counts": [
+                  482,
+                  475,
+                  514,
+                  577
+                ],
+                "assignment_percentages": [
+                  23.53515625,
+                  23.193359375,
+                  25.09765625,
+                  28.173828125
+                ],
+                "max_to_uniform_ratio": 1.126953125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 192,
+                "assignments": 2048,
+                "counts": [
+                  554,
+                  488,
+                  500,
+                  506
+                ],
+                "assignment_percentages": [
+                  27.05078125,
+                  23.828125,
+                  24.4140625,
+                  24.70703125
+                ],
+                "max_to_uniform_ratio": 1.08203125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 193,
+                "assignments": 2048,
+                "counts": [
+                  542,
+                  517,
+                  472,
+                  517
+                ],
+                "assignment_percentages": [
+                  26.46484375,
+                  25.244140625,
+                  23.046875,
+                  25.244140625
+                ],
+                "max_to_uniform_ratio": 1.05859375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 194,
+                "assignments": 2048,
+                "counts": [
+                  498,
+                  501,
+                  494,
+                  555
+                ],
+                "assignment_percentages": [
+                  24.31640625,
+                  24.462890625,
+                  24.12109375,
+                  27.099609375
+                ],
+                "max_to_uniform_ratio": 1.083984375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 195,
+                "assignments": 2048,
+                "counts": [
+                  509,
+                  502,
+                  494,
+                  543
+                ],
+                "assignment_percentages": [
+                  24.853515625,
+                  24.51171875,
+                  24.12109375,
+                  26.513671875
+                ],
+                "max_to_uniform_ratio": 1.060546875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 196,
+                "assignments": 2048,
+                "counts": [
+                  549,
+                  490,
+                  477,
+                  532
+                ],
+                "assignment_percentages": [
+                  26.806640625,
+                  23.92578125,
+                  23.291015625,
+                  25.9765625
+                ],
+                "max_to_uniform_ratio": 1.072265625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 197,
+                "assignments": 2048,
+                "counts": [
+                  556,
+                  512,
+                  434,
+                  546
+                ],
+                "assignment_percentages": [
+                  27.1484375,
+                  25.0,
+                  21.19140625,
+                  26.66015625
+                ],
+                "max_to_uniform_ratio": 1.0859375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 198,
+                "assignments": 2048,
+                "counts": [
+                  521,
+                  502,
+                  471,
+                  554
+                ],
+                "assignment_percentages": [
+                  25.439453125,
+                  24.51171875,
+                  22.998046875,
+                  27.05078125
+                ],
+                "max_to_uniform_ratio": 1.08203125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 199,
+                "assignments": 2048,
+                "counts": [
+                  530,
+                  488,
+                  479,
+                  551
+                ],
+                "assignment_percentages": [
+                  25.87890625,
+                  23.828125,
+                  23.388671875,
+                  26.904296875
+                ],
+                "max_to_uniform_ratio": 1.076171875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 200,
+                "assignments": 2048,
+                "counts": [
+                  524,
+                  471,
+                  502,
+                  551
+                ],
+                "assignment_percentages": [
+                  25.5859375,
+                  22.998046875,
+                  24.51171875,
+                  26.904296875
+                ],
+                "max_to_uniform_ratio": 1.076171875,
+                "zero_assignment_experts": []
+              }
+            ]
+          },
+          "38": {
+            "assignments": 40960,
+            "counts": [
+              11035,
+              10065,
+              10088,
+              9772
+            ],
+            "assignment_percentages": [
+              26.94091796875,
+              24.57275390625,
+              24.62890625,
+              23.857421875
+            ],
+            "max_to_uniform_ratio": 1.07763671875,
+            "zero_assignment_experts": [],
+            "zero_assignment_steps_per_expert": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "peak_step_max_to_uniform_ratio": 1.158203125,
+            "per_step": [
+              {
+                "step": 181,
+                "assignments": 2048,
+                "counts": [
+                  528,
+                  524,
+                  504,
+                  492
+                ],
+                "assignment_percentages": [
+                  25.78125,
+                  25.5859375,
+                  24.609375,
+                  24.0234375
+                ],
+                "max_to_uniform_ratio": 1.03125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 182,
+                "assignments": 2048,
+                "counts": [
+                  560,
+                  503,
+                  474,
+                  511
+                ],
+                "assignment_percentages": [
+                  27.34375,
+                  24.560546875,
+                  23.14453125,
+                  24.951171875
+                ],
+                "max_to_uniform_ratio": 1.09375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 183,
+                "assignments": 2048,
+                "counts": [
+                  560,
+                  498,
+                  503,
+                  487
+                ],
+                "assignment_percentages": [
+                  27.34375,
+                  24.31640625,
+                  24.560546875,
+                  23.779296875
+                ],
+                "max_to_uniform_ratio": 1.09375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 184,
+                "assignments": 2048,
+                "counts": [
+                  554,
+                  522,
+                  509,
+                  463
+                ],
+                "assignment_percentages": [
+                  27.05078125,
+                  25.48828125,
+                  24.853515625,
+                  22.607421875
+                ],
+                "max_to_uniform_ratio": 1.08203125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 185,
+                "assignments": 2048,
+                "counts": [
+                  516,
+                  468,
+                  593,
+                  471
+                ],
+                "assignment_percentages": [
+                  25.1953125,
+                  22.8515625,
+                  28.955078125,
+                  22.998046875
+                ],
+                "max_to_uniform_ratio": 1.158203125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 186,
+                "assignments": 2048,
+                "counts": [
+                  574,
+                  480,
+                  546,
+                  448
+                ],
+                "assignment_percentages": [
+                  28.02734375,
+                  23.4375,
+                  26.66015625,
+                  21.875
+                ],
+                "max_to_uniform_ratio": 1.12109375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 187,
+                "assignments": 2048,
+                "counts": [
+                  586,
+                  502,
+                  488,
+                  472
+                ],
+                "assignment_percentages": [
+                  28.61328125,
+                  24.51171875,
+                  23.828125,
+                  23.046875
+                ],
+                "max_to_uniform_ratio": 1.14453125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 188,
+                "assignments": 2048,
+                "counts": [
+                  552,
+                  501,
+                  491,
+                  504
+                ],
+                "assignment_percentages": [
+                  26.953125,
+                  24.462890625,
+                  23.974609375,
+                  24.609375
+                ],
+                "max_to_uniform_ratio": 1.078125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 189,
+                "assignments": 2048,
+                "counts": [
+                  568,
+                  536,
+                  474,
+                  470
+                ],
+                "assignment_percentages": [
+                  27.734375,
+                  26.171875,
+                  23.14453125,
+                  22.94921875
+                ],
+                "max_to_uniform_ratio": 1.109375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 190,
+                "assignments": 2048,
+                "counts": [
+                  556,
+                  497,
+                  526,
+                  469
+                ],
+                "assignment_percentages": [
+                  27.1484375,
+                  24.267578125,
+                  25.68359375,
+                  22.900390625
+                ],
+                "max_to_uniform_ratio": 1.0859375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 191,
+                "assignments": 2048,
+                "counts": [
+                  518,
+                  479,
+                  538,
+                  513
+                ],
+                "assignment_percentages": [
+                  25.29296875,
+                  23.388671875,
+                  26.26953125,
+                  25.048828125
+                ],
+                "max_to_uniform_ratio": 1.05078125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 192,
+                "assignments": 2048,
+                "counts": [
+                  551,
+                  526,
+                  460,
+                  511
+                ],
+                "assignment_percentages": [
+                  26.904296875,
+                  25.68359375,
+                  22.4609375,
+                  24.951171875
+                ],
+                "max_to_uniform_ratio": 1.076171875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 193,
+                "assignments": 2048,
+                "counts": [
+                  581,
+                  511,
+                  492,
+                  464
+                ],
+                "assignment_percentages": [
+                  28.369140625,
+                  24.951171875,
+                  24.0234375,
+                  22.65625
+                ],
+                "max_to_uniform_ratio": 1.134765625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 194,
+                "assignments": 2048,
+                "counts": [
+                  561,
+                  487,
+                  509,
+                  491
+                ],
+                "assignment_percentages": [
+                  27.392578125,
+                  23.779296875,
+                  24.853515625,
+                  23.974609375
+                ],
+                "max_to_uniform_ratio": 1.095703125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 195,
+                "assignments": 2048,
+                "counts": [
+                  537,
+                  481,
+                  525,
+                  505
+                ],
+                "assignment_percentages": [
+                  26.220703125,
+                  23.486328125,
+                  25.634765625,
+                  24.658203125
+                ],
+                "max_to_uniform_ratio": 1.048828125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 196,
+                "assignments": 2048,
+                "counts": [
+                  566,
+                  502,
+                  503,
+                  477
+                ],
+                "assignment_percentages": [
+                  27.63671875,
+                  24.51171875,
+                  24.560546875,
+                  23.291015625
+                ],
+                "max_to_uniform_ratio": 1.10546875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 197,
+                "assignments": 2048,
+                "counts": [
+                  568,
+                  518,
+                  463,
+                  499
+                ],
+                "assignment_percentages": [
+                  27.734375,
+                  25.29296875,
+                  22.607421875,
+                  24.365234375
+                ],
+                "max_to_uniform_ratio": 1.109375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 198,
+                "assignments": 2048,
+                "counts": [
+                  547,
+                  509,
+                  507,
+                  485
+                ],
+                "assignment_percentages": [
+                  26.708984375,
+                  24.853515625,
+                  24.755859375,
+                  23.681640625
+                ],
+                "max_to_uniform_ratio": 1.068359375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 199,
+                "assignments": 2048,
+                "counts": [
+                  515,
+                  484,
+                  513,
+                  536
+                ],
+                "assignment_percentages": [
+                  25.146484375,
+                  23.6328125,
+                  25.048828125,
+                  26.171875
+                ],
+                "max_to_uniform_ratio": 1.046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 200,
+                "assignments": 2048,
+                "counts": [
+                  537,
+                  537,
+                  470,
+                  504
+                ],
+                "assignment_percentages": [
+                  26.220703125,
+                  26.220703125,
+                  22.94921875,
+                  24.609375
+                ],
+                "max_to_uniform_ratio": 1.048828125,
+                "zero_assignment_experts": []
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "model": "dense",
+      "seed": 43,
+      "metrics_sha256": "e32ce5c2cf77374828604463bbe2e4ae149965cf11b0204788026ed343fa4b3e",
+      "validation_curve": [
+        {
+          "step": 0,
+          "val_ce": 6.270516991615295,
+          "val_perplexity": 528.7506668889001
+        },
+        {
+          "step": 20,
+          "val_ce": 5.414399266242981,
+          "val_perplexity": 224.61756978379802
+        },
+        {
+          "step": 40,
+          "val_ce": 5.0593661069869995,
+          "val_perplexity": 157.49065245100383
+        },
+        {
+          "step": 60,
+          "val_ce": 4.666998386383057,
+          "val_perplexity": 106.37795721180183
+        },
+        {
+          "step": 80,
+          "val_ce": 4.387011766433716,
+          "val_perplexity": 80.39980625623656
+        },
+        {
+          "step": 100,
+          "val_ce": 4.178315043449402,
+          "val_perplexity": 65.25580732875488
+        },
+        {
+          "step": 120,
+          "val_ce": 4.07012939453125,
+          "val_perplexity": 58.5645400328475
+        },
+        {
+          "step": 140,
+          "val_ce": 4.010557174682617,
+          "val_perplexity": 55.17760556515463
+        },
+        {
+          "step": 160,
+          "val_ce": 3.9615476727485657,
+          "val_perplexity": 52.53857558063534
+        },
+        {
+          "step": 180,
+          "val_ce": 3.9236733317375183,
+          "val_perplexity": 50.58592278401656
+        },
+        {
+          "step": 200,
+          "val_ce": 3.9095081090927124,
+          "val_perplexity": 49.87441316835128
+        }
+      ],
+      "early_val_ce": 5.414399266242981,
+      "final_val_ce": 3.9095081090927124,
+      "ce_change_from_early": -1.5048911571502686,
+      "best_val_ce": 3.9095081090927124,
+      "best_step": 200,
+      "loop_seconds": 11.284549099989817,
+      "loop_tokens_per_second": 18148.709193899896,
+      "peak_allocated_mib": 34.98193359375,
+      "session_training_tokens": 204800
+    },
+    {
+      "model": "dense",
+      "seed": 44,
+      "metrics_sha256": "d3de70779784edc3e124ce080a0f0731760ab404ee0f2550a56099bb66bf591e",
+      "validation_curve": [
+        {
+          "step": 0,
+          "val_ce": 6.259796500205994,
+          "val_perplexity": 523.1124759945485
+        },
+        {
+          "step": 20,
+          "val_ce": 5.4172139167785645,
+          "val_perplexity": 225.25068032137628
+        },
+        {
+          "step": 40,
+          "val_ce": 5.042488932609558,
+          "val_perplexity": 154.85495933498902
+        },
+        {
+          "step": 60,
+          "val_ce": 4.6465020179748535,
+          "val_perplexity": 104.21978827663733
+        },
+        {
+          "step": 80,
+          "val_ce": 4.322705268859863,
+          "val_perplexity": 75.39230912824964
+        },
+        {
+          "step": 100,
+          "val_ce": 4.1651551723480225,
+          "val_perplexity": 64.40267518247096
+        },
+        {
+          "step": 120,
+          "val_ce": 4.062381625175476,
+          "val_perplexity": 58.11254870752211
+        },
+        {
+          "step": 140,
+          "val_ce": 3.9921019673347473,
+          "val_perplexity": 54.16863047322228
+        },
+        {
+          "step": 160,
+          "val_ce": 3.933551251888275,
+          "val_perplexity": 51.08808255397559
+        },
+        {
+          "step": 180,
+          "val_ce": 3.89299875497818,
+          "val_perplexity": 49.057778424514
+        },
+        {
+          "step": 200,
+          "val_ce": 3.8705296516418457,
+          "val_perplexity": 47.9677855701678
+        }
+      ],
+      "early_val_ce": 5.4172139167785645,
+      "final_val_ce": 3.8705296516418457,
+      "ce_change_from_early": -1.5466842651367188,
+      "best_val_ce": 3.8705296516418457,
+      "best_step": 200,
+      "loop_seconds": 10.972955100005493,
+      "loop_tokens_per_second": 18664.069809225548,
+      "peak_allocated_mib": 34.98193359375,
+      "session_training_tokens": 204800
+    },
+    {
+      "model": "moe",
+      "seed": 44,
+      "metrics_sha256": "952bb8bc70116df6ed568e0ec58e13f6b9077605a5bbde3fa92ae306cc6bef45",
+      "validation_curve": [
+        {
+          "step": 0,
+          "val_ce": 6.272374629974365,
+          "val_perplexity": 529.7338072870346
+        },
+        {
+          "step": 20,
+          "val_ce": 5.4358298778533936,
+          "val_perplexity": 229.4832123109972
+        },
+        {
+          "step": 40,
+          "val_ce": 5.3024104833602905,
+          "val_perplexity": 200.82030101113102
+        },
+        {
+          "step": 60,
+          "val_ce": 4.930911064147949,
+          "val_perplexity": 138.50564240002774
+        },
+        {
+          "step": 80,
+          "val_ce": 4.520607590675354,
+          "val_perplexity": 91.89141338589741
+        },
+        {
+          "step": 100,
+          "val_ce": 4.311238527297974,
+          "val_perplexity": 74.53274263553978
+        },
+        {
+          "step": 120,
+          "val_ce": 4.179101467132568,
+          "val_perplexity": 65.30714622551858
+        },
+        {
+          "step": 140,
+          "val_ce": 4.0821550488471985,
+          "val_perplexity": 59.273068667958924
+        },
+        {
+          "step": 160,
+          "val_ce": 4.025489509105682,
+          "val_perplexity": 56.00771836060358
+        },
+        {
+          "step": 180,
+          "val_ce": 3.9905734062194824,
+          "val_perplexity": 54.08589366126008
+        },
+        {
+          "step": 200,
+          "val_ce": 3.966687262058258,
+          "val_perplexity": 52.809297385548604
+        }
+      ],
+      "early_val_ce": 5.4358298778533936,
+      "final_val_ce": 3.966687262058258,
+      "ce_change_from_early": -1.4691426157951355,
+      "best_val_ce": 3.966687262058258,
+      "best_step": 200,
+      "loop_seconds": 23.963143100001616,
+      "loop_tokens_per_second": 8546.458164746602,
+      "peak_allocated_mib": 45.16796875,
+      "session_training_tokens": 204800,
+      "routing_early": {
+        "format_version": 1,
+        "metrics_file": "checkpoints/comparison-1k-200/moe-seed-44/metrics.jsonl",
+        "metrics_sha256": "952bb8bc70116df6ed568e0ec58e13f6b9077605a5bbde3fa92ae306cc6bef45",
+        "requested_start_step": 1,
+        "requested_end_step": 20,
+        "first_step": 1,
+        "last_step": 20,
+        "observed_steps": 20,
+        "scope": "training hard top-k assignments across all microbatches; percentages use assignments, not unique tokens or gate weights",
+        "layer_id_convention": "logged model.modules() IDs, not decoder block indices",
+        "layers": {
+          "11": {
+            "assignments": 40960,
+            "counts": [
+              10549,
+              9012,
+              10227,
+              11172
+            ],
+            "assignment_percentages": [
+              25.754394531250004,
+              22.001953125,
+              24.96826171875,
+              27.275390625
+            ],
+            "max_to_uniform_ratio": 1.091015625,
+            "zero_assignment_experts": [],
+            "zero_assignment_steps_per_expert": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "peak_step_max_to_uniform_ratio": 1.703125,
+            "per_step": [
+              {
+                "step": 1,
+                "assignments": 2048,
+                "counts": [
+                  552,
+                  429,
+                  557,
+                  510
+                ],
+                "assignment_percentages": [
+                  26.953125,
+                  20.947265625,
+                  27.197265625,
+                  24.90234375
+                ],
+                "max_to_uniform_ratio": 1.087890625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 2,
+                "assignments": 2048,
+                "counts": [
+                  569,
+                  484,
+                  537,
+                  458
+                ],
+                "assignment_percentages": [
+                  27.783203125,
+                  23.6328125,
+                  26.220703125,
+                  22.36328125
+                ],
+                "max_to_uniform_ratio": 1.111328125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 3,
+                "assignments": 2048,
+                "counts": [
+                  578,
+                  450,
+                  564,
+                  456
+                ],
+                "assignment_percentages": [
+                  28.22265625,
+                  21.97265625,
+                  27.5390625,
+                  22.265625
+                ],
+                "max_to_uniform_ratio": 1.12890625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 4,
+                "assignments": 2048,
+                "counts": [
+                  538,
+                  438,
+                  546,
+                  526
+                ],
+                "assignment_percentages": [
+                  26.26953125,
+                  21.38671875,
+                  26.66015625,
+                  25.68359375
+                ],
+                "max_to_uniform_ratio": 1.06640625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 5,
+                "assignments": 2048,
+                "counts": [
+                  564,
+                  446,
+                  531,
+                  507
+                ],
+                "assignment_percentages": [
+                  27.5390625,
+                  21.77734375,
+                  25.927734375,
+                  24.755859375
+                ],
+                "max_to_uniform_ratio": 1.1015625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 6,
+                "assignments": 2048,
+                "counts": [
+                  606,
+                  405,
+                  527,
+                  510
+                ],
+                "assignment_percentages": [
+                  29.58984375,
+                  19.775390625,
+                  25.732421875,
+                  24.90234375
+                ],
+                "max_to_uniform_ratio": 1.18359375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 7,
+                "assignments": 2048,
+                "counts": [
+                  627,
+                  359,
+                  500,
+                  562
+                ],
+                "assignment_percentages": [
+                  30.615234375,
+                  17.529296875,
+                  24.4140625,
+                  27.44140625
+                ],
+                "max_to_uniform_ratio": 1.224609375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 8,
+                "assignments": 2048,
+                "counts": [
+                  712,
+                  286,
+                  444,
+                  606
+                ],
+                "assignment_percentages": [
+                  34.765625,
+                  13.96484375,
+                  21.6796875,
+                  29.58984375
+                ],
+                "max_to_uniform_ratio": 1.390625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 9,
+                "assignments": 2048,
+                "counts": [
+                  811,
+                  289,
+                  356,
+                  592
+                ],
+                "assignment_percentages": [
+                  39.599609375,
+                  14.111328125,
+                  17.3828125,
+                  28.90625
+                ],
+                "max_to_uniform_ratio": 1.583984375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 10,
+                "assignments": 2048,
+                "counts": [
+                  872,
+                  229,
+                  297,
+                  650
+                ],
+                "assignment_percentages": [
+                  42.578125,
+                  11.181640625,
+                  14.501953125,
+                  31.73828125
+                ],
+                "max_to_uniform_ratio": 1.703125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 11,
+                "assignments": 2048,
+                "counts": [
+                  820,
+                  306,
+                  266,
+                  656
+                ],
+                "assignment_percentages": [
+                  40.0390625,
+                  14.94140625,
+                  12.98828125,
+                  32.03125
+                ],
+                "max_to_uniform_ratio": 1.6015625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 12,
+                "assignments": 2048,
+                "counts": [
+                  683,
+                  481,
+                  251,
+                  633
+                ],
+                "assignment_percentages": [
+                  33.349609375,
+                  23.486328125,
+                  12.255859375,
+                  30.908203125
+                ],
+                "max_to_uniform_ratio": 1.333984375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 13,
+                "assignments": 2048,
+                "counts": [
+                  452,
+                  684,
+                  318,
+                  594
+                ],
+                "assignment_percentages": [
+                  22.0703125,
+                  33.3984375,
+                  15.52734375,
+                  29.00390625
+                ],
+                "max_to_uniform_ratio": 1.3359375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 14,
+                "assignments": 2048,
+                "counts": [
+                  326,
+                  799,
+                  466,
+                  457
+                ],
+                "assignment_percentages": [
+                  15.91796875,
+                  39.013671875,
+                  22.75390625,
+                  22.314453125
+                ],
+                "max_to_uniform_ratio": 1.560546875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 15,
+                "assignments": 2048,
+                "counts": [
+                  206,
+                  803,
+                  685,
+                  354
+                ],
+                "assignment_percentages": [
+                  10.05859375,
+                  39.208984375,
+                  33.447265625,
+                  17.28515625
+                ],
+                "max_to_uniform_ratio": 1.568359375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 16,
+                "assignments": 2048,
+                "counts": [
+                  195,
+                  706,
+                  838,
+                  309
+                ],
+                "assignment_percentages": [
+                  9.521484375,
+                  34.47265625,
+                  40.91796875,
+                  15.087890625
+                ],
+                "max_to_uniform_ratio": 1.63671875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 17,
+                "assignments": 2048,
+                "counts": [
+                  198,
+                  574,
+                  792,
+                  484
+                ],
+                "assignment_percentages": [
+                  9.66796875,
+                  28.02734375,
+                  38.671875,
+                  23.6328125
+                ],
+                "max_to_uniform_ratio": 1.546875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 18,
+                "assignments": 2048,
+                "counts": [
+                  231,
+                  281,
+                  781,
+                  755
+                ],
+                "assignment_percentages": [
+                  11.279296875,
+                  13.720703125,
+                  38.134765625,
+                  36.865234375
+                ],
+                "max_to_uniform_ratio": 1.525390625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 19,
+                "assignments": 2048,
+                "counts": [
+                  471,
+                  273,
+                  581,
+                  723
+                ],
+                "assignment_percentages": [
+                  22.998046875,
+                  13.330078125,
+                  28.369140625,
+                  35.302734375
+                ],
+                "max_to_uniform_ratio": 1.412109375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 20,
+                "assignments": 2048,
+                "counts": [
+                  538,
+                  290,
+                  390,
+                  830
+                ],
+                "assignment_percentages": [
+                  26.26953125,
+                  14.16015625,
+                  19.04296875,
+                  40.52734375
+                ],
+                "max_to_uniform_ratio": 1.62109375,
+                "zero_assignment_experts": []
+              }
+            ]
+          },
+          "38": {
+            "assignments": 40960,
+            "counts": [
+              9199,
+              9277,
+              12553,
+              9931
+            ],
+            "assignment_percentages": [
+              22.45849609375,
+              22.64892578125,
+              30.64697265625,
+              24.24560546875
+            ],
+            "max_to_uniform_ratio": 1.22587890625,
+            "zero_assignment_experts": [],
+            "zero_assignment_steps_per_expert": [
+              1,
+              2,
+              0,
+              0
+            ],
+            "peak_step_max_to_uniform_ratio": 2.0,
+            "per_step": [
+              {
+                "step": 1,
+                "assignments": 2048,
+                "counts": [
+                  382,
+                  474,
+                  727,
+                  465
+                ],
+                "assignment_percentages": [
+                  18.65234375,
+                  23.14453125,
+                  35.498046875,
+                  22.705078125
+                ],
+                "max_to_uniform_ratio": 1.419921875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 2,
+                "assignments": 2048,
+                "counts": [
+                  460,
+                  367,
+                  648,
+                  573
+                ],
+                "assignment_percentages": [
+                  22.4609375,
+                  17.919921875,
+                  31.640625,
+                  27.978515625
+                ],
+                "max_to_uniform_ratio": 1.265625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 3,
+                "assignments": 2048,
+                "counts": [
+                  373,
+                  496,
+                  725,
+                  454
+                ],
+                "assignment_percentages": [
+                  18.212890625,
+                  24.21875,
+                  35.400390625,
+                  22.16796875
+                ],
+                "max_to_uniform_ratio": 1.416015625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 4,
+                "assignments": 2048,
+                "counts": [
+                  284,
+                  530,
+                  757,
+                  477
+                ],
+                "assignment_percentages": [
+                  13.8671875,
+                  25.87890625,
+                  36.962890625,
+                  23.291015625
+                ],
+                "max_to_uniform_ratio": 1.478515625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 5,
+                "assignments": 2048,
+                "counts": [
+                  234,
+                  599,
+                  795,
+                  420
+                ],
+                "assignment_percentages": [
+                  11.42578125,
+                  29.248046875,
+                  38.818359375,
+                  20.5078125
+                ],
+                "max_to_uniform_ratio": 1.552734375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 6,
+                "assignments": 2048,
+                "counts": [
+                  182,
+                  805,
+                  872,
+                  189
+                ],
+                "assignment_percentages": [
+                  8.88671875,
+                  39.306640625,
+                  42.578125,
+                  9.228515625
+                ],
+                "max_to_uniform_ratio": 1.703125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 7,
+                "assignments": 2048,
+                "counts": [
+                  49,
+                  919,
+                  989,
+                  91
+                ],
+                "assignment_percentages": [
+                  2.392578125,
+                  44.873046875,
+                  48.291015625,
+                  4.443359375
+                ],
+                "max_to_uniform_ratio": 1.931640625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 8,
+                "assignments": 2048,
+                "counts": [
+                  43,
+                  918,
+                  990,
+                  97
+                ],
+                "assignment_percentages": [
+                  2.099609375,
+                  44.82421875,
+                  48.33984375,
+                  4.736328125
+                ],
+                "max_to_uniform_ratio": 1.93359375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 9,
+                "assignments": 2048,
+                "counts": [
+                  8,
+                  825,
+                  1015,
+                  200
+                ],
+                "assignment_percentages": [
+                  0.390625,
+                  40.283203125,
+                  49.560546875,
+                  9.765625
+                ],
+                "max_to_uniform_ratio": 1.982421875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 10,
+                "assignments": 2048,
+                "counts": [
+                  1,
+                  171,
+                  1023,
+                  853
+                ],
+                "assignment_percentages": [
+                  0.048828125,
+                  8.349609375,
+                  49.951171875,
+                  41.650390625
+                ],
+                "max_to_uniform_ratio": 1.998046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 11,
+                "assignments": 2048,
+                "counts": [
+                  2,
+                  3,
+                  1023,
+                  1020
+                ],
+                "assignment_percentages": [
+                  0.09765625,
+                  0.146484375,
+                  49.951171875,
+                  49.8046875
+                ],
+                "max_to_uniform_ratio": 1.998046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 12,
+                "assignments": 2048,
+                "counts": [
+                  0,
+                  0,
+                  1024,
+                  1024
+                ],
+                "assignment_percentages": [
+                  0.0,
+                  0.0,
+                  50.0,
+                  50.0
+                ],
+                "max_to_uniform_ratio": 2.0,
+                "zero_assignment_experts": [
+                  0,
+                  1
+                ]
+              },
+              {
+                "step": 13,
+                "assignments": 2048,
+                "counts": [
+                  49,
+                  12,
+                  997,
+                  990
+                ],
+                "assignment_percentages": [
+                  2.392578125,
+                  0.5859375,
+                  48.681640625,
+                  48.33984375
+                ],
+                "max_to_uniform_ratio": 1.947265625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 14,
+                "assignments": 2048,
+                "counts": [
+                  1002,
+                  266,
+                  213,
+                  567
+                ],
+                "assignment_percentages": [
+                  48.92578125,
+                  12.98828125,
+                  10.400390625,
+                  27.685546875
+                ],
+                "max_to_uniform_ratio": 1.95703125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 15,
+                "assignments": 2048,
+                "counts": [
+                  1018,
+                  982,
+                  4,
+                  44
+                ],
+                "assignment_percentages": [
+                  49.70703125,
+                  47.94921875,
+                  0.1953125,
+                  2.1484375
+                ],
+                "max_to_uniform_ratio": 1.98828125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 16,
+                "assignments": 2048,
+                "counts": [
+                  1023,
+                  1015,
+                  2,
+                  8
+                ],
+                "assignment_percentages": [
+                  49.951171875,
+                  49.560546875,
+                  0.09765625,
+                  0.390625
+                ],
+                "max_to_uniform_ratio": 1.998046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 17,
+                "assignments": 2048,
+                "counts": [
+                  1018,
+                  871,
+                  6,
+                  153
+                ],
+                "assignment_percentages": [
+                  49.70703125,
+                  42.529296875,
+                  0.29296875,
+                  7.470703125
+                ],
+                "max_to_uniform_ratio": 1.98828125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 18,
+                "assignments": 2048,
+                "counts": [
+                  1023,
+                  22,
+                  4,
+                  999
+                ],
+                "assignment_percentages": [
+                  49.951171875,
+                  1.07421875,
+                  0.1953125,
+                  48.779296875
+                ],
+                "max_to_uniform_ratio": 1.998046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 19,
+                "assignments": 2048,
+                "counts": [
+                  1024,
+                  2,
+                  70,
+                  952
+                ],
+                "assignment_percentages": [
+                  50.0,
+                  0.09765625,
+                  3.41796875,
+                  46.484375
+                ],
+                "max_to_uniform_ratio": 2.0,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 20,
+                "assignments": 2048,
+                "counts": [
+                  1024,
+                  0,
+                  669,
+                  355
+                ],
+                "assignment_percentages": [
+                  50.0,
+                  0.0,
+                  32.666015625,
+                  17.333984375
+                ],
+                "max_to_uniform_ratio": 2.0,
+                "zero_assignment_experts": [
+                  1
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "routing_late": {
+        "format_version": 1,
+        "metrics_file": "checkpoints/comparison-1k-200/moe-seed-44/metrics.jsonl",
+        "metrics_sha256": "952bb8bc70116df6ed568e0ec58e13f6b9077605a5bbde3fa92ae306cc6bef45",
+        "requested_start_step": 181,
+        "requested_end_step": 200,
+        "first_step": 181,
+        "last_step": 200,
+        "observed_steps": 20,
+        "scope": "training hard top-k assignments across all microbatches; percentages use assignments, not unique tokens or gate weights",
+        "layer_id_convention": "logged model.modules() IDs, not decoder block indices",
+        "layers": {
+          "11": {
+            "assignments": 40960,
+            "counts": [
+              10815,
+              11355,
+              11022,
+              7768
+            ],
+            "assignment_percentages": [
+              26.40380859375,
+              27.72216796875,
+              26.9091796875,
+              18.96484375
+            ],
+            "max_to_uniform_ratio": 1.10888671875,
+            "zero_assignment_experts": [],
+            "zero_assignment_steps_per_expert": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "peak_step_max_to_uniform_ratio": 1.17578125,
+            "per_step": [
+              {
+                "step": 181,
+                "assignments": 2048,
+                "counts": [
+                  538,
+                  568,
+                  529,
+                  413
+                ],
+                "assignment_percentages": [
+                  26.26953125,
+                  27.734375,
+                  25.830078125,
+                  20.166015625
+                ],
+                "max_to_uniform_ratio": 1.109375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 182,
+                "assignments": 2048,
+                "counts": [
+                  552,
+                  567,
+                  544,
+                  385
+                ],
+                "assignment_percentages": [
+                  26.953125,
+                  27.685546875,
+                  26.5625,
+                  18.798828125
+                ],
+                "max_to_uniform_ratio": 1.107421875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 183,
+                "assignments": 2048,
+                "counts": [
+                  520,
+                  577,
+                  537,
+                  414
+                ],
+                "assignment_percentages": [
+                  25.390625,
+                  28.173828125,
+                  26.220703125,
+                  20.21484375
+                ],
+                "max_to_uniform_ratio": 1.126953125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 184,
+                "assignments": 2048,
+                "counts": [
+                  575,
+                  562,
+                  508,
+                  403
+                ],
+                "assignment_percentages": [
+                  28.076171875,
+                  27.44140625,
+                  24.8046875,
+                  19.677734375
+                ],
+                "max_to_uniform_ratio": 1.123046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 185,
+                "assignments": 2048,
+                "counts": [
+                  537,
+                  602,
+                  522,
+                  387
+                ],
+                "assignment_percentages": [
+                  26.220703125,
+                  29.39453125,
+                  25.48828125,
+                  18.896484375
+                ],
+                "max_to_uniform_ratio": 1.17578125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 186,
+                "assignments": 2048,
+                "counts": [
+                  516,
+                  593,
+                  573,
+                  366
+                ],
+                "assignment_percentages": [
+                  25.1953125,
+                  28.955078125,
+                  27.978515625,
+                  17.87109375
+                ],
+                "max_to_uniform_ratio": 1.158203125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 187,
+                "assignments": 2048,
+                "counts": [
+                  524,
+                  567,
+                  548,
+                  409
+                ],
+                "assignment_percentages": [
+                  25.5859375,
+                  27.685546875,
+                  26.7578125,
+                  19.970703125
+                ],
+                "max_to_uniform_ratio": 1.107421875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 188,
+                "assignments": 2048,
+                "counts": [
+                  522,
+                  570,
+                  570,
+                  386
+                ],
+                "assignment_percentages": [
+                  25.48828125,
+                  27.83203125,
+                  27.83203125,
+                  18.84765625
+                ],
+                "max_to_uniform_ratio": 1.11328125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 189,
+                "assignments": 2048,
+                "counts": [
+                  557,
+                  550,
+                  539,
+                  402
+                ],
+                "assignment_percentages": [
+                  27.197265625,
+                  26.85546875,
+                  26.318359375,
+                  19.62890625
+                ],
+                "max_to_uniform_ratio": 1.087890625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 190,
+                "assignments": 2048,
+                "counts": [
+                  506,
+                  579,
+                  547,
+                  416
+                ],
+                "assignment_percentages": [
+                  24.70703125,
+                  28.271484375,
+                  26.708984375,
+                  20.3125
+                ],
+                "max_to_uniform_ratio": 1.130859375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 191,
+                "assignments": 2048,
+                "counts": [
+                  532,
+                  546,
+                  568,
+                  402
+                ],
+                "assignment_percentages": [
+                  25.9765625,
+                  26.66015625,
+                  27.734375,
+                  19.62890625
+                ],
+                "max_to_uniform_ratio": 1.109375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 192,
+                "assignments": 2048,
+                "counts": [
+                  548,
+                  558,
+                  531,
+                  411
+                ],
+                "assignment_percentages": [
+                  26.7578125,
+                  27.24609375,
+                  25.927734375,
+                  20.068359375
+                ],
+                "max_to_uniform_ratio": 1.08984375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 193,
+                "assignments": 2048,
+                "counts": [
+                  546,
+                  578,
+                  575,
+                  349
+                ],
+                "assignment_percentages": [
+                  26.66015625,
+                  28.22265625,
+                  28.076171875,
+                  17.041015625
+                ],
+                "max_to_uniform_ratio": 1.12890625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 194,
+                "assignments": 2048,
+                "counts": [
+                  536,
+                  563,
+                  549,
+                  400
+                ],
+                "assignment_percentages": [
+                  26.171875,
+                  27.490234375,
+                  26.806640625,
+                  19.53125
+                ],
+                "max_to_uniform_ratio": 1.099609375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 195,
+                "assignments": 2048,
+                "counts": [
+                  523,
+                  591,
+                  555,
+                  379
+                ],
+                "assignment_percentages": [
+                  25.537109375,
+                  28.857421875,
+                  27.099609375,
+                  18.505859375
+                ],
+                "max_to_uniform_ratio": 1.154296875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 196,
+                "assignments": 2048,
+                "counts": [
+                  556,
+                  579,
+                  574,
+                  339
+                ],
+                "assignment_percentages": [
+                  27.1484375,
+                  28.271484375,
+                  28.02734375,
+                  16.552734375
+                ],
+                "max_to_uniform_ratio": 1.130859375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 197,
+                "assignments": 2048,
+                "counts": [
+                  569,
+                  535,
+                  560,
+                  384
+                ],
+                "assignment_percentages": [
+                  27.783203125,
+                  26.123046875,
+                  27.34375,
+                  18.75
+                ],
+                "max_to_uniform_ratio": 1.111328125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 198,
+                "assignments": 2048,
+                "counts": [
+                  555,
+                  530,
+                  579,
+                  384
+                ],
+                "assignment_percentages": [
+                  27.099609375,
+                  25.87890625,
+                  28.271484375,
+                  18.75
+                ],
+                "max_to_uniform_ratio": 1.130859375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 199,
+                "assignments": 2048,
+                "counts": [
+                  577,
+                  544,
+                  563,
+                  364
+                ],
+                "assignment_percentages": [
+                  28.173828125,
+                  26.5625,
+                  27.490234375,
+                  17.7734375
+                ],
+                "max_to_uniform_ratio": 1.126953125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 200,
+                "assignments": 2048,
+                "counts": [
+                  526,
+                  596,
+                  551,
+                  375
+                ],
+                "assignment_percentages": [
+                  25.68359375,
+                  29.1015625,
+                  26.904296875,
+                  18.310546875
+                ],
+                "max_to_uniform_ratio": 1.1640625,
+                "zero_assignment_experts": []
+              }
+            ]
+          },
+          "38": {
+            "assignments": 40960,
+            "counts": [
+              11664,
+              9663,
+              9561,
+              10072
+            ],
+            "assignment_percentages": [
+              28.476562500000004,
+              23.59130859375,
+              23.34228515625,
+              24.58984375
+            ],
+            "max_to_uniform_ratio": 1.1390625,
+            "zero_assignment_experts": [],
+            "zero_assignment_steps_per_expert": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "peak_step_max_to_uniform_ratio": 1.20703125,
+            "per_step": [
+              {
+                "step": 181,
+                "assignments": 2048,
+                "counts": [
+                  556,
+                  490,
+                  491,
+                  511
+                ],
+                "assignment_percentages": [
+                  27.1484375,
+                  23.92578125,
+                  23.974609375,
+                  24.951171875
+                ],
+                "max_to_uniform_ratio": 1.0859375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 182,
+                "assignments": 2048,
+                "counts": [
+                  618,
+                  458,
+                  458,
+                  514
+                ],
+                "assignment_percentages": [
+                  30.17578125,
+                  22.36328125,
+                  22.36328125,
+                  25.09765625
+                ],
+                "max_to_uniform_ratio": 1.20703125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 183,
+                "assignments": 2048,
+                "counts": [
+                  576,
+                  454,
+                  432,
+                  586
+                ],
+                "assignment_percentages": [
+                  28.125,
+                  22.16796875,
+                  21.09375,
+                  28.61328125
+                ],
+                "max_to_uniform_ratio": 1.14453125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 184,
+                "assignments": 2048,
+                "counts": [
+                  575,
+                  444,
+                  483,
+                  546
+                ],
+                "assignment_percentages": [
+                  28.076171875,
+                  21.6796875,
+                  23.583984375,
+                  26.66015625
+                ],
+                "max_to_uniform_ratio": 1.123046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 185,
+                "assignments": 2048,
+                "counts": [
+                  586,
+                  475,
+                  499,
+                  488
+                ],
+                "assignment_percentages": [
+                  28.61328125,
+                  23.193359375,
+                  24.365234375,
+                  23.828125
+                ],
+                "max_to_uniform_ratio": 1.14453125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 186,
+                "assignments": 2048,
+                "counts": [
+                  584,
+                  461,
+                  467,
+                  536
+                ],
+                "assignment_percentages": [
+                  28.515625,
+                  22.509765625,
+                  22.802734375,
+                  26.171875
+                ],
+                "max_to_uniform_ratio": 1.140625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 187,
+                "assignments": 2048,
+                "counts": [
+                  562,
+                  476,
+                  463,
+                  547
+                ],
+                "assignment_percentages": [
+                  27.44140625,
+                  23.2421875,
+                  22.607421875,
+                  26.708984375
+                ],
+                "max_to_uniform_ratio": 1.09765625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 188,
+                "assignments": 2048,
+                "counts": [
+                  589,
+                  510,
+                  486,
+                  463
+                ],
+                "assignment_percentages": [
+                  28.759765625,
+                  24.90234375,
+                  23.73046875,
+                  22.607421875
+                ],
+                "max_to_uniform_ratio": 1.150390625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 189,
+                "assignments": 2048,
+                "counts": [
+                  553,
+                  495,
+                  468,
+                  532
+                ],
+                "assignment_percentages": [
+                  27.001953125,
+                  24.169921875,
+                  22.8515625,
+                  25.9765625
+                ],
+                "max_to_uniform_ratio": 1.080078125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 190,
+                "assignments": 2048,
+                "counts": [
+                  591,
+                  471,
+                  478,
+                  508
+                ],
+                "assignment_percentages": [
+                  28.857421875,
+                  22.998046875,
+                  23.33984375,
+                  24.8046875
+                ],
+                "max_to_uniform_ratio": 1.154296875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 191,
+                "assignments": 2048,
+                "counts": [
+                  575,
+                  489,
+                  474,
+                  510
+                ],
+                "assignment_percentages": [
+                  28.076171875,
+                  23.876953125,
+                  23.14453125,
+                  24.90234375
+                ],
+                "max_to_uniform_ratio": 1.123046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 192,
+                "assignments": 2048,
+                "counts": [
+                  587,
+                  474,
+                  477,
+                  510
+                ],
+                "assignment_percentages": [
+                  28.662109375,
+                  23.14453125,
+                  23.291015625,
+                  24.90234375
+                ],
+                "max_to_uniform_ratio": 1.146484375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 193,
+                "assignments": 2048,
+                "counts": [
+                  575,
+                  528,
+                  505,
+                  440
+                ],
+                "assignment_percentages": [
+                  28.076171875,
+                  25.78125,
+                  24.658203125,
+                  21.484375
+                ],
+                "max_to_uniform_ratio": 1.123046875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 194,
+                "assignments": 2048,
+                "counts": [
+                  610,
+                  459,
+                  480,
+                  499
+                ],
+                "assignment_percentages": [
+                  29.78515625,
+                  22.412109375,
+                  23.4375,
+                  24.365234375
+                ],
+                "max_to_uniform_ratio": 1.19140625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 195,
+                "assignments": 2048,
+                "counts": [
+                  581,
+                  479,
+                  474,
+                  514
+                ],
+                "assignment_percentages": [
+                  28.369140625,
+                  23.388671875,
+                  23.14453125,
+                  25.09765625
+                ],
+                "max_to_uniform_ratio": 1.134765625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 196,
+                "assignments": 2048,
+                "counts": [
+                  542,
+                  511,
+                  512,
+                  483
+                ],
+                "assignment_percentages": [
+                  26.46484375,
+                  24.951171875,
+                  25.0,
+                  23.583984375
+                ],
+                "max_to_uniform_ratio": 1.05859375,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 197,
+                "assignments": 2048,
+                "counts": [
+                  607,
+                  470,
+                  481,
+                  490
+                ],
+                "assignment_percentages": [
+                  29.638671875,
+                  22.94921875,
+                  23.486328125,
+                  23.92578125
+                ],
+                "max_to_uniform_ratio": 1.185546875,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 198,
+                "assignments": 2048,
+                "counts": [
+                  609,
+                  514,
+                  469,
+                  456
+                ],
+                "assignment_percentages": [
+                  29.736328125,
+                  25.09765625,
+                  22.900390625,
+                  22.265625
+                ],
+                "max_to_uniform_ratio": 1.189453125,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 199,
+                "assignments": 2048,
+                "counts": [
+                  592,
+                  506,
+                  478,
+                  472
+                ],
+                "assignment_percentages": [
+                  28.90625,
+                  24.70703125,
+                  23.33984375,
+                  23.046875
+                ],
+                "max_to_uniform_ratio": 1.15625,
+                "zero_assignment_experts": []
+              },
+              {
+                "step": 200,
+                "assignments": 2048,
+                "counts": [
+                  596,
+                  499,
+                  486,
+                  467
+                ],
+                "assignment_percentages": [
+                  29.1015625,
+                  24.365234375,
+                  23.73046875,
+                  22.802734375
+                ],
+                "max_to_uniform_ratio": 1.1640625,
+                "zero_assignment_experts": []
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "paired_final_ce_differences": [
+    {
+      "seed": 42,
+      "final_ce_moe_minus_dense": 0.11701315641403198
+    },
+    {
+      "seed": 43,
+      "final_ce_moe_minus_dense": 0.12350142002105713
+    },
+    {
+      "seed": 44,
+      "final_ce_moe_minus_dense": 0.09615761041641235
+    }
+  ],
+  "mean_paired_final_ce_difference": 0.11222406228383382,
+  "sample_sd_paired_final_ce_difference": 0.014287146246353391,
+  "interpretation": "Negative MoE-minus-dense CE favors MoE on this sampled evaluation; routing windows describe training assignments, not validation specialization. Seed spread is descriptive, not a significance test."
+}

@@ -1,0 +1,58 @@
+{
+  "format_version": 3,
+  "sources": {
+    "train": {
+      "path": "data\\raw\\tinystories-1k\\train.jsonl",
+      "sha256": "a737661a574dfc8329e11e5b9ce049ac0f2704b5db347084cc19c7f3dcb91139"
+    },
+    "val": {
+      "path": "data\\raw\\tinystories-1k\\val.jsonl",
+      "sha256": "7d6dee413376b5d604b363afa715d4a617eb6e765ad766c80e5d9c05cf4a0ec1"
+    }
+  },
+  "split": "explicit document-level source files; validation takes precedence",
+  "normalization": "CRLF/CR to LF; strip outer whitespace",
+  "deduplication": "SHA-256 of normalized UTF-8; exact within/across splits",
+  "boundary": "one EOS after each document; no attention barrier",
+  "eos_token_id": 511,
+  "tokenizer": "byte-level BPE",
+  "requested_vocab_size": 512,
+  "vocab_size": 512,
+  "tokenizer_training": {
+    "max_bytes": 65536,
+    "bytes": 65536,
+    "documents": 89,
+    "last_document_truncated": true,
+    "sha256": "58aed8b09b273813f37e1eb0737fed19182afb28398a3f7939c57509bc862029",
+    "selection": "prefix of deduplicated, overlap-free training documents only",
+    "boundary_policy": "no pair counts or merges across document boundaries",
+    "hash_scope": "sample documents, each prefixed by an 8-byte big-endian byte length"
+  },
+  "dtype": "little-endian uint16",
+  "block_size_checked": 128,
+  "documents": {
+    "val": {
+      "read": 100,
+      "kept": 100,
+      "duplicates": 0,
+      "overlap_with_val": 0,
+      "tokens": 28668
+    },
+    "train": {
+      "read": 1000,
+      "kept": 1000,
+      "duplicates": 0,
+      "overlap_with_val": 0,
+      "tokens": 412068
+    }
+  },
+  "tokens": {
+    "val": 28668,
+    "train": 412068
+  },
+  "artifacts_sha256": {
+    "ids_train.bin": "1011dac3a8505b283aae9daf28daa8fd948c75de277c618d5ad7ac00db98df92",
+    "ids_val.bin": "2868aff28ff5c7111fa864d26c62605dc1c509b5fc09a29953c1439195912509",
+    "tokenizer.json": "7c1741e837f3404144bec51ed1952c4b5e156d017d8182183727824dfa9fcfe5"
+  }
+}

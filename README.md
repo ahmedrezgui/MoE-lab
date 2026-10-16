@@ -220,6 +220,21 @@ The report shows each expert's number of zero-assignment steps, aggregate busies
 
 The [recorded smoke routing report](reports/routing-gpu-smoke/routing.md) covers both completed GPU seeds. All experts received assignments across each full run, but several experts in logged layer `38` had individual steps with zero assignments. For seed 42, expert 2 had three such steps despite receiving 29.38% of that layer's total assignments. This illustrates why an aggregate alone is insufficient. These short runs do not establish expert specialization or persistent routing collapse.
 
+## Larger bounded experiment and early/late routing
+
+The next recorded experiment uses 1,000 training and 100 validation TinyStories documents, a shared 512-entry BPE vocabulary including EOS, and 200 steps for each model over seeds 42, 43 and 44. Reproduce it with fresh output paths:
+
+```powershell
+.venv/Scripts/python scripts/download_data.py --output data/raw/tinystories-1k --train-documents 1000 --val-documents 100
+.venv/Scripts/python scripts/prepare_documents.py --train-input data/raw/tinystories-1k/train.jsonl --val-input data/raw/tinystories-1k/val.jsonl --output data/tinystories-1k-eos --block-size 128 --vocab-size 512 --tokenizer-training-bytes 65536 --add-eos
+.venv/Scripts/python scripts/run_comparison.py --data-dir data/tinystories-1k-eos --output-dir checkpoints/comparison-1k-200 --steps 200 --seeds 42 43 44 --device cuda --timeout-seconds 180
+.venv/Scripts/python scripts/report_experiment.py --comparison-dir checkpoints/comparison-1k-200 --output-dir reports/tinystories-1k-200 --window-steps 20
+```
+
+The report pairs validation CE at step 20 and step 200 with routing over steps 1-20 and 181-200, respectively. Windows are fixed before inspecting results and must be nonoverlapping. It preserves every recorded validation evaluation and both windows' per-step routing in `analysis.json`, with readable tables in `analysis.md`. Missing step records, incomplete comparisons, unequal paired token budgets, or a missing early-window endpoint evaluation fail explicitly; validation is never interpolated. The default reporter expects the four-expert experiment presets for its displayed expert ordering.
+
+See the [experiment protocol and interpretation](reports/tinystories-1k-200/README.md) and [validation/routing tables](reports/tinystories-1k-200/analysis.md). This is still a small experiment: each run processes 204,800 targets sampled with replacement, and validation measures the same 1,024 sampled targets rather than all 28,668 held-out tokens. Three seeds provide descriptive variability, not a general architecture conclusion. The tokenizer differs from the earlier smoke fixture, so their token-level CE/perplexity values are not directly comparable.
+
 ## Tests and experiments
 
 ```powershell
