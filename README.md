@@ -235,6 +235,18 @@ The report pairs validation CE at step 20 and step 200 with routing over steps 1
 
 See the [experiment protocol and interpretation](reports/tinystories-1k-200/README.md) and [validation/routing tables](reports/tinystories-1k-200/analysis.md). This is still a small experiment: each run processes 204,800 targets sampled with replacement, and validation measures the same 1,024 sampled targets rather than all 28,668 held-out tokens. Three seeds provide descriptive variability, not a general architecture conclusion. The tokenizer differs from the earlier smoke fixture, so their token-level CE/perplexity values are not directly comparable.
 
+## Score the complete validation stream
+
+```powershell
+.venv/Scripts/python scripts/evaluate_full.py --comparison-dir checkpoints/comparison-1k-200 --data-dir data/tinystories-1k-eos --output-dir reports/new-full-validation --device cuda --batch-size 2 --max-tokens 100000
+```
+
+This evaluates all final (`last.pt`) checkpoints from a completed paired comparison, checking data/config/step fingerprints and using fp32 without auxiliary loss. It scores every next-token target once in consecutive context-reset blocks, includes a short final block, and weights loss by target count. It is full-stream coverage, not maximum-context sliding-window evaluation. The first stream token is unscored because no preceding context exists. EOS/cross-document targets remain included.
+
+The output directory must be new; `full-validation.json` contains coverage, summed loss, CE/perplexity, previous sampled CE, checkpoint hashes, paired differences and scoring runtime. `--max-tokens` rejects larger files instead of silently sampling them. CPU scoring is supported with `--device cpu`. This command reads saved checkpoints without modifying them and preserves the original sampled reports.
+
+The [completed full-validation report](reports/tinystories-1k-full-validation/README.md) covers all 28,667 next-token targets for each of the six 200-step models. Mean CE was 3.8301 dense versus 3.9415 MoE, with dense lower in every pair. This corroborates the earlier sampled ranking within this small experiment. Changed context alignment and coverage mean the sampled and full-stream scores are separate evaluation protocols, not successive training improvements.
+
 ## Tests and experiments
 
 ```powershell
