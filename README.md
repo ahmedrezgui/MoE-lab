@@ -260,6 +260,20 @@ Coefficient zero removes the auxiliary balancing objective, not routing or route
 
 The [recorded ablation](reports/balance-ablation-1k/README.md) explains the observed quality/traffic tradeoff. The report command archives raw metrics and the full manifest and can be run on the archived directory without checkpoints. This is a small validation-based sweep, not a claim of a universally optimal coefficient. Confirm any chosen setting on new held-out data before treating it as a general improvement.
 
+## Confirm the candidate on unused stories
+
+The confirmation workflow freezes the tokenizer and checkpoints, excludes normalized exact overlaps with training/development documents, and scores only the predeclared 0.01/0.1 pair:
+
+```powershell
+.venv/Scripts/python scripts/download_data.py --output data/raw/tinystories-confirmation-prefix --train-documents 1000 --val-documents 300
+.venv/Scripts/python scripts/prepare_confirmation.py --source data/raw/tinystories-confirmation-prefix/val.jsonl --prior-train data/raw/tinystories-1k/train.jsonl --prior-val data/raw/tinystories-1k/val.jsonl --training-data-dir data/tinystories-1k-eos --output data/tinystories-confirmation --start-document 100 --document-count 200
+.venv/Scripts/python scripts/evaluate_confirmation.py --ablation-dir checkpoints/balance-ablation-1k --heldout-dir data/tinystories-confirmation --output-dir reports/new-confirmation --device cuda --batch-size 2 --max-tokens 200000
+```
+
+Use fresh directories. The source prefix must match the entire prior development split; the start index is zero-based. Candidate stories 101-300 are filtered against all original training/development documents and one another. Excluded records are dropped without replacement. Preparation validates the original artifacts and copies the tokenizer bytes without fitting. Exact matching does not detect semantic/near-duplicates.
+
+The [recorded confirmation](reports/balance-confirmation/README.md) retained all 200 stories, with zero exact overlaps. All six frozen checkpoints scored all 80,138 next-token targets. Mean CE was 3.8986 at coefficient 0.01 versus 3.8849 at 0.1. Seeds 43/44 favored 0.1; seed 42 was effectively tied. This supports the candidate within this experiment, not a universal optimum. These stories are now observed confirmation data and should not be repeatedly reused for tuning while called untouched.
+
 ## Tests and experiments
 
 ```powershell
