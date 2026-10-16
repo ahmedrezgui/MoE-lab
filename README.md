@@ -1,4 +1,4 @@
-﻿# moelab: a Mixture-of-Experts language model from scratch
+# moelab: a Mixture-of-Experts language model from scratch
 
 An educational decoder-only language model in PyTorch. Train random weights, inspect top-k routing, save/resume a run, and generate text locally. Supports a dense FFN baseline and a sparse MoE variant. This is an architecture laboratory, not an instruction-tuned assistant.
 
@@ -34,6 +34,28 @@ python -m venv .venv
 For CPU-only installation, use the PyTorch `/whl/cpu` index instead. On Linux/macOS use `.venv/bin/python`. See the [official PyTorch installation selector](https://pytorch.org/get-started/locally/) for other hardware. No activation or Make is required.
 
 The included original short story is a plumbing fixture. A 200-step run can show loss reduction but does not establish general language quality. The default byte vocabulary is easy to inspect. To explore BPE merges use `--vocab-size 512` and set the model vocabulary to 512; after compression each split must still contain more tokens than the context length.
+
+## Prepare separate document splits
+
+For local corpora already divided into training and validation, use JSONL files with one object per document:
+
+```json
+{"text": "The complete text of one story."}
+{"text": "The complete text of another story."}
+```
+
+Use different files for the two splits and enough text in each retained split to exceed the model context length:
+
+```powershell
+.venv/Scripts/python scripts/prepare_documents.py --train-input data/raw/train.jsonl --val-input data/raw/val.jsonl --output data/stories --block-size 128
+.venv/Scripts/python scripts/train.py --config configs/training/laptop.yaml --model configs/model/laptop-moe.yaml --data-dir data/stories --device cuda --output-dir checkpoints/stories
+```
+
+This path preserves whole documents in their source split, standardizes line endings and outer whitespace, removes exact duplicates, and removes training documents also present in validation. Validation takes precedence. It streams text and stores document hashes in memory; it does not detect near-duplicates or establish the source's license.
+
+For this first preparation step, tokenization uses the complete 256-byte vocabulary with no learned BPE merges. Documents are separated by two newline bytes, **not an EOS token or attention barrier**; training windows may cross document boundaries within a split. The model vocabulary must remain 256. The existing `prepare_data.py` command remains available for the single-text demo.
+
+The new output directory contains token files, `tokenizer.json`, and `metadata.json` with source/artifact hashes, token counts, normalization rules, and retained/duplicate/overlap counts. Existing output directories are rejected. Malformed records, empty documents, or insufficient retained tokens fail before publishing the output directory. Dataset downloading, near-duplicate detection, dedicated EOS handling, and scalable BPE training remain separate next steps.
 
 ## Your NVIDIA laptop
 

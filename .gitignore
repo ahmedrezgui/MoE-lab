@@ -10,7 +10,7 @@ venv/
 htmlcov/
 
 # Data & artifacts — versioned with DVC, never with git
-data/
+/data/
 checkpoints/
 mlruns/
 mlartifacts/
