@@ -247,6 +247,19 @@ The output directory must be new; `full-validation.json` contains coverage, summ
 
 The [completed full-validation report](reports/tinystories-1k-full-validation/README.md) covers all 28,667 next-token targets for each of the six 200-step models. Mean CE was 3.8301 dense versus 3.9415 MoE, with dense lower in every pair. This corroborates the earlier sampled ranking within this small experiment. Changed context alignment and coverage mean the sampled and full-stream scores are separate evaluation protocols, not successive training improvements.
 
+## Ablate the load-balancing coefficient
+
+```powershell
+.venv/Scripts/python scripts/run_balance_ablation.py --data-dir data/tinystories-1k-eos --output-dir checkpoints/balance-ablation-1k --coefficients 0 0.01 0.1 --seeds 42 43 44 --steps 200 --window-steps 20 --device cuda --timeout-seconds 180 --max-val-tokens 100000
+.venv/Scripts/python scripts/report_balance_ablation.py --ablation-dir checkpoints/balance-ablation-1k --output-dir reports/balance-ablation-1k
+```
+
+This trains nine fresh MoE models, including fresh baseline runs at 0.01. For each seed, only `load_balance_coef` differs; architecture, initialization, training samples, tokenizer, learning-rate schedule, optimizer and target budget are fixed. Coefficient order rotates by seed, giving each setting each order position once for this three-by-three sweep. Coefficients must be distinct, finite, nonnegative and include the 0.01 reference. Each isolated worker has a deadline covering both training and full validation, and must use a fresh directory. Failed/partial runs remain marked failed in `ablation.json`.
+
+Coefficient zero removes the auxiliary balancing objective, not routing or router task gradients. Compare CE without the auxiliary term, not raw training loss across coefficients. Each final model is scored on the same full validation stream with context-reset blocks; early/late routing windows remain 1-20 and 181-200. The output records all configs, hashes, validation curves, per-step window routing and paired CE differences versus 0.01.
+
+The [recorded ablation](reports/balance-ablation-1k/README.md) explains the observed quality/traffic tradeoff. The report command archives raw metrics and the full manifest and can be run on the archived directory without checkpoints. This is a small validation-based sweep, not a claim of a universally optimal coefficient. Confirm any chosen setting on new held-out data before treating it as a general improvement.
+
 ## Tests and experiments
 
 ```powershell
