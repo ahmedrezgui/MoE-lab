@@ -5,7 +5,15 @@ import torch
 
 @torch.no_grad()
 def generate(
-    model, idx, max_new_tokens, temperature=1.0, top_k=None, top_p=None, *, eos_token_id=None
+    model,
+    idx,
+    max_new_tokens,
+    temperature=1.0,
+    top_k=None,
+    top_p=None,
+    *,
+    eos_token_id=None,
+    generator=None,
 ):
     """Include sampled EOS in results; pad finished batch rows with EOS.
 
@@ -44,7 +52,7 @@ def generate(
                     remove[:, 1:] = remove[:, :-1].clone()
                     remove[:, 0] = False
                     scores = scores.scatter(1, order, sorted_scores.masked_fill(remove, -torch.inf))
-                token = torch.multinomial(scores.softmax(-1), num_samples=1)
+                token = torch.multinomial(scores.softmax(-1), num_samples=1, generator=generator)
             if eos_token_id is not None:
                 token = token.masked_fill(finished[:, None], eos_token_id)
                 finished |= token.squeeze(-1) == eos_token_id

@@ -16,6 +16,25 @@ The implementation lives in `src/moelab/`; runnable commands and the project roa
 
 KV cache, streaming, quantization, real-corpus experiments, Azure infrastructure, and hosted demos are planned. MLflow has an optional wrapper but is not connected to the current trainer. CI configuration is included; remote execution is not yet verified.
 
+## Interactive local playground
+
+```powershell
+.venv/Scripts/python -m pip install -e ".[ui]"
+.venv/Scripts/python scripts/demo_ui.py
+```
+
+Open **http://127.0.0.1:7860** to try the model. Gradio provides a story prompt, examples, token limit, temperature/top-k/top-p controls, a sampling seed, generated text and stopping statistics. The app loads the coefficient-0.1, seed-42 checkpoint by default; use `--checkpoint PATH` for another run, `--device cpu` to force CPU, or `--port 7861` for another port. `auto` chooses CUDA when available. The adjacent tokenizer must match the checkpoint. Weights are local artifacts and are not included in Git.
+
+This is a text-continuation demo, not a chat assistant. The model still produces repetitions and broken phrasing. Read the [model card](MODEL_CARD.md) for its exact identity, evidence, limitations and training reproduction, and inspect [all six fixed-prompt samples](reports/demo-samples.json). The UI is local-only (`127.0.0.1`, no public share link); stop it with Ctrl+C. Requests are queued one at a time and each uses an independent seeded random generator. The optional UI extra pins Gradio 6.30.0; existing CLI/API usage does not require Gradio.
+
+To export the same fixed prompt suite with no cherry-picking:
+
+```powershell
+.venv/Scripts/python scripts/demo_samples.py --device cpu --output reports/my-demo-samples.json
+```
+
+The exporter refuses an existing destination. Prompt length is limited to the model context; generation uses a sliding window and stops at EOS or the chosen cap. EOS counts as a generated token although it is hidden from displayed text. Temperature zero is greedy and ignores top-k/top-p; top-k zero disables that filter. Sampling seeds reproduce draws on the same runtime, not bit-identical results across different hardware/software.
+
 ## Windows quickstart
 
 From the project directory (Python 3.11+):
