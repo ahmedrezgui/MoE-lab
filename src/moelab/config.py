@@ -44,6 +44,7 @@ class ModelConfig(StrictConfig):
     n_kv_heads: int = Field(ge=1)
     max_seq_len: int = Field(ge=32)
     dropout: float = Field(ge=0.0, le=0.5, default=0.0)
+    ffn_hidden_dim: int | None = Field(default=None, ge=1)
     moe: MoEConfig | None = None
 
     @model_validator(mode="after")
@@ -60,6 +61,12 @@ class ModelConfig(StrictConfig):
         if self.head_dim % 2:
             raise ValueError("head_dim must be even for RoPE")
         return self
+
+    @property
+    def effective_ffn_hidden_dim(self) -> int:
+        return (
+            self.ffn_hidden_dim if self.ffn_hidden_dim is not None else int(self.d_model * (8 / 3))
+        )
 
     @property
     def head_dim(self) -> int:

@@ -8,7 +8,8 @@ from moelab.tokenizer.bpe import BPETokenizer  # noqa: E402
 from moelab.training.loop import load_checkpoint, train  # noqa: E402
 
 
-def test_training_resume_equals_uninterrupted(tmp_path):
+@pytest.mark.parametrize("legacy", [False, True])
+def test_training_resume_equals_uninterrupted(tmp_path, legacy):
     torch.set_num_threads(2)
     data = tmp_path / "data"
     data.mkdir()
@@ -30,6 +31,11 @@ def test_training_resume_equals_uninterrupted(tmp_path):
     )
     full = train(model_cfg, training_cfg, data_dir=data, output_dir=tmp_path / "full")
     train(model_cfg, training_cfg, max_steps=2, data_dir=data, output_dir=tmp_path / "split")
+    if legacy:
+        checkpoint_path = tmp_path / "split/last.pt"
+        old = torch.load(checkpoint_path, weights_only=True)
+        old["model_config"].pop("ffn_hidden_dim")
+        torch.save(old, checkpoint_path)
     resumed = train(
         model_cfg,
         training_cfg,

@@ -8,9 +8,11 @@ from moelab.config import ModelConfig
 
 
 class SwiGLU(nn.Module):
-    def __init__(self, d_model: int, hidden_mult: float = 8 / 3) -> None:
+    def __init__(
+        self, d_model: int, hidden_mult: float = 8 / 3, *, hidden_dim: int | None = None
+    ) -> None:
         super().__init__()
-        hidden = int(d_model * hidden_mult)
+        hidden = int(d_model * hidden_mult) if hidden_dim is None else hidden_dim
         self.w1 = nn.Linear(d_model, hidden, bias=False)
         self.w2 = nn.Linear(hidden, d_model, bias=False)
         self.w3 = nn.Linear(d_model, hidden, bias=False)
@@ -25,7 +27,10 @@ class MoELayer(nn.Module):
         assert cfg.moe is not None
         self.cfg = cfg
         self.router = nn.Linear(cfg.d_model, cfg.moe.n_experts, bias=False)
-        self.experts = nn.ModuleList(SwiGLU(cfg.d_model) for _ in range(cfg.moe.n_experts))
+        self.experts = nn.ModuleList(
+            SwiGLU(cfg.d_model, hidden_dim=cfg.effective_ffn_hidden_dim)
+            for _ in range(cfg.moe.n_experts)
+        )
         self.register_buffer("token_counts", torch.zeros(cfg.moe.n_experts), persistent=False)
 
     def forward(self, x):

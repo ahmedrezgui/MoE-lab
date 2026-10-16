@@ -28,7 +28,11 @@ class Block(nn.Module):
         self.attn_norm = RMSNorm(cfg.d_model)
         self.attn = Attention(cfg)
         self.ffn_norm = RMSNorm(cfg.d_model)
-        self.ffn = MoELayer(cfg) if cfg.moe else SwiGLU(cfg.d_model)
+        self.ffn = (
+            MoELayer(cfg)
+            if cfg.moe
+            else SwiGLU(cfg.d_model, hidden_dim=cfg.effective_ffn_hidden_dim)
+        )
 
     def forward(self, x):
         x = x + self.attn(self.attn_norm(x))

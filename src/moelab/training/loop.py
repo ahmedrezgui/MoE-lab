@@ -84,7 +84,7 @@ def train(
     best_step = None
     if resume:
         saved = torch.load(resume, map_location="cpu", weights_only=True)
-        if saved["model_config"] != model_cfg.model_dump():
+        if ModelConfig.model_validate(saved["model_config"]).model_dump() != model_cfg.model_dump():
             raise ValueError("Resume model configuration mismatch")
         if saved["training_config"] != c.model_dump() or saved["data_hashes"] != fingerprints:
             raise ValueError("Resume requires the same training config and tokenized corpus")

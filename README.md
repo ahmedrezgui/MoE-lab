@@ -160,6 +160,36 @@ Invoke-RestMethod http://127.0.0.1:8000/generate -Method Post -ContentType "appl
 
 This is a local synchronous demo. Generation recomputes a sliding context window; it has no KV cache yet. Prompts longer than the model context are rejected by the API. A tokenizer JSON must accompany its matching checkpoint. Public deployment still needs authentication, request limits, and infrastructure verification.
 
+## Controlled dense-versus-MoE budgets
+
+Use `configs/model/compare-dense.yaml` and `configs/model/compare-moe.yaml` with the same `configs/training/laptop.yaml`. They share vocabulary, width 128, two layers, attention heads, context 128, and zero dropout. The comparison matches estimated **active parameters per token**, including the router, within 0.1%.
+
+| Model (vocabulary 256) | FFN hidden width | Total parameters | Active estimate |
+| --- | ---: | ---: | ---: |
+| Dense | 683 | 656,256 | 656,256 |
+| MoE, four experts / top-2 | 341 per expert | 1,180,288 | 656,512 |
+
+The signed MoE-minus-dense active gap is 256 weights, or 0.039% of dense. One SwiGLU has `3 * d_model * ffn_hidden_dim` weights. Top-2 activates two such experts; routing adds `d_model * n_experts` weights per layer. The ideal dense hidden width is `2 * 341 + 4 / 3 = 683.333...`; 683 is the nearest integer. Tied embeddings are counted once; all attention and normalization weights are included. RoPE buffers are not trainable parameters.
+
+```powershell
+.venv/Scripts/python scripts/compare_budgets.py
+```
+
+The command prints a JSON breakdown without allocating model weights, rejects mismatched backbones, and exits unsuccessfully when the active gap exceeds 0.1%. Use `--dense PATH --moe PATH` for edited configurations. `ffn_hidden_dim` controls dense width or each expert's width. Omitting it preserves the previous `int(d_model * (8 / 3))` default, including old checkpoints.
+
+Before training, set `vocab_size` in **both** comparison configs to the actual value in your prepared `metadata.json`, then rerun the budget command. Both models must use exactly the same prepared token files and tokenizer, including EOS policy. For example, with the EOS corpus prepared above:
+
+```powershell
+# First update both vocab_size values from data/tinystories-eos/metadata.json.
+.venv/Scripts/python scripts/compare_budgets.py
+.venv/Scripts/python scripts/train.py --config configs/training/laptop.yaml --model configs/model/compare-dense.yaml --data-dir data/tinystories-eos --device cuda --output-dir checkpoints/compare-dense --max-steps 20
+.venv/Scripts/python scripts/train.py --config configs/training/laptop.yaml --model configs/model/compare-moe.yaml --data-dir data/tinystories-eos --device cuda --output-dir checkpoints/compare-moe --max-steps 20
+```
+
+These are bounded pipeline runs, not completed quality experiments. Both use the same seed, optimizer settings, precision, evaluation schedule, and 1,024 training tokens per optimizer step (`2 * 128 * 4`). The shared training horizon remains 200 steps, even when stopping at 20; the learning-rate schedule is therefore unchanged. The trainer's independent NumPy sampling generator supplies identical training windows for equal seeds and step counts; evaluation uses its own fixed seed. Different architectures do not have identical initial weights merely because the seed matches.
+
+This is not a match on total capacity, FLOPs, wall-clock time, or peak GPU memory. MoE stores more weights and optimizer state, and routing/dispatch adds overhead. The active count includes shared weights and selected expert matrices, not the number of distinct weights touched by an entire batch. Compare validation CE (which excludes auxiliary balancing loss), not raw training loss (which includes it for MoE). Report final-step results at equal token budgets; label best-checkpoint results separately because selected steps can differ. Repeat paired seeds before drawing conclusions. Timing/memory measurements and experiment reporting are a subsequent milestone; no performance advantage is claimed here.
+
 ## Tests and experiments
 
 ```powershell
