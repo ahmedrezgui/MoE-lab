@@ -204,6 +204,22 @@ The output directory must be new. It contains `comparison.json` and one director
 
 A completed [local GPU smoke report](reports/local-gpu-smoke.md) and its [full JSON record](reports/local-gpu-smoke.json) cover two paired seeds, 20 steps each, on 8 training and 4 validation TinyStories documents. Mean final CE was 3.4291 dense versus 3.4733 MoE; mean loop time was 1.56 versus 2.92 seconds, with peak allocated memory about 33.63 versus 43.82 MiB. These tiny runs validate the measurement pipeline and do not establish general language quality or an architecture ranking.
 
+## Inspect expert utilization
+
+Generate reports from existing MoE training logs without loading a checkpoint or retraining:
+
+```powershell
+.venv/Scripts/python scripts/report_routing.py --metrics checkpoints/comparison/moe-seed-42/metrics.jsonl checkpoints/comparison/moe-seed-43/metrics.jsonl --output-dir reports/my-routing
+```
+
+The output directory must be new. `routing.md` contains per-layer/per-expert assignment percentages and concentration summaries; `routing.json` also retains every observed step's counts and percentages. Use `--start-step 11 --end-step 20` to examine a later window. Bounds are inclusive; the report records both requested bounds and actual observed steps. Source log hashes make the input traceable. Dense logs, non-finite/negative/fractional counts, changing layer layouts, inconsistent layer totals, and missing steps inside an observed window are rejected.
+
+Assignment percentages are calculated by summing counts over the selected steps and dividing by each layer's total assignments. They sum to 100% per layer. With top-2 routing, one token contributes two assignments, so 25% assignment share is not 25% token coverage. Counts describe hard selection, not gate weights, expert quality, or GPU time. Layer IDs such as `11` and `38` come from the trainer's module enumeration; they are not decoder block indices.
+
+The report shows each expert's number of zero-assignment steps, aggregate busiest-expert share relative to uniform, and the highest per-step ratio. With four experts, uniform is 25%; a max/uniform ratio of 1.6 means the busiest expert received 40%. Whole-run balance can hide temporary concentration, so inspect per-step data or windows before interpreting it. This implementation selects distinct experts per token; with four experts and top-2, an expert's maximum assignment share is 50% and the maximum ratio is 2.
+
+The [recorded smoke routing report](reports/routing-gpu-smoke/routing.md) covers both completed GPU seeds. All experts received assignments across each full run, but several experts in logged layer `38` had individual steps with zero assignments. For seed 42, expert 2 had three such steps despite receiving 29.38% of that layer's total assignments. This illustrates why an aggregate alone is insufficient. These short runs do not establish expert specialization or persistent routing collapse.
+
 ## Tests and experiments
 
 ```powershell
