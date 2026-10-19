@@ -62,4 +62,7 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Tests also import repository scripts, which are not part of the installed wheel.
+# Keep console-script pytest and python -m pytest import behavior consistent.
+pythonpath = ["."]
 addopts = "-q"
