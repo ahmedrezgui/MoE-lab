@@ -2,7 +2,17 @@
 
 An educational decoder-only language model in PyTorch. Train random weights, inspect top-k routing, save/resume a run, and generate text locally. Supports a dense FFN baseline and a sparse MoE variant. This is an architecture laboratory, not an instruction-tuned assistant.
 
-The implementation lives in `src/moelab/`; runnable commands and the project roadmap are below.
+**1.21M parameters · 4 experts per layer · top-2 routing · local GPU training**
+
+Read the [model card](MODEL_CARD.md) for architecture, checkpoint identity and limitations, and the [larger training experiment](reports/story-5k-2k/README.md) for recorded results. To run the demo from a fresh clone, follow [Train the larger demo model](#train-the-larger-demo-model).
+
+![Recorded training results](assets/training-results.png)
+
+The larger run reduced full development perplexity from **51.30 to 9.01** by increasing both training stories (1,000 to 5,000) and updates (200 to 2,000). This is one seed on the same development stream, not an isolated estimate of either change. Text remains repetitive and inconsistent. In the separate three-seed dense/MoE comparison, **dense achieved lower loss in all three pairs**; this project does not claim a MoE speed or quality advantage.
+
+**Demo availability:** weights are local and are not bundled in Git. Review [all six outputs](reports/story-5k-2k/samples-after.json), or follow the [fresh-clone reproduction](#train-the-larger-demo-model) before launching Gradio. No public hosting or Azure deployment is claimed.
+
+The implementation lives in `src/moelab/`; detailed commands follow.
 
 ## Implemented
 
@@ -14,9 +24,13 @@ The implementation lives in `src/moelab/`; runnable commands and the project roa
 - Reference sampling with temperature/top-k/top-p; FastAPI generation, readiness, Prometheus metrics.
 - Tests for causality, routing equivalence, gradient flow, overfitting, resume, and API behavior.
 
-KV cache, streaming, quantization, real-corpus experiments, Azure infrastructure, and hosted demos are planned. MLflow has an optional wrapper but is not connected to the current trainer. CI configuration is included; remote execution is not yet verified.
+TinyStories experiments, expert-utilization reports, balancing sweeps and a local Gradio demo are implemented. KV caching, streaming, quantization, Azure infrastructure and hosted demos remain future work. MLflow has an optional wrapper but is not connected to the current trainer.
+
+GitHub Actions passes after the pytest import-path fix. See the [CI workflow runs](https://github.com/ahmedrezgui/MoE-lab/actions/workflows/ci.yml) for the status of each pushed commit.
 
 ## Interactive local playground
+
+These commands assume the original checkpoint already exists locally. For a fresh clone, follow [Train the larger demo model](#train-the-larger-demo-model), which does not require a baseline checkpoint. To show the improved candidate, use the explicit checkpoint command in the Windows quickstart below.
 
 ```powershell
 .venv/Scripts/python -m pip install -e ".[ui]"
@@ -62,6 +76,20 @@ python -m venv .venv
 For CPU-only installation, use the PyTorch `/whl/cpu` index instead. On Linux/macOS use `.venv/bin/python`. See the [official PyTorch installation selector](https://pytorch.org/get-started/locally/) for other hardware. No activation or Make is required.
 
 The included original short story is a plumbing fixture. A 200-step run can show loss reduction but does not establish general language quality. The default byte vocabulary is easy to inspect. To explore BPE merges request `--vocab-size 512`, then set the model vocabulary to the **actual** `vocab_size` reported in the prepared metadata. The request is an upper bound: fitting can stop earlier. After compression each split must still contain more tokens than the context length.
+
+## Train the larger demo model
+
+After installing the CUDA environment above, run these commands from the repository root. They reproduce the 5,000-story, 2,000-update candidate without needing the earlier baseline weights. Use new output directories; downloaded data and checkpoints remain ignored by Git.
+
+```powershell
+.venv/Scripts/python -m pip install -e ".[ui]"
+.venv/Scripts/python scripts/download_data.py --output data/raw/reviewer-5k --train-documents 5000 --val-documents 100
+.venv/Scripts/python scripts/prepare_documents.py --train-input data/raw/reviewer-5k/train.jsonl --val-input data/raw/reviewer-5k/val.jsonl --output data/reviewer-5k --block-size 128 --vocab-size 512 --tokenizer-training-bytes 65536 --add-eos
+.venv/Scripts/python scripts/train.py --config configs/training/story-2k.yaml --model configs/model/portfolio-moe.yaml --data-dir data/reviewer-5k --output-dir checkpoints/reviewer --device cuda
+.venv/Scripts/python scripts/demo_ui.py --checkpoint checkpoints/reviewer/last.pt --device cuda --port 7861
+```
+
+Open http://127.0.0.1:7861. The recorded training loop took about four minutes on an RTX 3050 Ti Laptop GPU; installation and data preparation take additional time. This direct training command has a fixed step budget but no wall-clock deadline. Runtime and generated text may differ across environments. For the measured before/after comparison and its worker deadline, see the [experiment report](reports/story-5k-2k/README.md).
 
 ## Download a bounded TinyStories subset
 
@@ -312,7 +340,7 @@ The [recorded confirmation](reports/balance-confirmation/README.md) retained all
 
 The dense and MoE `tiny` configs share a backbone but **do not have matched active parameters**: top-2 runs two full-sized FFNs per token. `num_params(active_only=True)` reports an architectural estimate. A fair comparison needs an explicit parameter/compute budget and measured throughput.
 
-Suggested portfolio sequence: reproduce the local demo, train on a documented corpus, plot expert utilization with/without balancing, compare dense/MoE under a declared budget, measure KV-cache speedups, then deploy and publish the evidence. Do not claim pretrained-level language quality or MoE speed advantages from the smoke test.
+Completed: documented-corpus training, expert-utilization analysis, balancing comparisons, dense/MoE experiments, a local demo and passing CI after the import-path fix. Next: capture a demo walkthrough for the personal portfolio website, then optionally package a release. KV-cache optimization and deployment are later extensions.
 
 ## Recorded runs and cloud assessment
 
