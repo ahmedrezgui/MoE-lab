@@ -1,21 +1,30 @@
-from pathlib import Path
-
 import pytest
 from pydantic import ValidationError
 
-from moelab.config import ModelConfig, load_model_config
+from moelab.config import ModelConfig
 from moelab.model.budget import compare_budgets, parameter_budget
 
-CONFIGS = Path(__file__).resolve().parents[1] / "configs/model"
+
+def budget_fixture(dense=False, default_width=False):
+    return ModelConfig(
+        vocab_size=256,
+        d_model=128,
+        n_layers=2,
+        n_heads=4,
+        n_kv_heads=2,
+        max_seq_len=128,
+        ffn_hidden_dim=None if default_width else (683 if dense else 341),
+        moe=None if dense else {"n_experts": 4, "top_k": 2},
+    )
 
 
-@pytest.mark.parametrize("name", ["compare-dense", "compare-moe", "laptop-moe"])
+@pytest.mark.parametrize("name", ["dense", "moe", "default-width"])
 def test_budget_matches_allocated_parameters_and_backward(name):
     torch = pytest.importorskip("torch")
     from moelab.model.transformer import Transformer
 
     torch.set_num_threads(2)
-    cfg = load_model_config(CONFIGS / f"{name}.yaml")
+    cfg = budget_fixture(dense=name == "dense", default_width=name == "default-width")
     model = Transformer(cfg)
     budget = parameter_budget(cfg)
     assert budget["total_params"] == sum(p.numel() for p in model.parameters())
@@ -31,8 +40,8 @@ def test_budget_matches_allocated_parameters_and_backward(name):
 
 
 def test_pair_is_matched_with_router_and_tied_embedding_counted_once():
-    dense = load_model_config(CONFIGS / "compare-dense.yaml")
-    moe = load_model_config(CONFIGS / "compare-moe.yaml")
+    dense = budget_fixture(dense=True)
+    moe = budget_fixture()
     report = compare_budgets(dense, moe)
     assert report["dense"]["total_params"] == 656256
     assert report["moe"]["total_params"] == 1180288
@@ -55,7 +64,7 @@ def test_pair_is_matched_with_router_and_tied_embedding_counted_once():
 
 
 def test_default_width_preserves_old_architecture_and_rejects_zero():
-    cfg = load_model_config(CONFIGS / "laptop-moe.yaml")
+    cfg = budget_fixture(default_width=True)
     assert cfg.ffn_hidden_dim is None and cfg.effective_ffn_hidden_dim == 341
     with pytest.raises(ValidationError):
         ModelConfig.model_validate(cfg.model_dump() | {"ffn_hidden_dim": 0})

@@ -11,7 +11,7 @@ from moelab.training.loop import load_checkpoint
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--checkpoint", default="checkpoints/demo/last.pt")
+    p.add_argument("--checkpoint", default="checkpoints/moe/last.pt")
     p.add_argument("--prompt", default="Once upon a time")
     p.add_argument("--max-new-tokens", type=int, default=100)
     p.add_argument("--temperature", type=float, default=0.8)

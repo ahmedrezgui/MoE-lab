@@ -23,7 +23,10 @@ async def lifespan(app):
     checkpoint = os.getenv("MOELAB_CHECKPOINT")
     if checkpoint:
         torch.set_num_threads(int(os.getenv("MOELAB_THREADS", "2")))
-        app.state.model, _ = load_checkpoint(checkpoint, os.getenv("MOELAB_DEVICE", "cpu"))
+        device = os.getenv("MOELAB_DEVICE", "auto")
+        if device == "auto":
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+        app.state.model, _ = load_checkpoint(checkpoint, device)
         app.state.model.eval()
         app.state.tokenizer = BPETokenizer.load(Path(checkpoint).with_name("tokenizer.json"))
         if app.state.tokenizer.vocab_size != app.state.model.cfg.vocab_size:
@@ -89,3 +92,9 @@ def generate(req: GenerateRequest):
         "generated_tokens": generated_tokens,
         "finish_reason": "eos" if stopped_on_eos else "length",
     }
+
+
+# Workspace endpoints are additive; the existing generation contract stays stable.
+from moelab.serving.workspace import router as workspace_router  # noqa: E402
+
+app.include_router(workspace_router)

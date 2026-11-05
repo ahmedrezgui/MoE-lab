@@ -1,14 +1,13 @@
 import json
 import subprocess
-from pathlib import Path
 
 import numpy as np
 import pytest
+import yaml
 
 from moelab.comparison import run_comparison
+from moelab.config import ModelConfig, TrainingConfig
 from moelab.tokenizer.bpe import BPETokenizer
-
-ROOT = Path(__file__).resolve().parents[1]
 
 
 @pytest.fixture
@@ -18,12 +17,32 @@ def comparison_args(tmp_path):
     BPETokenizer().save(data / "tokenizer.json")
     for split in ("train", "val"):
         np.tile(np.arange(40, dtype="<u2"), 10).tofile(data / f"ids_{split}.bin")
+    moe = ModelConfig(
+        vocab_size=256,
+        d_model=128,
+        n_layers=2,
+        n_heads=4,
+        n_kv_heads=2,
+        max_seq_len=128,
+        ffn_hidden_dim=341,
+        moe={"n_experts": 4, "top_k": 2},
+    )
+    dense = moe.model_dump() | {"moe": None, "ffn_hidden_dim": 683}
+    training = TrainingConfig(
+        lr=0.003, warmup_steps=0, max_steps=2, batch_size=2, precision="fp32", eval_every=1
+    )
+    for name, config in [
+        ("dense", dense),
+        ("moe", moe.model_dump()),
+        ("training", training.model_dump()),
+    ]:
+        (tmp_path / f"{name}.yaml").write_text(yaml.safe_dump(config))
     return dict(
         data_dir=data,
         output_dir=tmp_path / "comparison",
-        dense_path=ROOT / "configs/model/compare-dense.yaml",
-        moe_path=ROOT / "configs/model/compare-moe.yaml",
-        training_path=ROOT / "configs/training/demo.yaml",
+        dense_path=tmp_path / "dense.yaml",
+        moe_path=tmp_path / "moe.yaml",
+        training_path=tmp_path / "training.yaml",
         steps=1,
         seeds=(42,),
         device="cpu",

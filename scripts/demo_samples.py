@@ -6,7 +6,7 @@ from pathlib import Path
 
 import torch
 
-from moelab.serving.demo import DEFAULT_CHECKPOINT, EXAMPLE_PROMPTS, DemoModel
+from moelab.inference.demo import DEFAULT_CHECKPOINT, EXAMPLE_PROMPTS, DemoModel
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)

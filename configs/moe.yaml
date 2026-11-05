@@ -1,5 +1,4 @@
-# Portfolio demo architecture: coefficient 0.1, seed 42 via laptop training config.
-# Vocabulary must match the frozen TinyStories-1k tokenizer (512 including EOS).
+# The single MoE architecture used for training and demos.
 vocab_size: 512
 d_model: 128
 n_layers: 2

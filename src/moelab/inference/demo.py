@@ -12,7 +12,7 @@ from moelab.inference.generate import generate
 from moelab.tokenizer.bpe import BPETokenizer
 from moelab.training.loop import load_checkpoint
 
-DEFAULT_CHECKPOINT = "checkpoints/balance-ablation-1k/coef-0.1-seed-42/last.pt"
+DEFAULT_CHECKPOINT = "checkpoints/moe/last.pt"
 EXAMPLE_PROMPTS = ["Once upon a time", "The little fox", "One day, a girl"]
 
 

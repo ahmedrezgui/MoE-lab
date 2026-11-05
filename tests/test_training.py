@@ -9,7 +9,7 @@ from moelab.training.loop import load_checkpoint, train  # noqa: E402
 
 
 @pytest.mark.parametrize("legacy", [False, True])
-def test_training_resume_equals_uninterrupted(tmp_path, legacy):
+def test_training_resume_equals_uninterrupted(tmp_path, legacy, capsys):
     torch.set_num_threads(2)
     data = tmp_path / "data"
     data.mkdir()
@@ -45,6 +45,9 @@ def test_training_resume_equals_uninterrupted(tmp_path, legacy):
     )
     for a, b in zip(full.parameters(), resumed.parameters(), strict=True):
         torch.testing.assert_close(a, b, rtol=0, atol=0)
+    terminal = capsys.readouterr().out
+    assert "Iteration 4/4 (100.0%) | remaining 0" in terminal
+    assert "ETA 0.0 min" in terminal and "train loss" in terminal
     loaded, checkpoint = load_checkpoint(tmp_path / "split/last.pt")
     assert checkpoint["step"] == 4
     x = torch.tensor([[1, 2, 3]])

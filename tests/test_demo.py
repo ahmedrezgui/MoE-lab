@@ -4,8 +4,8 @@ import pytest
 import torch
 
 from moelab.config import ModelConfig
+from moelab.inference.demo import DemoModel
 from moelab.model.transformer import Transformer
-from moelab.serving.demo import DemoModel
 from moelab.tokenizer.bpe import BPETokenizer
 from moelab.training.loop import file_hash
 
@@ -87,15 +87,3 @@ def test_tokenizer_with_same_size_but_different_bytes_is_rejected(engine):
     tokenizer.write_text(json.dumps(payload))
     with pytest.raises(ValueError, match="fingerprint"):
         DemoModel(checkpoint)
-
-
-def test_gradio_builds_without_launching(engine):
-    pytest.importorskip("gradio")
-    from moelab.serving.ui import build_ui
-
-    app = build_ui(engine)
-    assert app.title == "MoE Lab | Story playground"
-    assert any(
-        dependency.get("api_name") == "generate" for dependency in app.config["dependencies"]
-    )
-    app.close()

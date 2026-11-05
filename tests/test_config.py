@@ -10,20 +10,14 @@ from moelab.config import ModelConfig, load_model_config, load_training_config
 CONFIGS = Path(__file__).parent.parent / "configs"
 
 
-def test_tiny_config_loads():
-    cfg = load_model_config(CONFIGS / "model" / "tiny.yaml")
-    assert cfg.head_dim == cfg.d_model // cfg.n_heads
-    assert cfg.moe is None
-
-
-def test_tiny_moe_config_loads():
-    cfg = load_model_config(CONFIGS / "model" / "tiny-moe.yaml")
+def test_moe_config_loads():
+    cfg = load_model_config(CONFIGS / "moe.yaml")
     assert cfg.moe is not None
     assert cfg.moe.top_k <= cfg.moe.n_experts
 
 
 def test_training_config_loads():
-    cfg = load_training_config(CONFIGS / "training" / "base.yaml")
+    cfg = load_training_config(CONFIGS / "training.yaml")
     assert cfg.precision in {"bf16", "fp16", "fp32"}
 
 

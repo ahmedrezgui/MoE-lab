@@ -109,6 +109,7 @@ def train(
     if not resume:
         initial = {
             "step": 0,
+            "total_steps": c.max_steps,
             **evaluate(model, datasets["val"], batches=4, batch_size=c.batch_size),
         }
         metrics_path.write_text(json.dumps(initial) + "\n", encoding="utf-8")
@@ -171,6 +172,7 @@ def train(
         step += 1
         row = {
             "step": step,
+            "total_steps": c.max_steps,
             "train_loss": train_loss,
             "lr": c.lr * factor,
             "elapsed_seconds": time.perf_counter() - start,
@@ -198,7 +200,18 @@ def train(
             )
             if device.type == "cuda":
                 row["peak_allocated_mib"] = torch.cuda.max_memory_allocated(device) / 2**20
-            print(json.dumps(row))
+        if step == start_step + 1 or step % 25 == 0 or step == stop or "val_ce" in row:
+            elapsed = time.perf_counter() - start
+            rate = (step - start_step) / max(elapsed, 1e-9)
+            remaining = stop - step
+            eta = remaining / rate
+            validation = f" | val CE {row['val_ce']:.4f}" if "val_ce" in row else ""
+            print(
+                f"Iteration {step:,}/{stop:,} ({100 * step / stop:.1f}%)"
+                f" | remaining {remaining:,} | train loss {train_loss:.4f}"
+                f"{validation} | {rate:.2f} it/s | ETA {eta / 60:.1f} min",
+                flush=True,
+            )
         with metrics_path.open("a", encoding="utf-8") as stream:
             stream.write(json.dumps(row) + "\n")
         save_last = step % c.checkpoint_every == 0 or step == stop

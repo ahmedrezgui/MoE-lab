@@ -17,6 +17,3 @@ jobs:
       - run: ruff check .
       - run: ruff format --check .
       - run: pytest
-      - run: python scripts/prepare_data.py --input examples/demo.txt --output data/demo
-      - run: python scripts/train.py --config configs/training/demo.yaml --model configs/model/demo-moe.yaml --max-steps 5
-      - run: python scripts/generate.py --prompt "Once upon a time" --max-new-tokens 8

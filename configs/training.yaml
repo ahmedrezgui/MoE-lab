@@ -1,11 +1,12 @@
+# Edit max_steps to set the horizon for a fresh training run.
 seed: 42
 lr: 0.001
 warmup_steps: 10
-max_steps: 2000
+max_steps: 20000
 batch_size: 2
 grad_accum_steps: 4
 weight_decay: 0.01
 grad_clip: 1.0
 precision: bf16
-eval_every: 100
-checkpoint_every: 500
+eval_every: 250
+checkpoint_every: 2000

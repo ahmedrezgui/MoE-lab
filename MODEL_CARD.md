@@ -1,3 +1,10 @@
+# Current workflow
+
+The active model uses `configs/moe.yaml` and `configs/training.yaml`. Serve it with
+`python scripts/serve.py` from `checkpoints/moe/last.pt`. The measurements below
+describe historical checkpoints, not a claim about newly trained weights. Historical
+training controls are recorded in reports; current defaults are set to 20,000 steps.
+
 ﻿# MoE Lab: portfolio model card
 
 ## Purpose and identity
@@ -9,7 +16,7 @@ The demo selects **coefficient 0.1, training seed 42, final step 200** from the 
 - Local checkpoint: `checkpoints/balance-ablation-1k/coef-0.1-seed-42/last.pt`
 - SHA-256: `39b93d9e7b23bf2cf8eef8fa7e6d85fa02d6ab18e67494c9bb097e521916f103`
 - Weights are not bundled in Git. The local checkpoint and its adjacent `tokenizer.json` are required, or reproduce training below.
-- Implementation: from-scratch attention, tokenizer, routing, model and training code using PyTorch primitives. Gradio is the presentation layer; no hosted LLM API or downloaded pretrained model is used.
+- Implementation: from-scratch attention, tokenizer, routing, model and training code using PyTorch primitives. React/Vite is the presentation layer, backed by FastAPI; no hosted LLM API or downloaded pretrained model is used.
 
 ## Architecture and training
 
@@ -56,26 +63,26 @@ This repetition is a real limitation of the trained model, not a polished story.
 
 ## Local playground
 
-Install the optional UI dependency in the existing environment (install the intended CUDA PyTorch build first, as in the README):
+Use the Vite/React workspace and FastAPI backend described in the
+[README](README.md#interactive-local-playground). Select the checkpoint explicitly
+with `MOELAB_CHECKPOINT`; restart the API after changing it. The matching tokenizer
+must be adjacent to the checkpoint. `MOELAB_DEVICE=auto` uses CUDA when available.
 
-```powershell
-.venv/Scripts/python -m pip install -e ".[ui]"
-.venv/Scripts/python scripts/demo_ui.py
-```
-
-Open http://127.0.0.1:7860. The default device is `auto`: CUDA if available, otherwise CPU. Force CPU with `--device cpu`; choose another trained model with `--checkpoint PATH`; change the port with `--port 7861`. Keep the matching tokenizer beside its checkpoint. The UI validates vocabulary and, for current checkpoints, the tokenizer's training fingerprint. Gradio 6.30.0 is pinned for the optional UI extra.
-
-The interface provides prompt examples, maximum new tokens, temperature, top-k, top-p, a sampling seed, full generated text, token counts and stopping reason. A dedicated random generator per request makes repeated settings reproducible on the same runtime without changing global RNG state. Requests are serialized through a queue and model lock. The checkpoint is loaded once at launch; this interface does not upload files or train models.
-
-The app binds to loopback only and disables Gradio public sharing. It runs locally and does not require an Azure resource or a paid inference API. This local demo is not an authenticated public deployment. Stop the terminal process with Ctrl+C. There is no KV cache or streaming output; the model recomputes a sliding context during generation. Prompts longer than 128 tokens are rejected, and the output cap is 256 new tokens.
+The workspace supports text continuation and real prompt-only routing inspection.
+Archived comparison charts are separate from the currently loaded checkpoint.
+The API and frontend bind to loopback for local use. There is no KV cache or
+streaming. Reproducible seeded samples remain available through `demo_samples.py`;
+the browser generation API does not currently expose a sampling seed.
 
 ## Reproduce the checkpoint and samples
 
 Prepare the pinned corpus using the commands in the recorded 1k-story experiment, then train a fresh run:
 
 ```powershell
-.venv/Scripts/python scripts/train.py --config configs/training/laptop.yaml --model configs/model/portfolio-moe.yaml --data-dir data/tinystories-1k-eos --device cuda --output-dir checkpoints/portfolio --max-steps 200
-.venv/Scripts/python scripts/demo_ui.py --checkpoint checkpoints/portfolio/last.pt --device cuda
+.venv/Scripts/python scripts/train.py --config configs/training.yaml --model configs/moe.yaml --data-dir data/tinystories-1k-eos --device cuda --output-dir checkpoints/portfolio --max-steps 200
+$env:MOELAB_CHECKPOINT = 'checkpoints/portfolio/last.pt'
+$env:MOELAB_DEVICE = 'cuda'
+.venv/Scripts/python -m uvicorn moelab.serving.api:app --host 127.0.0.1 --port 8000
 .venv/Scripts/python scripts/demo_samples.py --checkpoint checkpoints/portfolio/last.pt --device cpu --output reports/my-demo-samples.json
 ```
 
@@ -96,4 +103,4 @@ Full CPU fp32 development CE improved from 3.937743 to 2.198544 (perplexity 51.3
 
 The [full experiment report](reports/story-5k-2k/README.md) contains commands, controls, fingerprints, early/late routing and every [before](reports/story-5k-2k/samples-before.json)/[after](reports/story-5k-2k/samples-after.json) output. Recognizable phrases improve, but repetitions, inconsistent pronouns and incoherence remain; all six outputs still reach the cap without EOS. Both corpus size and training horizon change, so their separate contributions are unknown. This is one seed on an inspected development set, with no new confirmation/test-set claim.
 
-Launch with `.venv/Scripts/python scripts/demo_ui.py --checkpoint checkpoints/story-5k-2k/last.pt --port 7861`. The candidate is an educational improvement, not a fluent assistant.
+Select `checkpoints/story-5k-2k/last.pt` using `MOELAB_CHECKPOINT` and launch the API and frontend as described in the README. The candidate is an educational improvement, not a fluent assistant.
